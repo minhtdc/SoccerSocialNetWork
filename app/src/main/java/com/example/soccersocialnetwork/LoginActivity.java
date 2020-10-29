@@ -1,6 +1,5 @@
 package com.example.soccersocialnetwork;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,22 +8,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-    Button btnRegister;
-    TextView txtFogetPassword;
+    Animation topAnimation, bottomAnimation;
+    Button btnRegister, btnLogin;
+    TextView txtFogetPassword, txtLogo;
+    ImageView imgLogo;
+    EditText edtLoginEmail, edtLoginPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.login_layout);
-        //hide action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+
+        topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
+        bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
 
         //Ánh xạ
         anhXa();
@@ -152,8 +159,13 @@ public class LoginActivity extends AppCompatActivity {
 
     //ham anh xa
     private void anhXa(){
+        btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
         txtFogetPassword = findViewById(R.id.txtFogetPassword);
+        txtLogo = findViewById(R.id.txtLogo);
+        imgLogo = findViewById(R.id.imgLogo);
+        edtLoginEmail = findViewById(R.id.edtLoginMail);
+        edtLoginPassword = findViewById(R.id.edtLoginPassword);
 
     }
 }

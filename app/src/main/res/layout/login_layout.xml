@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
-    tools:context=".LoginActivity">
+    android:background="@drawable/bg_login">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -19,12 +18,12 @@
         app:srcCompat="@drawable/logo" />
 
     <EditText
-        android:id="@+id/edtForgetEmail"
+        android:id="@+id/edtLoginMail"
         style="@style/EditTextStyle"
         android:layout_width="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:ems="35"
@@ -32,34 +31,36 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtLogo" />
 
     <EditText
-        android:id="@+id/edtOTP"
+        android:id="@+id/edtLoginPassword"
         style="@style/EditTextStyle"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="35"
         android:hint="Nhập password"
         android:inputType="textPersonName"
         android:password="true"
-        app:layout_constraintEnd_toEndOf="@+id/edtForgetEmail"
-        app:layout_constraintStart_toStartOf="@+id/edtForgetEmail"
-        app:layout_constraintTop_toBottomOf="@+id/edtForgetEmail" />
+        app:layout_constraintEnd_toEndOf="@+id/edtLoginMail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edtLoginMail"
+        app:layout_constraintTop_toBottomOf="@+id/edtLoginMail" />
 
     <TextView
         android:id="@+id/txtFogetPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:text="Quên mật khẩu"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtOTP"
-        app:layout_constraintTop_toBottomOf="@+id/edtOTP" />
+        app:layout_constraintEnd_toEndOf="@+id/edtLoginPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtLoginPassword" />
 
     <Button
-        android:id="@+id/btnForgetPassword"
+        android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -70,7 +71,7 @@
         android:background="@drawable/btn_shape_login"
         android:text="Đăng Nhập"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtFogetPassword" />
 
@@ -81,7 +82,21 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/btn_shape_login"
         android:text="Đăng Ký"
-        app:layout_constraintEnd_toEndOf="@+id/btnForgetPassword"
-        app:layout_constraintStart_toStartOf="@+id/btnForgetPassword"
-        app:layout_constraintTop_toBottomOf="@+id/btnForgetPassword" />
+        app:layout_constraintEnd_toEndOf="@+id/btnLogin"
+        app:layout_constraintStart_toStartOf="@+id/btnLogin"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+    <TextView
+        android:id="@+id/txtLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bangers"
+        android:text="Soccer Social Network"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

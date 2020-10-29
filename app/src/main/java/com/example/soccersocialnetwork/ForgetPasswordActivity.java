@@ -82,7 +82,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
     //ánh xạ
     private void anhXa() {
-        btnForgetPassword = findViewById(R.id.btnForgetPassword);
+        btnForgetPassword = findViewById(R.id.btnLogin);
         btnBackLogin = findViewById(R.id.btnBackLogin);
     }
 }
