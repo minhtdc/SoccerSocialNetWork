@@ -34,11 +34,21 @@ public class LoginActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        //Ánh xạ
+        anhXa();
+
+        //animation
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
         bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
 
-        //Ánh xạ
-        anhXa();
+        imgLogo.setAnimation(topAnimation);
+        txtLogo.setAnimation(topAnimation);
+
+        btnLogin.setAnimation(bottomAnimation);
+        btnRegister.setAnimation(bottomAnimation);
+        txtFogetPassword.setAnimation(bottomAnimation);
+        edtLoginEmail.setAnimation(bottomAnimation);
+        edtLoginPassword.setAnimation(bottomAnimation);
 
         //action
         btnRegister.setOnClickListener(new View.OnClickListener() {
