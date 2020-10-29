@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/edtRegisterPW"
+        android:id="@+id/edtForgetPassword"
         style="@style/EditTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <EditText
-        android:id="@+id/edtRegisterRePW"
+        android:id="@+id/edtReForgetPassword"
         style="@style/EditTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
         android:hint="Nhập họ và tên"
         android:inputType="textPersonName"
         android:singleLine="false"
-        app:layout_constraintEnd_toEndOf="@+id/edtRegisterPW"
-        app:layout_constraintStart_toStartOf="@+id/edtRegisterPW"
+        app:layout_constraintEnd_toEndOf="@+id/edtForgetPassword"
+        app:layout_constraintStart_toStartOf="@+id/edtForgetPassword"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

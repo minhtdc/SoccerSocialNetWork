@@ -5,16 +5,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-
     Button btnRegister;
+    TextView txtFogetPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +37,23 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        txtFogetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
+
     }
 
     //Hiển thị dialog login 1
     private void dislayDialogLogin1() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_1_layout, null);
-        EditText edtRegisterEmail = (EditText) alertLayout.findViewById(R.id.edtRegisterPW);
-        EditText edtRegisterName = (EditText) alertLayout.findViewById(R.id.edtRegisterRePW);
+        EditText edtRegisterEmail = (EditText) alertLayout.findViewById(R.id.edtForgetPassword);
+        EditText edtRegisterName = (EditText) alertLayout.findViewById(R.id.edtReForgetPassword);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -75,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin2() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_2_layout, null);
-        EditText edtRegisterBirthday = (EditText) alertLayout.findViewById(R.id.edtRegisterPW);
-        EditText edtRegisterAria = (EditText) alertLayout.findViewById(R.id.edtRegisterRePW);
+        EditText edtRegisterBirthday = (EditText) alertLayout.findViewById(R.id.edtForgetPassword);
+        EditText edtRegisterAria = (EditText) alertLayout.findViewById(R.id.edtReForgetPassword);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -109,8 +120,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin3() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_3_layout, null);
-        EditText edtRegisterPW = (EditText) alertLayout.findViewById(R.id.edtRegisterPW);
-        EditText edtRegisterRePW = (EditText) alertLayout.findViewById(R.id.edtRegisterRePW);
+        EditText edtRegisterPW = (EditText) alertLayout.findViewById(R.id.edtForgetPassword);
+        EditText edtRegisterRePW = (EditText) alertLayout.findViewById(R.id.edtReForgetPassword);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -139,10 +150,10 @@ public class LoginActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
-
     //ham anh xa
     private void anhXa(){
         btnRegister = findViewById(R.id.btnRegister);
+        txtFogetPassword = findViewById(R.id.txtFogetPassword);
+
     }
 }
