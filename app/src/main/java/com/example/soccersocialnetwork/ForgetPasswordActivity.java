@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
-    Button btnForgetPassword, btnBackLogin;
+    Button btnRegisterXacNhan, btnBackLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             }
         });
 
-        btnForgetPassword.setOnClickListener(new View.OnClickListener() {
+        btnRegisterXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dislayDialogForgetPW();
@@ -49,8 +49,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private void dislayDialogForgetPW() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_3_layout, null);
-        EditText edtRegisterPW = (EditText) alertLayout.findViewById(R.id.edtForgetPassword);
-        EditText edtRegisterRePW = (EditText) alertLayout.findViewById(R.id.edtReForgetPassword);
+        EditText edtForgetMail = (EditText) alertLayout.findViewById(R.id.edtForgetMail);
+        EditText edtRegisterRePW = (EditText) alertLayout.findViewById(R.id.edtDialogName);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Quên mật khẩu");
@@ -82,7 +82,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
     //ánh xạ
     private void anhXa() {
-        btnForgetPassword = findViewById(R.id.btnLogin);
+        btnRegisterXacNhan = findViewById(R.id.btnRegisterXacNhan);
         btnBackLogin = findViewById(R.id.btnBackLogin);
     }
 }

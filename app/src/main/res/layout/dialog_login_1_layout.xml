@@ -27,21 +27,20 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/edtForgetPassword"
+        android:id="@+id/edtDialogMail"
         style="@style/EditTextStyle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
         android:layout_marginLeft="45dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
         android:ems="10"
         android:hint="Nhập email"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView6" />
 
     <TextView
@@ -55,16 +54,16 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <EditText
-        android:id="@+id/edtReForgetPassword"
+        android:id="@+id/edtDialogName"
         style="@style/EditTextStyle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Nhập họ và tên"
         android:inputType="textPersonName"
         android:singleLine="false"
-        app:layout_constraintEnd_toEndOf="@+id/edtForgetPassword"
-        app:layout_constraintStart_toStartOf="@+id/edtForgetPassword"
+        app:layout_constraintEnd_toEndOf="@+id/edtDialogMail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edtDialogMail"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

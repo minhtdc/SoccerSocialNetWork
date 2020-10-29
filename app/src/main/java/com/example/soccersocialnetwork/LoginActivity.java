@@ -1,5 +1,6 @@
 package com.example.soccersocialnetwork;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.login_layout);
+        //hide action bar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
         bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
@@ -59,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin1() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_1_layout, null);
-        EditText edtRegisterEmail = (EditText) alertLayout.findViewById(R.id.edtForgetPassword);
-        EditText edtRegisterName = (EditText) alertLayout.findViewById(R.id.edtReForgetPassword);
+        EditText edtDialogMail = (EditText) alertLayout.findViewById(R.id.edtDialogMail);
+        EditText edtDialogName = (EditText) alertLayout.findViewById(R.id.edtDialogName);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -93,8 +97,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin2() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_2_layout, null);
-        EditText edtRegisterBirthday = (EditText) alertLayout.findViewById(R.id.edtForgetPassword);
-        EditText edtRegisterAria = (EditText) alertLayout.findViewById(R.id.edtReForgetPassword);
+        EditText edtDialogBirthday = (EditText) alertLayout.findViewById(R.id.edtDialogBirthday);
+        EditText edtDialogAria = (EditText) alertLayout.findViewById(R.id.edtDialogAria);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -127,8 +131,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin3() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_3_layout, null);
-        EditText edtRegisterPW = (EditText) alertLayout.findViewById(R.id.edtForgetPassword);
-        EditText edtRegisterRePW = (EditText) alertLayout.findViewById(R.id.edtReForgetPassword);
+        EditText edtDialogPass = (EditText) alertLayout.findViewById(R.id.edtDialogPass);
+        EditText edtDialogRePass = (EditText) alertLayout.findViewById(R.id.edtDialogRePass);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
