@@ -41,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin1() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_1_layout, null);
-        EditText edtRegisterEmail = (EditText) alertLayout.findViewById(R.id.edtRegisterBirthday);
-        EditText edtRegisterName = (EditText) alertLayout.findViewById(R.id.edtRegisterAria);
+        EditText edtRegisterEmail = (EditText) alertLayout.findViewById(R.id.edtRegisterPW);
+        EditText edtRegisterName = (EditText) alertLayout.findViewById(R.id.edtRegisterRePW);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -75,8 +75,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin2() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_2_layout, null);
-        EditText edtRegisterBirthday = (EditText) alertLayout.findViewById(R.id.edtRegisterBirthday);
-        EditText edtRegisterAria = (EditText) alertLayout.findViewById(R.id.edtRegisterAria);
+        EditText edtRegisterBirthday = (EditText) alertLayout.findViewById(R.id.edtRegisterPW);
+        EditText edtRegisterAria = (EditText) alertLayout.findViewById(R.id.edtRegisterRePW);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -98,12 +98,47 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // code for matching password
-                Toast.makeText(getBaseContext(), "Next", Toast.LENGTH_SHORT).show();
+                dislayDialogLogin3();
             }
         });
         AlertDialog dialog = alert.create();
         dialog.show();
     }
+
+    //hiển thị dialog login 3
+    private void dislayDialogLogin3() {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.dialog_login_3_layout, null);
+        EditText edtRegisterPW = (EditText) alertLayout.findViewById(R.id.edtRegisterPW);
+        EditText edtRegisterRePW = (EditText) alertLayout.findViewById(R.id.edtRegisterRePW);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Đăng ký");
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+
+        //cancel
+        alert.setNegativeButton("Quay lại", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dislayDialogLogin2();
+            }
+        });
+
+        //next
+        alert.setPositiveButton("Xong", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // code for matching password
+                Toast.makeText(getBaseContext(), "Xong", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
+    }
+
 
 
     //ham anh xa
