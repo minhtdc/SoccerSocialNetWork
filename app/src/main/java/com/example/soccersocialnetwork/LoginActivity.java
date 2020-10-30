@@ -43,10 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         //animation
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
         bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
-
         imgLogo.setAnimation(topAnimation);
         txtLogo.setAnimation(topAnimation);
-
         btnLogin.setAnimation(bottomAnimation);
         btnRegister.setAnimation(bottomAnimation);
         txtFogetPassword.setAnimation(bottomAnimation);
