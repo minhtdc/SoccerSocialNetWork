@@ -3,4 +3,8 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="colorForAlPha">#212226</color>
+    <color name="colorBtnYellow">#f4c613</color>
+
 </resources>

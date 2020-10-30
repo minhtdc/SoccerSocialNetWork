@@ -7,4 +7,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="EditTextStyle" >
+        <item name="android:background">@drawable/bg_shape_register</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColorHint">#615D5D</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
 </resources>
