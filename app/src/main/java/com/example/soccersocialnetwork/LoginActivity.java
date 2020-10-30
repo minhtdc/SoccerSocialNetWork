@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class LoginActivity extends AppCompatActivity {
     Animation topAnimation, bottomAnimation;
     Button btnRegister, btnLogin;
@@ -49,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         txtFogetPassword.setAnimation(bottomAnimation);
         edtLoginEmail.setAnimation(bottomAnimation);
         edtLoginPassword.setAnimation(bottomAnimation);
+
 
         //action
         btnRegister.setOnClickListener(new View.OnClickListener() {
