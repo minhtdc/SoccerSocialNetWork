@@ -1,6 +1,7 @@
 package com.example.soccersocialnetwork.data_models;
 
 public class Users {
+    private String userID;
     private String userEmail;
     private String userName;
     private String userBirth;
@@ -13,11 +14,20 @@ public class Users {
         this.userAria = "userAria";
     }
 
-    public Users(String userEmail, String userName, String userBirth, String userAria) {
+    public Users(String userID, String userEmail, String userName, String userBirth, String userAria) {
+        this.userID = userID;
         this.userEmail = userEmail;
         this.userName = userName;
         this.userBirth = userBirth;
         this.userAria = userAria;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getUserEmail() {

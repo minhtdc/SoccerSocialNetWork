@@ -9,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.data_models.Users;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,12 +41,13 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    private support_func support_func;
     Animation topAnimation, bottomAnimation;
     Button btnRegister, btnLogin;
     TextView txtFogetPassword, txtLogo;
     ImageView imgLogo;
     EditText edtLoginEmail, edtLoginPassword;
-    private FirebaseAuth auth;
+    private FirebaseAuth fAuth;
     Users user = new Users();
 
     @Override
@@ -74,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getBaseContext(), getDate("yyyy") + ";" + getDate("MM") + ";" + getDate("dd"), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -104,32 +109,50 @@ public class LoginActivity extends AppCompatActivity {
         final EditText edtDialogMail = (EditText) alertLayout.findViewById(R.id.edtDialogMail);
         final EditText edtDialogName = (EditText) alertLayout.findViewById(R.id.edtDialogName);
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Đăng ký");
-        alert.setView(alertLayout);
-        alert.setCancelable(false);
-        //cancel
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
+        final AlertDialog alert = new AlertDialog.Builder(this)
+                .setView(alertLayout)
+                .setTitle("Đăng ký")
+                .setPositiveButton("Tiếp", null)
+                .setNegativeButton("Hủy", null)
+                .create();
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getBaseContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+            public void onShow(DialogInterface dialogInterface) {
+                Button btnHuy = ((AlertDialog) alert).getButton(AlertDialog.BUTTON_NEGATIVE);
+                Button btnTiep = ((AlertDialog) alert).getButton(AlertDialog.BUTTON_POSITIVE);
+                //xử lý ấn trên dialog
+                btnHuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alert.dismiss();
+                    }
+                });
+                btnTiep.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final String userMail = edtDialogMail.getText().toString();
+                        final String userName = edtDialogName.getText().toString();
+                        if(userMail.equalsIgnoreCase("") == false && userName.equalsIgnoreCase("") == false) {
+                            if(support_func.isValidEmailId(userMail)) {
+                                user.setUserEmail(userMail);
+                                user.setUserName(userName);
+                                alert.dismiss();
+                                dislayDialogLogin2();
+                            }
+                            else {
+                                Toast.makeText(getBaseContext(), "Sai định dạng email!", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        else {
+                            Toast.makeText(getBaseContext(), "Vui lòng nhập đủ dữ liệu!", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
             }
         });
-
-        //next
-        alert.setPositiveButton("Tiếp", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // code for matching password
-                user.setUserEmail(edtDialogMail.getText().toString());
-                user.setUserName(edtDialogName.getText().toString());
-                dislayDialogLogin2();
-            }
-        });
-        AlertDialog dialog = alert.create();
-        dialog.show();
+        alert.show();
     }
 
     //hiển thị dialog 2
@@ -153,9 +176,9 @@ public class LoginActivity extends AppCompatActivity {
                 };
 
                 // Create DatePickerDialog (Spinner Mode):
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getBaseContext(),
+                DatePickerDialog datePickerDialog = new DatePickerDialog(LoginActivity.this,
                         android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                        dateSetListener, getDate("YYYY"), getDate("MM"), getDate("DD"));
+                        dateSetListener, getDate("yyyy"), getDate("MM"), getDate("dd"));
 
                 // Show
                 datePickerDialog.show();
@@ -193,10 +216,11 @@ public class LoginActivity extends AppCompatActivity {
 
     //hiển thị dialog login 3
     private void dislayDialogLogin3() {
+        fAuth = FirebaseAuth.getInstance();
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_3_layout, null);
         final EditText edtDialogPass = (EditText) alertLayout.findViewById(R.id.edtDialogPass);
-        EditText edtDialogRePass = (EditText) alertLayout.findViewById(R.id.edtDialogRePass);
+        final EditText edtDialogRePass = (EditText) alertLayout.findViewById(R.id.edtDialogRePass);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -217,15 +241,30 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // code for matching password
-                //final String pass = edtDialogPass.getText().toString();
-                try {
-                    addUserInformation("123", user);
-                    Toast.makeText(getBaseContext(), "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                final String pass = edtDialogPass.getText().toString();
+                final String Repass = edtDialogRePass.getText().toString();
+                if (pass.equals(Repass)) {
+                    fAuth.createUserWithEmailAndPassword(user.getUserEmail(), pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull final Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                try {
+                                    addUserInformation(fAuth.getUid(), user);//Add information of new user sign up
+                                    Toast.makeText(getBaseContext(), "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 
+                            } else {
+                                Toast.makeText(getBaseContext(), "Tạo tài khoản thất bại!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(getBaseContext(), "Mật khẩu không trùng khớp!", Toast.LENGTH_SHORT).show();
+                    dislayDialogLogin3();
+                }
             }
         });
         AlertDialog dialog = alert.create();
