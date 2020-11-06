@@ -1,5 +1,6 @@
 package com.example.soccersocialnetwork;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,8 +20,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.soccersocialnetwork.data_models.Users;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     Animation topAnimation, bottomAnimation;
@@ -27,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView txtFogetPassword, txtLogo;
     ImageView imgLogo;
     EditText edtLoginEmail, edtLoginPassword;
+    private FirebaseAuth auth;
+    Users user = new Users();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +65,18 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //action
+        //login
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+
+        });
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 dislayDialogLogin1();
             }
         });
@@ -75,8 +96,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin1() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_1_layout, null);
-        EditText edtDialogMail = (EditText) alertLayout.findViewById(R.id.edtDialogMail);
-        EditText edtDialogName = (EditText) alertLayout.findViewById(R.id.edtDialogName);
+        final EditText edtDialogMail = (EditText) alertLayout.findViewById(R.id.edtDialogMail);
+        final EditText edtDialogName = (EditText) alertLayout.findViewById(R.id.edtDialogName);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -98,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // code for matching password
+                user.setUserEmail(edtDialogMail.getText().toString());
+                user.setUserName(edtDialogName.getText().toString());
                 dislayDialogLogin2();
             }
         });
@@ -109,8 +132,8 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin2() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_2_layout, null);
-        EditText edtDialogBirthday = (EditText) alertLayout.findViewById(R.id.edtDialogBirthday);
-        EditText edtDialogAria = (EditText) alertLayout.findViewById(R.id.edtDialogAria);
+        final EditText edtDialogBirthday = (EditText) alertLayout.findViewById(R.id.edtDialogBirthday);
+        final EditText edtDialogAria = (EditText) alertLayout.findViewById(R.id.edtDialogAria);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -132,6 +155,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // code for matching password
+                user.setUserBirth(edtDialogBirthday.getText().toString());
+                user.setUserAria(edtDialogAria.getText().toString());
                 dislayDialogLogin3();
             }
         });
@@ -143,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
     private void dislayDialogLogin3() {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_3_layout, null);
-        EditText edtDialogPass = (EditText) alertLayout.findViewById(R.id.edtDialogPass);
+        final EditText edtDialogPass = (EditText) alertLayout.findViewById(R.id.edtDialogPass);
         EditText edtDialogRePass = (EditText) alertLayout.findViewById(R.id.edtDialogRePass);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -166,7 +191,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // code for matching password
-                Toast.makeText(getBaseContext(), "Xong", Toast.LENGTH_SHORT).show();
+                //final String pass = edtDialogPass.getText().toString();
+                try {
+                    addUserInformation("123", user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
         AlertDialog dialog = alert.create();
@@ -183,5 +215,31 @@ public class LoginActivity extends AppCompatActivity {
         edtLoginEmail = findViewById(R.id.edtLoginMail);
         edtLoginPassword = findViewById(R.id.edtLoginPassword);
 
+    }
+
+    //adduser
+    private void addUserInformation(String UserID, Users user) throws JSONException {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object> postValues = null;
+
+        try {
+            postValues = support_func.toMap(toJSON(user));
+        } catch (JSONException e) {
+        }
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/users/" + UserID, postValues);
+
+        mDatabase.updateChildren(childUpdates);
+    }
+
+    //put user to firebase
+    public JSONObject toJSON(Users user) throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("userEmail", user.getUserEmail());
+        json.put("userName", user.getUserName());
+        json.put("userBirth", user.getUserBirth());
+        json.put("userAria",  user.getUserAria());
+        return json;
     }
 }
