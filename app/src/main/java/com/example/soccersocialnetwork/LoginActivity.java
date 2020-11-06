@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
@@ -103,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
         alert.setTitle("Đăng ký");
         alert.setView(alertLayout);
         alert.setCancelable(false);
-
         //cancel
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
@@ -114,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //next
-        alert.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton("Tiếp", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -134,6 +138,29 @@ public class LoginActivity extends AppCompatActivity {
         View alertLayout = inflater.inflate(R.layout.dialog_login_2_layout, null);
         final EditText edtDialogBirthday = (EditText) alertLayout.findViewById(R.id.edtDialogBirthday);
         final EditText edtDialogAria = (EditText) alertLayout.findViewById(R.id.edtDialogAria);
+
+        edtDialogBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Date Select Listener.
+                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        edtDialogBirthday.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    }
+                };
+
+                // Create DatePickerDialog (Spinner Mode):
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getBaseContext(),
+                        android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                        dateSetListener, getDate("YYYY"), getDate("MM"), getDate("DD"));
+
+                // Show
+                datePickerDialog.show();
+            }
+        });
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Đăng ký");
@@ -194,10 +221,10 @@ public class LoginActivity extends AppCompatActivity {
                 //final String pass = edtDialogPass.getText().toString();
                 try {
                     addUserInformation("123", user);
+                    Toast.makeText(getBaseContext(), "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
 
             }
         });
@@ -206,7 +233,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //ham anh xa
-    private void anhXa(){
+    private void anhXa() {
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
         txtFogetPassword = findViewById(R.id.txtFogetPassword);
@@ -239,7 +266,15 @@ public class LoginActivity extends AppCompatActivity {
         json.put("userEmail", user.getUserEmail());
         json.put("userName", user.getUserName());
         json.put("userBirth", user.getUserBirth());
-        json.put("userAria",  user.getUserAria());
+        json.put("userAria", user.getUserAria());
         return json;
+    }
+
+    //lấy ngày giờ
+    public static int getDate(String data) {
+        //lấy ngày giờ hệ thống
+        SimpleDateFormat sdf = new SimpleDateFormat(data, Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+        return Integer.parseInt(currentDateandTime);
     }
 }
