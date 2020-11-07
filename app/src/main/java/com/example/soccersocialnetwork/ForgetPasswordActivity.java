@@ -48,16 +48,16 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         btnRegisterXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                 mFirebaseAuth = FirebaseAuth.getInstance();
-//                 mFirebaseAuth.sendPasswordResetEmail(edtForgetMail.getText().toString())
-//                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                             @Override
-//                             public void onComplete(@NonNull Task<Void> task) {
-//
-//                             }
-//                         });
+                String email = edtForgetMail.getText().toString();
+                 mFirebaseAuth = FirebaseAuth.getInstance();
+                 mFirebaseAuth.sendPasswordResetEmail(email)
+                         .addOnCompleteListener(new OnCompleteListener<Void>() {
+                             @Override
+                             public void onComplete(@NonNull Task<Void> task) {
+                                 dislayDialogForgetPW();
+                             }
+                         });
 
-                dislayDialogForgetPW();
             }
         });
 
