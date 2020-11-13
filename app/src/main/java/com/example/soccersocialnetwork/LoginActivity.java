@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,6 +160,9 @@ public class LoginActivity extends AppCompatActivity {
         final EditText edtDialogBirthday = (EditText) alertLayout.findViewById(R.id.edtDialogBirthday);
         final EditText edtDialogAria = (EditText) alertLayout.findViewById(R.id.edtDialogAria);
 
+        //enable
+        edtDialogBirthday.setInputType(InputType.TYPE_NULL);
+
         edtDialogBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -258,6 +262,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         final String pass = edtDialogPass.getText().toString();
                         final String Repass = edtDialogRePass.getText().toString();
+
                         if (pass.equals(Repass)) {
                             fAuth.createUserWithEmailAndPassword(user.getUserEmail(), pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override

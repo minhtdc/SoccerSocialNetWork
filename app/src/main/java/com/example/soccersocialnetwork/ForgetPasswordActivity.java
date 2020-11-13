@@ -49,15 +49,22 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email = edtForgetMail.getText().toString();
-                 mFirebaseAuth = FirebaseAuth.getInstance();
-                 mFirebaseAuth.sendPasswordResetEmail(email)
-                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                             @Override
-                             public void onComplete(@NonNull Task<Void> task) {
-                                 dislayDialogForgetPW();
-                             }
-                         });
-
+                if (email.equalsIgnoreCase("")) {
+                    Toast.makeText(getBaseContext(), "Vui lòng nhập email.", Toast.LENGTH_SHORT).show();
+                } else {
+                    if(!support_func.isValidEmailId(email)){
+                        Toast.makeText(getBaseContext(), "Sai định dạng email", Toast.LENGTH_SHORT).show();
+                    }else {
+                        mFirebaseAuth = FirebaseAuth.getInstance();
+                        mFirebaseAuth.sendPasswordResetEmail(email)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        dislayDialogForgetPW();
+                                    }
+                                });
+                    }
+                }
             }
         });
 
