@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home_layout">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </androidx.appcompat.widget.Toolbar>
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem_trangChu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="trang chu">
+            </com.google.android.material.tabs.TabItem>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem_DSDoi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="danh sach doi">
+            </com.google.android.material.tabs.TabItem>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem_DSSan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="danh sach san">
+            </com.google.android.material.tabs.TabItem>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem_thongBao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="thong bao">
+            </com.google.android.material.tabs.TabItem>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="navigation">
+            </com.google.android.material.tabs.TabItem>
+        </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

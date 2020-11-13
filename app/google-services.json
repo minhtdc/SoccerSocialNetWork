@@ -3,11 +3,11 @@
     "project_number": "277856253779",
     "firebase_url": "https://soccersocialnetwork-733b3.firebaseio.com",
     "project_id": "soccersocialnetwork-733b3",
-    "storage_bucket": "soccersocialnetwork-733b3.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
+        "storage_bucket": "soccersocialnetwork-733b3.appspot.com"
+      },
+      "client": [
+        {
+          "client_info": {
         "mobilesdk_app_id": "1:277856253779:android:d51bdf107372a19a6f93a6",
         "android_client_info": {
           "package_name": "com.example.soccersocialnetwork"
