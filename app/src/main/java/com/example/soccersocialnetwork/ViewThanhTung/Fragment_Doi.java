@@ -1,13 +1,15 @@
-package com.example.soccersocialnetwork.ViewDoi;
+package com.example.soccersocialnetwork.ViewThanhTung;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
 
 import com.example.soccersocialnetwork.Adapter.Adapter_FeedsDoi;
 import com.example.soccersocialnetwork.R;
@@ -15,45 +17,33 @@ import com.example.soccersocialnetwork.data_models.Model_FeedsDoi_View;
 
 import java.util.ArrayList;
 
-public class DoiActivity extends AppCompatActivity {
+public class Fragment_Doi extends Fragment {
 
     RecyclerView recyclerView;
 
     ArrayList<Model_FeedsDoi_View> listFeeds = new ArrayList<>();
     Adapter_FeedsDoi adapterFeedsDoi;
 
-    private ViewPager pager;
-    private PagerAdapter pagerAdapter;
-    ArrayList<Fragment> fragmentList = new ArrayList<>();
 
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = (ViewGroup) inflater.inflate((R.layout.doi_feeds_2), container, false);
+        recyclerView = rootView.findViewById(R.id.recyclerView);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doi);
-        //setControl();
-
-       // setEvent();
-//
-       fragmentList.add(new Fragment_Doi());
-        fragmentList.add(new Fragment_Doi_2());
-
-        pager = findViewById(R.id.pagerMain);
-        pagerAdapter = new Fragment_SildePager(getSupportFragmentManager(),fragmentList);
-        pager.setAdapter(pagerAdapter);
-
+        setEvent();
+        return  rootView;
     }
+
 
     private void setEvent() {
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
 
-        adapterFeedsDoi = new Adapter_FeedsDoi(this, listFeeds);
+        adapterFeedsDoi = new Adapter_FeedsDoi(getContext(), listFeeds);
         recyclerView.setAdapter(adapterFeedsDoi);
 
-       ThemBaiVietDaBong();
+        ThemBaiVietDaBong();
 //
 
     }
@@ -61,7 +51,7 @@ public class DoiActivity extends AppCompatActivity {
 
 
     private void setControl() {
-        recyclerView = findViewById(R.id.recyclerView);
+
 
     }
 

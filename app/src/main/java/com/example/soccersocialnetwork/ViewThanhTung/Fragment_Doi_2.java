@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.ViewDoi;
+package com.example.soccersocialnetwork.ViewThanhTung;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import com.example.soccersocialnetwork.data_models.Model_FeedsDoi_View;
 
 import java.util.ArrayList;
 
-public class Fragment_Doi extends Fragment {
+public class Fragment_Doi_2 extends Fragment {
 
     RecyclerView recyclerView;
 
@@ -26,10 +26,8 @@ public class Fragment_Doi extends Fragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = (ViewGroup) inflater.inflate((R.layout.feeds_doi_3), container, false);
-        recyclerView = rootView.findViewById(R.id.recyclerView);
-
-        setEvent();
+        View rootView = (ViewGroup) inflater.inflate((R.layout.fragment_trandau), container, false);
+        //setEvent();
         return  rootView;
     }
 
@@ -43,7 +41,7 @@ public class Fragment_Doi extends Fragment {
         adapterFeedsDoi = new Adapter_FeedsDoi(getContext(), listFeeds);
         recyclerView.setAdapter(adapterFeedsDoi);
 
-        ThemBaiVietDaBong();
+       // ThemBaiVietDaBong();
 //
 
     }

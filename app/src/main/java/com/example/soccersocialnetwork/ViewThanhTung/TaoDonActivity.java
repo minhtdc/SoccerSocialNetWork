@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.ViewDoi;
+package com.example.soccersocialnetwork.ViewThanhTung;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
