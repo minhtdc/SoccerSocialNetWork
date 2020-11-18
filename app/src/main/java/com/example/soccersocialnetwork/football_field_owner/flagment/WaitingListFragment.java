@@ -2,65 +2,51 @@ package com.example.soccersocialnetwork.football_field_owner.flagment;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.adapter.CustomAdapterWaiting;
+import com.example.soccersocialnetwork.football_field_owner.model.Waiting;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WaitingListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class WaitingListFragment extends Fragment {
+    ListView lvWaiting;
+    ArrayList<Waiting> data_waiting = new ArrayList<>();
+    ArrayAdapter adapter_waiting;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public WaitingListFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WaitingListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static WaitingListFragment newInstance(String param1, String param2) {
-        WaitingListFragment fragment = new WaitingListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_waiting_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_waiting_list, container, false);
+        lvWaiting = view.findViewById(R.id.lvWaiting);
+        setEvent();
+        return view;
+    }
+
+    private void setEvent() {
+        KhoiTao();
+        adapter_waiting = new CustomAdapterWaiting(getContext(), R.layout.item_listview_waiting, data_waiting);
+        lvWaiting.setAdapter(adapter_waiting);
+    }
+
+    private void KhoiTao() {
+        Waiting waiting = new Waiting("A", "san 1", "11/12/2020", "06:30");
+        Waiting waiting1 = new Waiting("B", "san 2", "02/12/2020", "17:30");
+        Waiting waiting2 = new Waiting("c", "san 3", "11/11/2020", "11:00");
+        Waiting waiting3 = new Waiting("d", "san 2", "20/11/2020", "16:30");
+        data_waiting.add(waiting);
+        data_waiting.add(waiting1);
+        data_waiting.add(waiting2);
+        data_waiting.add(waiting3);
     }
 }

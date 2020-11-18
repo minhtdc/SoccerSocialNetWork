@@ -22,7 +22,6 @@ public class ZoneInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_zone_info);
         setControl();
         setupViewPager();
-
         tabLayout.setupWithViewPager(viewPager);
         setIcon();
     }

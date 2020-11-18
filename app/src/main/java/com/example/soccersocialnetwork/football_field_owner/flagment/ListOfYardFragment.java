@@ -7,60 +7,45 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.adapter.CustomAdapterFootballPitches;
+import com.example.soccersocialnetwork.football_field_owner.adapter.CustomAdapterWaiting;
+import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
+import com.example.soccersocialnetwork.football_field_owner.model.Waiting;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListOfYardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class ListOfYardFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ListOfYardFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListOfYardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ListOfYardFragment newInstance(String param1, String param2) {
-        ListOfYardFragment fragment = new ListOfYardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    ListView lvFootballPitches;
+    ArrayList<FootballPitches> data_FootballPitches = new ArrayList<>();
+    ArrayAdapter adapter_FootballPitches;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_of_yard, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_of_yard, container, false);
+        lvFootballPitches = view.findViewById(R.id.lvFootballPitches);
+        setEvent();
+        return view;
+    }
+
+    private void setEvent() {
+        KhoiTao();
+        adapter_FootballPitches = new CustomAdapterFootballPitches(getContext(), R.layout.item_listview_yard, data_FootballPitches);
+        lvFootballPitches.setAdapter(adapter_FootballPitches);
+    }
+
+    private void KhoiTao() {
+        FootballPitches footballPitches = new FootballPitches("san 1", "200.000", "7 người","sân cỏ nhân tạo");
+        FootballPitches footballPitches1= new FootballPitches("san 2", "150.000", "5 người","sân cỏ nhân tạo");
+        FootballPitches footballPitches2 = new FootballPitches("san 3", "300.000", "7 người","sân cỏ tự nhiên");
+        FootballPitches footballPitches3 = new FootballPitches("san 4", "250.000", "5 người","sân cỏ tự nhiên");
+        data_FootballPitches.add(footballPitches);
+        data_FootballPitches.add(footballPitches1);
+        data_FootballPitches.add(footballPitches2);
+        data_FootballPitches.add(footballPitches3);
     }
 }

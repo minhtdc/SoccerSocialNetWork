@@ -9,6 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/tvTenSan"
         android:text="Sân 1"
         android:textSize="30dp"
         />
@@ -20,17 +21,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="2"
+        android:id="@+id/tvGia"
         android:text="giá"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="2"
+        android:id="@+id/tvLHS"
         android:text="Loại hình sân"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/tvLS"
         android:layout_weight="6"
         android:text="loại sân"
         />
