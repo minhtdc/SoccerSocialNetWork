@@ -1,6 +1,6 @@
-package com.example.soccersocialnetwork.data_models;
+package com.example.soccersocialnetwork.DoanThanhTung.Models;
 
-public class Model_FeedsDoi_View {
+public class Feeds {
     int hanGio;
     String thanhPho;
     String quan;
@@ -56,7 +56,7 @@ public class Model_FeedsDoi_View {
         this.thongBao = thongBao;
     }
 
-    public Model_FeedsDoi_View(int hanGio, String thanhPho, String quan, String ngay, String gio, String thongBao) {
+    public Feeds(int hanGio, String thanhPho, String quan, String ngay, String gio, String thongBao) {
         this.hanGio = hanGio;
         this.thanhPho = thanhPho;
         this.quan = quan;
@@ -65,3 +65,5 @@ public class Model_FeedsDoi_View {
         this.thongBao = thongBao;
     }
 }
+
+

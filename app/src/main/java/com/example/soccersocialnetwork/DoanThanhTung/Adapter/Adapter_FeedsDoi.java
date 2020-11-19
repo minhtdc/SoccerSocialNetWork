@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Adapter;
+package com.example.soccersocialnetwork.DoanThanhTung.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,22 +8,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.data_models.Model_FeedsDoi_View;
 
 import java.util.ArrayList;
 
 public class Adapter_FeedsDoi extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
-    private ArrayList<Model_FeedsDoi_View> data;
+    private ArrayList<Feeds> data;
     int count = 1;
-
+    // layout chính
     private static final int LAYOUT_ONE= 0;
     private static final int LAYOUT_TWO= 1;
 
     private ArrayList<View> views;
 
-    public Adapter_FeedsDoi(Context context, ArrayList<Model_FeedsDoi_View> data) {
+    public Adapter_FeedsDoi(Context context, ArrayList<Feeds> data) {
         this.context = context;
         this.data = data;
 

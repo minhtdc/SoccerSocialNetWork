@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewThanhTung.TaoDonActivity"></activity>
+        <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity"></activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".ForgetPasswordActivity" />
-        <activity android:name=".ViewThanhTung.DoiActivity">
+        <activity android:name=".DoanThanhTung.ViewThanhTung.DoiActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

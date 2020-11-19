@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Adapter;
+package com.example.soccersocialnetwork.DoanThanhTung.Adapter;
 
 import android.view.View;
 import android.widget.TextView;

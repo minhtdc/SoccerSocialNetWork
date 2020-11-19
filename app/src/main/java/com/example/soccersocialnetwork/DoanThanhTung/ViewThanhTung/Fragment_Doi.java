@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.ViewThanhTung;
+package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.soccersocialnetwork.Adapter.Adapter_FeedsDoi;
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.data_models.Model_FeedsDoi_View;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ public class Fragment_Doi extends Fragment {
 
     RecyclerView recyclerView;
 
-    ArrayList<Model_FeedsDoi_View> listFeeds = new ArrayList<>();
+    ArrayList<Feeds> listFeeds = new ArrayList<>();
     Adapter_FeedsDoi adapterFeedsDoi;
 
 
@@ -56,11 +56,11 @@ public class Fragment_Doi extends Fragment {
     }
 
     private void ThemBaiVietDaBong() {
-        Model_FeedsDoi_View model_feedsDoi_view = new Model_FeedsDoi_View(24, "Hà Nội", "Cái Làn", "14/11/2020", "13h - 16h", "Ae mình zui vẽ");
-        Model_FeedsDoi_View model_feedsDoi_view1 = new Model_FeedsDoi_View(72,"xxx","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
-        Model_FeedsDoi_View model_feedsDoi_view2 = new Model_FeedsDoi_View(123,"x","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
-        Model_FeedsDoi_View model_feedsDoi_view3 = new Model_FeedsDoi_View(234,"Hà Nội","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
-        Model_FeedsDoi_View model_feedsDoi_view4 = new Model_FeedsDoi_View(234,"Hà Nội","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
+        Feeds model_feedsDoi_view = new Feeds(24, "Hà Nội", "Cái Làn", "14/11/2020", "13h - 16h", "Ae mình zui vẽ");
+        Feeds model_feedsDoi_view1 = new Feeds(72,"xxx","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
+        Feeds model_feedsDoi_view2 = new Feeds(123,"x","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
+        Feeds model_feedsDoi_view3 = new Feeds(234,"Hà Nội","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
+        Feeds model_feedsDoi_view4 = new Feeds(234,"Hà Nội","Cái Làn","14/11/2020","13h - 16h","Ae mình zui vẽ");
         listFeeds.add(model_feedsDoi_view);
         listFeeds.add(model_feedsDoi_view1);
         listFeeds.add(model_feedsDoi_view2);
