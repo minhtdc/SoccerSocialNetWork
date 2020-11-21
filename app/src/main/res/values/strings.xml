@@ -6,6 +6,7 @@
     <string name="stadium_flagment">Stadium</string>
     <string name="team_fragmen">Team</string>
     <string name="home_fragmen">Home</string>
+    <string name="txtDiaDiem_lstView">Địa điểm</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

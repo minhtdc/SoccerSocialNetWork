@@ -1,7 +1,7 @@
 
 // màn hình trang chủ khi người dùng đăng nhập vào ứng dụng
 // Trần Duy Huynh
-package com.example.soccersocialnetwork.TranDuyHuynh.models;
+package com.example.soccersocialnetwork.TranDuyHuynh;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,27 +58,28 @@ public class home_layout extends AppCompatActivity {
 
         // tạo tab yêu cầu cho từng trang, khi người dùng click vào 1 tab thì thay đổi các viewpage và hiển thị theo yêu cầu
         tabLayout.setupWithViewPager(viewPager);
+        getViewPagerAdapter();
+    }
+
+    private void getViewPagerAdapter(){
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),0);
-        viewPagerAdapter.addFragment(home_flagment, "trang chủ");
-        viewPagerAdapter.addFragment(team_flagment,"DS đội");
-        viewPagerAdapter.addFragment(stadium_flagment,"DS sân");
-        viewPagerAdapter.addFragment(notification_flagment,"thông báo");
-        viewPagerAdapter.addFragment(menu_flagment,"menu");
+        viewPagerAdapter.addFragment(home_flagment);
+        viewPagerAdapter.addFragment(team_flagment);
+        viewPagerAdapter.addFragment(stadium_flagment);
+        viewPagerAdapter.addFragment(notification_flagment);
+        viewPagerAdapter.addFragment(menu_flagment);
 
         viewPager.setAdapter(viewPagerAdapter);
-
         // thêm icon vào mỗi item của tablayout
         tabLayout.getTabAt(0).setIcon(R.drawable.icon_home);
         tabLayout.getTabAt(1).setIcon(R.drawable.icon_team);
         tabLayout.getTabAt(2).setIcon(R.drawable.icon_stadium);
         tabLayout.getTabAt(3).setIcon(R.drawable.icon_notification);
+        tabLayout.getTabAt(4).setIcon(R.drawable.icon_menu);
 //        BadgeDrawable badgeDrawable = tabLayout.getTabAt(3).getOrCreateBadge();
 //        badgeDrawable.setVisible(true);
 //        badgeDrawable.setNumber(0);
-
-        tabLayout.getTabAt(4).setIcon(R.drawable.icon_menu);
-
 
     }
 
@@ -91,9 +92,8 @@ public class home_layout extends AppCompatActivity {
             super(fm, behavior);
         }
 
-        public void addFragment(Fragment fragment, String title){
+        public void addFragment(Fragment fragment){
             fragments.add(fragment);
-            fragmentTitle.add(title);
 
         }
 
@@ -111,11 +111,5 @@ public class home_layout extends AppCompatActivity {
             return fragments.size();
         }
 
-        //lấy title flagment
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return fragmentTitle.get(position);
-        }
     }
 }

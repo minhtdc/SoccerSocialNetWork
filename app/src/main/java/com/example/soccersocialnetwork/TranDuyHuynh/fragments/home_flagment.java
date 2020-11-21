@@ -2,13 +2,30 @@ package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_KhuVuc;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_LoaiHinhSan;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_LoaiSan;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_findTeams_Adapter;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiHinhSan;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiSan;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.information_findTeams;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,13 +35,29 @@ import com.example.soccersocialnetwork.R;
 public class home_flagment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // khai báo SpinnerKhuVuc và adapter
+    private Spinner spnKhuVuc;
+    private CategoryAdapter_KhuVuc categoryAdapterKhuVuc;
+
+    // khai báo spinner Loại hinh sân và apdater
+    private Spinner spnLoaiHinhSan;
+    private CategoryAdapter_LoaiHinhSan categoryAdapterLoaiHinhSan;
+
+    // khai báo spinner loại sân và adapter
+    private Spinner spnLoaiSan;
+    private CategoryAdapter_LoaiSan categoryAdapterLoaiSan;
+
+    // khai báo đối tượng cho list view
+    private ListView listView;
+    private ArrayList<information_findTeams> information_findTeams;
 
     public home_flagment() {
         // Required empty public constructor
@@ -38,7 +71,7 @@ public class home_flagment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment home_flagment.
      */
-    // TODO: Rename and change types and number of parameters
+// TODO: Rename and change types and number of parameters
     public static home_flagment newInstance(String param1, String param2) {
         home_flagment fragment = new home_flagment();
         Bundle args = new Bundle();
@@ -55,6 +88,8 @@ public class home_flagment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -62,5 +97,81 @@ public class home_flagment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home_flagment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // đổ dữ liệu từ adapter vào spinner khu vực
+        spnKhuVuc = getView().findViewById(R.id.spnKhuVuc);
+        categoryAdapterKhuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, getListCategoryKhuVuc());
+        spnKhuVuc.setAdapter(categoryAdapterKhuVuc);
+
+        // đổ dữ liệu từ adapter vào spinner loại hình sân
+        spnLoaiHinhSan = getView().findViewById(R.id.spnLoaiHinhSan);
+        categoryAdapterLoaiHinhSan = new CategoryAdapter_LoaiHinhSan(getContext(), R.layout.item_selected, getListCategoryLoaiHinhSan());
+        spnLoaiHinhSan.setAdapter(categoryAdapterLoaiHinhSan);
+
+        // đổ dữ liệu từ adapter vào spinner loại sân
+        spnLoaiSan = getView().findViewById(R.id.spnLoaiSan);
+        categoryAdapterLoaiSan = new CategoryAdapter_LoaiSan(getContext(), R.layout.item_selected, getListCategoryLoaiSan());
+        spnLoaiSan.setAdapter(categoryAdapterLoaiSan);
+
+        // gọi hàm tạo dữ liệu giả cho list view
+        createDataForListView();
+
+        // setAdapter cho list view
+        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(),R.layout.listview_doi_dang_tim_tran,information_findTeams);
+        listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
+        listView.setAdapter(adapter);
+
+    }
+
+
+    // thêm dữ liệu giả cho spinner khu vực
+    private List<Category_KhuVuc> getListCategoryKhuVuc() {
+        List<Category_KhuVuc> list = new ArrayList<>();
+        list.add(new Category_KhuVuc("Khu vực"));
+        list.add(new Category_KhuVuc("TP.HCM"));
+        list.add(new Category_KhuVuc("Đà Nẵng"));
+        list.add(new Category_KhuVuc("Hà Nội"));
+        list.add(new Category_KhuVuc("Huế"));
+
+        return list;
+    }
+
+    // thêm dữ liệu giả cho spinner loại hình sân
+    private List<Category_LoaiHinhSan> getListCategoryLoaiHinhSan() {
+        List<Category_LoaiHinhSan> list = new ArrayList<>();
+        list.add(new Category_LoaiHinhSan("Loại hình sân"));
+        list.add(new Category_LoaiHinhSan("Sân 5"));
+        list.add(new Category_LoaiHinhSan("Sân 7"));
+        list.add(new Category_LoaiHinhSan("Sân 11"));
+
+        return list;
+    }
+
+    // thêm dữ liệu giả cho spinner loại sân
+    private List<Category_LoaiSan> getListCategoryLoaiSan() {
+        List<Category_LoaiSan> list = new ArrayList<>();
+        list.add(new Category_LoaiSan("Loại sân"));
+        list.add(new Category_LoaiSan("Sân cỏ thật"));
+        list.add(new Category_LoaiSan("Sân cỏ nhân tạo"));
+        list.add(new Category_LoaiSan("Sân trong nhà"));
+        return list;
+    }
+
+    // thêm dữ liệu giả cho list view đội tìm trận
+    private void createDataForListView() {
+
+        information_findTeams = new ArrayList<information_findTeams>();
+        information_findTeams.add(new information_findTeams(R.drawable.img_team1, "Doi 1", "TP.HCM", "19h -> 20h", "20/12/2020"));
+        information_findTeams.add(new information_findTeams(R.drawable.img_team2, "Doi 2", "Hà Nội", "7h -> 10h", "21/12/2020"));
+        information_findTeams.add(new information_findTeams(R.drawable.img_team3, "Doi 3", "Hải Phòng", "14h -> 15h", "22/12/2020"));
+        information_findTeams.add(new information_findTeams(R.drawable.img_team4, "Doi 4", "Nghệ An", "18h -> 19h", "23/12/2020"));
+        information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
+        information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
+        information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
     }
 }
