@@ -17,7 +17,7 @@
 
     <string name="txtDoi">ĐỘI</string>
     <string name="txtSan">SÂN</string>
-
+    <string name="txtThongBao">Thông báo</string>
 
     <string name="btn_danh_sach_san">Danh sách sân</string>
     <string name="btn_san_cua_ban">Sân của bạn</string>

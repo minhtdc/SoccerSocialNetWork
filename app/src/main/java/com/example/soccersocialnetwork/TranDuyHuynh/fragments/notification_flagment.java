@@ -2,13 +2,20 @@ package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_notifications_Adapter;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.information_notifications;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +23,9 @@ import com.example.soccersocialnetwork.R;
  * create an instance of this fragment.
  */
 public class notification_flagment extends Fragment {
+
+    private ListView listView;
+    ArrayList<information_notifications> information_notifications;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +72,27 @@ public class notification_flagment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.notification_flagment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        // goi ham tao du lieu cho list view
+        createDataForListView();
+        information_notifications_Adapter information_notifications_adapter = new information_notifications_Adapter(getContext(),R.layout.list_notification,information_notifications);
+        listView = (ListView) view.findViewById(R.id.lstNotification);
+        listView.setAdapter(information_notifications_adapter);
+
+    }
+
+    // tao du lieu gia cho list view
+    private void createDataForListView(){
+        information_notifications = new ArrayList<>();
+        information_notifications.add(new information_notifications(R.drawable.img_team1,"Team 1 mời bạn gia nhập vào đội của họ !"));
+        information_notifications.add(new information_notifications(R.drawable.img_team2,"Team 2 mời bạn gia nhập vào đội của họ !"));
+        information_notifications.add(new information_notifications(R.drawable.img_team3,"Team 3 mời bạn gia nhập vào đội của họ !"));
+        information_notifications.add(new information_notifications(R.drawable.img_team4,"Team 4 mời bạn gia nhập vào đội của họ !"));
+        information_notifications.add(new information_notifications(R.drawable.img_team5,"Team 5 mời bạn gia nhập vào đội của họ !"));
+        information_notifications.add(new information_notifications(R.drawable.img_team6,"Team 6 mời bạn gia nhập vào đội của họ !"));
     }
 }
