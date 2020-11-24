@@ -6,7 +6,24 @@
     <string name="stadium_flagment">Stadium</string>
     <string name="team_fragmen">Team</string>
     <string name="home_fragmen">Home</string>
-    <string name="txtDiaDiem_lstView">Địa điểm</string>
+    <string name="txtDiaDiem_lstView">Địa điểm : </string>
+    <string name="txtThoiGian_lstView">Thời gian : </string>
+    <string name="txtNgay_lstView">Ngày : </string>
+    <string name="btn_danh_sach_doi">Danh sách đội</string>
+    <string name="btn_doi_cua_ban">Đội của bạn</string>
+    <string name="txtKhuVuc_lstTeams">Khu vực</string>
+    <string name="txtSoLuong_cauThu_lstTeam">Cầu thủ</string>
+    <string name="txtGioiThieuTeam_lstTeam">Giới thiệu</string>
+
+    <string name="txtDoi">ĐỘI</string>
+    <string name="txtSan">SÂN</string>
+
+
+    <string name="btn_danh_sach_san">Danh sách sân</string>
+    <string name="btn_san_cua_ban">Sân của bạn</string>
+    <string name="txtLoaiHinhSan">Loại hình sân</string>
+    <string name="txtLoaiSan">Loại sân</string>
+    <string name="txtDiaChiSan">Địa chỉ</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
