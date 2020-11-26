@@ -12,28 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".football_field_owner.activity.AddZoneActivity"></activity>
-        <activity android:name=".ForgetPasswordActivity" />
-        <activity android:name=".LoginActivity">
         <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity"></activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".ForgetPasswordActivity" />
-        <activity android:name=".DoanThanhTung.ViewThanhTung.DoiActivity">
+        <activity android:name=".DoanThanhTung.ViewThanhTung.DoiActivity"/>
         <activity android:name=".TranDuyHuynh.home_layout" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ForgetPasswordActivity" />
-        <activity android:name=".LoginActivity" >
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
     </application>
 
