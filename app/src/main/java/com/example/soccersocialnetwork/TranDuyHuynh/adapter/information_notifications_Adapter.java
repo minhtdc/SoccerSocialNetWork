@@ -39,7 +39,6 @@ public class information_notifications_Adapter extends ArrayAdapter<information_
         {
             LayoutInflater layoutInflater = ((Activity)context).getLayoutInflater();
             row = layoutInflater.inflate(resource,parent,false);
-
             holder = new Holder();
             holder.imageView = (ImageView) row.findViewById(R.id.img_Team_notification);
             holder.txtThongBao = (TextView) row.findViewById(R.id.txtChiThietThongBao);
