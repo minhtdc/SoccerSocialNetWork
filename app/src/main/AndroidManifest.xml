@@ -12,6 +12,10 @@
         <activity android:name=".football_field_owner.activity.AddZoneActivity"></activity>
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".LoginActivity">
+        <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ForgetPasswordActivity" />
+        <activity android:name=".DoanThanhTung.ViewThanhTung.DoiActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
