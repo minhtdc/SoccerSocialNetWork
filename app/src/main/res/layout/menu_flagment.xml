@@ -52,6 +52,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:background="@drawable/change_color_ln_user"
                 android:id="@+id/ln_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
