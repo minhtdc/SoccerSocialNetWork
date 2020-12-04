@@ -1,5 +1,9 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,7 +11,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
 import com.example.soccersocialnetwork.R;
 
 /**
@@ -16,7 +22,9 @@ import com.example.soccersocialnetwork.R;
  * create an instance of this fragment.
  */
 public class menu_flagment extends Fragment {
-
+    LinearLayout lnUser;
+    ImageView imageView_icHelps, imageView_Setting, imageView_user;
+    LinearLayout ln_choose_Helps, ln_choose_Settings;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -57,10 +65,73 @@ public class menu_flagment extends Fragment {
         }
     }
 
+
+    int viewCount = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.menu_flagment, container, false);
+        View rootView = inflater.inflate(R.layout.menu_flagment, container, false);
+
+        imageView_icHelps = rootView.findViewById(R.id.imgDown_TroGiup);
+        ln_choose_Helps = rootView.findViewById(R.id.ln_choose_Help);
+        imageView_Setting = rootView.findViewById(R.id.img_Down_CaiDat);
+        ln_choose_Settings = rootView.findViewById(R.id.ln_choose_Settings);
+        imageView_user = rootView.findViewById(R.id.img_user_menu);
+        lnUser = rootView.findViewById(R.id.ln_user);
+
+
+        // click vào img down của button  trợ giúp sẽ hiện thị các item chức năng trợ giúp
+        imageView_icHelps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewCount == 0) {
+                    ln_choose_Helps.setVisibility(View.VISIBLE);
+                    imageView_icHelps.setImageResource(R.drawable.ic_up);
+                    imageView_Setting.setImageResource(R.drawable.ic_down);
+                    if (ln_choose_Settings.getVisibility() == View.VISIBLE) {
+                        ln_choose_Settings.setVisibility(View.GONE);
+                        imageView_Setting.setImageResource(R.drawable.ic_down);
+                        viewCount = 0;
+                    } else
+                        viewCount = 1;
+                } else {
+                    ln_choose_Helps.setVisibility(View.GONE);
+                    imageView_icHelps.setImageResource(R.drawable.ic_down);
+                    viewCount = 0;
+                }
+            }
+        });
+
+        // click vào img down của button  trợ giúp sẽ hiện thị các item chức năng cài đặt
+        imageView_Setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewCount == 0) {
+                    ln_choose_Settings.setVisibility(View.VISIBLE);
+                    imageView_Setting.setImageResource(R.drawable.ic_up);
+                    if (ln_choose_Helps.getVisibility() == View.VISIBLE) {
+                        ln_choose_Helps.setVisibility(View.GONE);
+                        imageView_icHelps.setImageResource(R.drawable.ic_down);
+                        viewCount = 0;
+                    } else
+                        viewCount = 1;
+                } else {
+                    ln_choose_Settings.setVisibility(View.GONE);
+                    imageView_Setting.setImageResource(R.drawable.ic_down);
+                    viewCount = 0;
+                }
+            }
+        });
+        lnUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),edit_profile_user.class);
+                startActivity(intent);
+            }
+        });
+
+        return rootView;
     }
 }

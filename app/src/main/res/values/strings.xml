@@ -29,6 +29,15 @@
     <string name="txtLoaiHinhSan">Loại hình sân</string>
     <string name="txtLoaiSan">Loại sân</string>
     <string name="txtDiaChiSan">Địa chỉ</string>
+
+    <string name="txtSetting_TaiKhoan">Tài Khoản </string>
+    <string name="txtSetting_NgonNgu">Ngôn ngữ</string>
+    <string name="txtSetting_GiaoDien">Giao diện</string>
+    <string name="txtTroGiup_LienHe">Liên hệ</string>
+    <string name="txtTroGiup_BCSC">Báo cáo sự cố</string>
+    <string name="txtTroGiup_DieuKhoan">Điều khoản và chính sách</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

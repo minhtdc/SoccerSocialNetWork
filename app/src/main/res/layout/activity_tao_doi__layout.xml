@@ -264,12 +264,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.5">
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Tạo đội"
                     android:background="@drawable/btn_shape_login"
-                    ></Button>
+                    android:text="Tạo đội"></Button>
 
             </LinearLayout>
         </LinearLayout>
