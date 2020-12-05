@@ -6,9 +6,5 @@
 
     <color name="colorForAlPha">#212226</color>
     <color name="colorBtnYellow">#f4c613</color>
-    <color name="colorBlack">#000000</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="colorSilver">#C0C0C0</color>
-    <color name="backgroundSpiner">#DDDDDD</color>
-    <color name="colorBorder_listview_doi_tim_tran">#00FF00</color>
+
 </resources>

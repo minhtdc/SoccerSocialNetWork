@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         //hide action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
         //Ánh xạ
         anhXa();
 
