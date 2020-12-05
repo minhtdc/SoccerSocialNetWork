@@ -79,7 +79,22 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), getDate("yyyy") + ";" + getDate("MM") + ";" + getDate("dd"), Toast.LENGTH_SHORT).show();
+                String userName = edtLoginEmail.getText().toString();
+                String userPass = edtLoginPassword.getText().toString();
+                if(!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")){
+                    fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+                }else {
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập đủ dữ liệu!", Toast.LENGTH_SHORT).show();
+                }
             }
 
         });
