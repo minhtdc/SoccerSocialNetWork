@@ -1,6 +1,7 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -11,8 +12,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
 import com.example.soccersocialnetwork.R;
 
@@ -22,9 +26,10 @@ import com.example.soccersocialnetwork.R;
  * create an instance of this fragment.
  */
 public class menu_flagment extends Fragment {
+     Dialog dialog ;
     LinearLayout lnUser;
     ImageView imageView_icHelps, imageView_Setting, imageView_user;
-    LinearLayout ln_choose_Helps, ln_choose_Settings;
+    LinearLayout ln_choose_Helps, ln_choose_Settings,lnDangXuat;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,7 +77,7 @@ public class menu_flagment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.menu_flagment, container, false);
+        final View rootView = inflater.inflate(R.layout.menu_flagment, container, false);
 
         imageView_icHelps = rootView.findViewById(R.id.imgDown_TroGiup);
         ln_choose_Helps = rootView.findViewById(R.id.ln_choose_Help);
@@ -80,7 +85,7 @@ public class menu_flagment extends Fragment {
         ln_choose_Settings = rootView.findViewById(R.id.ln_choose_Settings);
         imageView_user = rootView.findViewById(R.id.img_user_menu);
         lnUser = rootView.findViewById(R.id.ln_user);
-
+        lnDangXuat = rootView.findViewById(R.id.lnDangXuat);
 
         // click vào img down của button  trợ giúp sẽ hiện thị các item chức năng trợ giúp
         imageView_icHelps.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +137,38 @@ public class menu_flagment extends Fragment {
             }
         });
 
+        // Click vao dang xuat hiện thị dialog thông báo đăng xuất cho người dùng
+        lnDangXuat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog_DangXuat();
+            }
+        });
+
         return rootView;
+    }
+
+    public void showDialog_DangXuat(){
+        dialog = new Dialog(getContext());
+        dialog.setTitle("Đăng xuất");
+        dialog.setCancelable(true); // khi bấm ra ngoài dialog thì dialog sẽ tự tắt đi
+        dialog.setContentView(R.layout.dialog_sign_out);
+        Button btnHuy = dialog.findViewById(R.id.btnHuy);
+        Button btnDongY = dialog.findViewById(R.id.btnDong_y);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btnDongY.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

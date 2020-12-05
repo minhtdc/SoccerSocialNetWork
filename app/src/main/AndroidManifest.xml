@@ -14,6 +14,7 @@
         <activity android:name=".TranDuyHuynh.edit_profile_user">
 
         </activity>
+        <activity android:name=".TranDuyHuynh.infomation_dangtintimtran" />
         <activity android:name=".football_field_owner.activity.AddZoneActivity" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity" />
         <activity android:name=".LoginActivity" />

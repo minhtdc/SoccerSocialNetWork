@@ -1,5 +1,6 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Spinner;
-
+import android.widget.TextView;
+import com.example.soccersocialnetwork.TranDuyHuynh.infomation_dangtintimtran;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_LoaiHinhSan;
@@ -31,6 +33,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class home_flagment extends Fragment {
+    TextView txtDangTin;
 
     // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -100,7 +103,7 @@ public class home_flagment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        txtDangTin = (TextView) getView().findViewById(R.id.txtDangTinTimTran);
         // đổ dữ liệu từ adapter vào spinner khu vực
         spnKhuVuc = getView().findViewById(R.id.spnKhuVuc);
         categoryAdapterKhuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, getListCategoryKhuVuc());
@@ -124,6 +127,15 @@ public class home_flagment extends Fragment {
         listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
         listView.setAdapter(adapter);
 
+
+        // hiện thị màn hình thông tin đăng tin tìm trận khi click vào edt đăng tin tìm trận
+        txtDangTin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),infomation_dangtintimtran.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

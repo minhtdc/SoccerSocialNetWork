@@ -11,4 +11,6 @@
     <color name="colorSilver">#C0C0C0</color>
     <color name="backgroundSpiner">#DDDDDD</color>
     <color name="colorBorder_listview_doi_tim_tran">#00FF00</color>
+    <color name="colorBg_signout">#99FFFF</color>
+
 </resources>
