@@ -39,7 +39,7 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         tieuChi = getIntent().getExtras().getString("Doi_TieuChi");
         slogan = getIntent().getExtras().getString("Doi_Slogan");
         setControl();
-
+        spKhuThongTinDoi.setEnabled(false);
         //Toast.makeText(this, fireBaseTeam.getListTeam().size() +"", Toast.LENGTH_SHORT).show();
         setEvent();
 

@@ -14,15 +14,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="0.1in"
                 android:layout_weight="3"
-                android:orientation="horizontal"
-                android:layout_marginBottom="0.1in">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -59,8 +58,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text="Nhấn để chỉnh sủa hình ảnh"
-                            android:textSize="10dp"
-                            ></TextView>
+                            android:textSize="10dp"></TextView>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -83,10 +81,10 @@
                     android:layout_weight="0.5">
 
                     <TextView
+                        style="@style/textViewTaoDoi"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        style="@style/textViewTaoDoi"
                         android:text="@string/Doi_TenDoi"
                         android:textSize="15dp"></TextView>
                 </LinearLayout>
@@ -98,13 +96,14 @@
 
                     <EditText
                         android:id="@+id/txtTenDoi"
-                        android:maxLength="6"
-                        android:maxLines="1"
-                        android:inputType="text|textCapWords"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></EditText>
+                        android:layout_height="wrap_content"
+                        android:inputType="text|textCapWords"
+                        android:maxLength="6"
+                        android:maxLines="1"></EditText>
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -129,16 +128,18 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
-                   <Spinner
-                       android:id="@+id/spKhuVuc"
-                       android:layout_width="match_parent"
-                       android:layout_height="match_parent"
-                       android:background="@color/colorXanhLa"
-                       android:textAlignment="center"
-                       android:entries="@array/listKhuVuc"
-                       android:gravity="center_horizontal"></Spinner>
+                    <Spinner
+                        android:id="@+id/spKhuVuc"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorXanhLa"
+                        android:entries="@array/listKhuVuc"
+                        android:gravity="center_horizontal"
+                        android:textAlignment="center"
+                       ></Spinner>
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -165,11 +166,11 @@
 
                     <EditText
                         android:id="@+id/txtEmail"
-                        android:maxLines="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLength="20"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></EditText>
+                        android:maxLines="1"></EditText>
                 </LinearLayout>
 
             </LinearLayout>
@@ -200,11 +201,11 @@
 
                     <EditText
                         android:id="@+id/txtSDT"
-                        android:maxLines="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLength="10"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></EditText>
+                        android:maxLines="1"></EditText>
                 </LinearLayout>
             </LinearLayout>
 
@@ -267,11 +268,11 @@
 
                     <EditText
                         android:id="@+id/txtTieuChi"
-                        android:maxLines="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:inputType="text"
                         android:maxLength="20"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"></EditText>
+                        android:maxLines="1"></EditText>
                 </LinearLayout>
             </LinearLayout>
 
@@ -301,11 +302,11 @@
 
                     <EditText
                         android:id="@+id/txtSlogan"
-                        android:maxLines="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLength="20"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></EditText>
+                        android:maxLines="1"></EditText>
                 </LinearLayout>
             </LinearLayout>
 

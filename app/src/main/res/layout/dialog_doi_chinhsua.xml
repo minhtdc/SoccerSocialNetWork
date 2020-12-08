@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Chỉnh sửa"
+                    android:textSize="30dp"
+                    android:textStyle="bold"></TextView>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorRed"
+                    android:text="X"
+                    android:textSize="0.12in"></Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_TenDoi"
+                    android:textSize="15dp">
+
+                </TextView>
+
+                <EditText
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="8"
+                    android:maxLines="1"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_KhuVuc"
+                    android:textSize="15dp"></TextView>
+
+                <Spinner
+                    android:id="@+id/spKhuVuc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@color/colorXanhLa"
+                    android:entries="@array/listKhuVuc"
+                    android:gravity="center_horizontal"
+                    android:textAlignment="center"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_Email"
+                    android:textSize="15dp"></TextView>
+
+                <EditText
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="20"
+                    android:maxLines="1"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_SDT"
+                    android:textSize="15dp"></TextView>
+
+                <EditText
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="11"
+                    android:maxLines="1"></EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="2">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_GioiThieu"
+                    android:textSize="15dp"></TextView>
+
+                <EditText
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="100"
+                    android:maxLines="5"></EditText>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_TieuChi"
+                    android:textSize="15dp"></TextView>
+
+                <EditText
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="20"
+                    android:maxLines="1"></EditText>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_Slogan"
+                    android:textSize="15dp"></TextView>
+
+                <EditText
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="20"
+                    android:maxLines="1"></EditText>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chỉnh sửa"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_shape_login"></Button>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
