@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
@@ -50,22 +51,26 @@ import java.util.UUID;
 
 public class TaoDonActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
-
     private FirebaseDatabase database;
+    //img
+    private StorageReference storegaRef;
+    private FirebaseStorage storage;
     Button btnTaoDoi;
     EditText txtTenDoi, txtEmail, txtSDT, txtGioiThieu, txtTieuChi, txtSlogan;
+    Spinner spKhuVuc;
     ImageView imgTaoDoi;
-    String URI_IMAGE;
+
+
+
 
 
     ArrayList<Team> listTeam = new ArrayList<>();
     FireBaseTeam fireBaseTeam = new FireBaseTeam();
 
-    //img
-    private StorageReference storegaRef;
-    private FirebaseStorage storage;
-    static Uri uri = null;
-    static String tenDoi;
+    Uri uri = null;
+    String tenDoi;
+
+    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     final int REQUEST_CODE = 999;
 
     //test save show firebase
@@ -81,54 +86,10 @@ public class TaoDonActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        //database = FirebaseDatabase.getInstance();
-
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("Doi");
-
-        //mAuth = FirebaseAuth.getInstance();
-
-//        mDatabase.child("HoTen").setValue("Đoàn Thanh Tùng");
-//        Team team = new Team(1,"HaDi","tung@gmail.com","0906100493","sdkjfnjsdnfiasdif","chua bao h thua","Dinh kao nhat SG");
-//        Team team1 = new Team(1,"HaDi","tung@gmail.com","0906100493","sdkjfnjsdnfiasdif","chua bao h thua","Dinh kao nhat SG");
-//        Team team2 = new Team(1,"HaDi","tung@gmail.com","0906100493","sdkjfnjsdnfiasdif","chua bao h thua","Dinh kao nhat SG");
-//        Team team3 = new Team(1,"HaDi","tung@gmail.com","0906100493","sdkjfnjsdnfiasdif","chua bao h thua","Dinh kao nhat SG");
-//
-//        teams.add(team);
-//        teams.add(team1);
-//        teams.add(team2);
-//        teams.add(team3);
-//        mDatabase.child("Team67").setValue(teams);
-
-//
-        // Write a message to the database
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("message");
-//
-//        myRef.setValue("Hello, World!");
-
-
-        //-----------img
-        // Create a storage reference from our app
-
-// Write a message to the database
-
-
-//        db = FirebaseDatabase.getInstance().getReference("tsttt");
-//        helper = new FireBaseHelp(db);
         setControl();
-        fireBaseTeam.readTeam();
-//
-//        //addListTeam();
-//
-//        //doc tat cả danh sách có trong firebase lưu vào listteam
-//        //readTeam();
-//
-//        //teams.add()
+        readTeam();
         setEvent();
     }
-
 
     private void setControl() {
         btnTaoDoi = findViewById(R.id.btnTaoDoi);
@@ -139,30 +100,18 @@ public class TaoDonActivity extends AppCompatActivity {
         txtGioiThieu = findViewById(R.id.txtGioiThieu);
         txtTieuChi = findViewById(R.id.txtTieuChi);
         txtSlogan = findViewById(R.id.txtSlogan);
+        spKhuVuc = findViewById(R.id.spKhuVuc);
 
         imgTaoDoi = findViewById(R.id.imgTaoDoi);
 
-
     }
 
+
     private void setEvent() {
-        //  fireBaseTeam.readTeam();
-
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
-
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //   mDatabase = FirebaseDatabase.getInstance().getReference("Team");
-
-
-//                Toast.makeText(TaoDonActivity.this,  fireBaseTeam.getUIDTeamLatter()+"", Toast.LENGTH_SHORT).show();
-
-
-//
-//
-
                 if (uri == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(TaoDonActivity.this);
                     builder.setTitle("Thiếu thông tin");
@@ -174,73 +123,244 @@ public class TaoDonActivity extends AppCompatActivity {
                         }
                     });
                     builder.show();
-
-
                 } else {
-                    //  fireBaseTeam.uploadImage(uri, progreDiaglog);
+                    // up ảnh lên và chuyền lên firebase data, store
+                    uploadImage(imgTaoDoi, progreDiaglog, getTeam());
 
-                    fireBaseTeam.uploadImage(imgTaoDoi, progreDiaglog, getTeam());
-                    tenDoi = txtTenDoi.getText().toString();
-//                    fireBaseTeam.insertTeam(getTeam());
-
-
-                    //lay uri tao doi , de set img ben layout doi
-
-//                    //test
-//
-                    //   helper.save(getTeam());
-
+                    // chuyển qua layout khác và dữ liệu
                     Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
-//                    Intent intent = new Intent(TaoDonActivity.this, Doi_ThongTin.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("TaoDoi_IDDoi", IDLatter() + "");
+                    bundle.putString("TaoDoi_IMGDoi", uri.toString());
+                    bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
+                    bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
+                    bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
+                    bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
+                    bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
+                    bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
+                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
+                    intent.putExtras(bundle);
                     startActivity(intent);
-
                 }
-//        finish();
-                //
-
-//                 fireBaseTeam.uploadImage(uri,progreDiaglog);
-
-
-//
-//                mDatabase.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        int idDoi = Integer.parseInt(snapshot.child("idDoi").getValue() +"");
-//                        Toast.makeText(TaoDonActivity.this, idDoi+"", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//
-
-
-//                update firebase
-//                Team teamUpdata = new Team();
-//                teamUpdata.setTieuChi(txtTieuChi.getText().toString());
-//                teamUpdata.setSdt(txtSDT.getText().toString());
-//                teamUpdata.setsLogan(txtSlogan.getText().toString());
-//                teamUpdata.setGioiThieu(txtGioiThieu.getText().toString());
-//                teamUpdata.setEmail(txtEmail.getText().toString());
-//                teamUpdata.setTenDoi(txtTenDoi.getText().toString());
-//                updataTeam(teamUpdata);
 
             }
 
         });
-
         //  deleteTeam(124);
-
         imgTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ActivityCompat.requestPermissions(TaoDonActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
             }
         });
+    }
+    public void readTeam() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
+        //  List<String> keys = new ArrayList<>();
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    //   keys.add(dt.getKey());
+                    Team team = dt.getValue(Team.class);
+//                    team.setTenDoi(dt.child("tenDoi").getValue().toString());
+//                    team.setEmail(dt.child("email").getValue().toString());
+//                    team.setGioiThieu(dt.child("gioiThieu").getValue().toString());
+//                    team.setIdDoi(Integer.parseInt(dt.child("idDoi").getValue().toString()));
+//                    team.setsLogan(dt.child("sLogan").getValue().toString());
+//                    team.setSdt(dt.child("sdt").getValue().toString());
+//                    team.setTieuChi(dt.child("tieuChi").getValue().toString());
+                    listTeam.add(team);
+
+                    //   Toast.makeText(TaoDonActivity.this, listTeam.size() + "", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(null, "loadPost:onCancelled", error.toException());
+            }
+        });
+    }
+
+    private Team getTeam() {
+        Team team = new Team();
+
+        team.setTenDoi(txtTenDoi.getText().toString());
+        team.setKhuVuc(spKhuVuc.getSelectedItem().toString());
+        team.setEmail(txtEmail.getText().toString());
+        team.setSdt(txtSDT.getText().toString());
+        team.setGioiThieu(txtGioiThieu.getText().toString());
+        team.setTieuChi(txtTieuChi.getText().toString());
+        team.setsLogan(txtSlogan.getText().toString());
+        team.setHinhAnh(uri.toString());
+        return team;
+    }
+
+    public int IDLatter() {
+        int idCuoi = 0;
+        //lay uid cuoi cung
+        for (int i = 0; i < listTeam.size(); i++) {
+            idCuoi = listTeam.get(i).getIdDoi() + 1;
+        }
+        return idCuoi;
+    }
+
+    public void insertTeam(Team team) {
+        //lay uid cuoi cung rồi tăng lên
+//        for (int i = 0; i < listTeam.size(); i++) {
+//            team.setIdDoi(listTeam.get(i).getIdDoi() + 1);
+//        }
+        team.setIdDoi(IDLatter());
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(team.getIdDoi() + "");
+        mDatabase.setValue(team);
+    }
+    public void uploadImage(ImageView imageView, final ProgressDialog progreDiaglog, final Team team) {
+        storage = FirebaseStorage.getInstance();
+        storegaRef = storage.getReference();
+        //dialog
+        progreDiaglog.setTitle("Đang trong quá trình tải");
+        progreDiaglog.show();
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        final StorageReference storageReference = storegaRef.child("imgTeam/" + "IDTeam_IMG: " + IDLatter() + "/" + UUID.randomUUID().toString());
+
+        UploadTask uploadTask = storageReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                progreDiaglog.setMessage("Lỗi");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri downloadPhotoUrl) {
+                        //Now play with downloadPhotoUrl
+                        //Store data into Firebase Realtime Database
+                       String uriIMG = downloadPhotoUrl.toString();
+                        team.setHinhAnh(uriIMG);
+                        insertTeam(team);
+                        progreDiaglog.dismiss();
+                        finish();
+                    }
+                });
+            }
+        });
+
 
     }
+    private void uploadImage() {
+//        storage = FirebaseStorage.getInstance();
+//        storegaRef = storage.getReference();
+//        if (uri != null) {
+////            //--Dialog
+//            final ProgressDialog progreDiaglog = new ProgressDialog(this);
+//            progreDiaglog.setTitle("Đang trong quá trình tải");
+//            progreDiaglog.show();
+//         //   final StorageReference storageReference = storegaRef.child("imgTeam/" + "IDTeam_IMG: " + UIDLatter() + "/" + UUID.randomUUID().toString());
+//
+//            imgTaoDoi.setDrawingCacheEnabled(true);
+//            imgTaoDoi.buildDrawingCache();
+//            Bitmap bitmap = ((BitmapDrawable) imgTaoDoi.getDrawable()).getBitmap();
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//            byte[] data = baos.toByteArray();
+//
+//            UploadTask uploadTask = storageReference.putBytes(data);
+//            uploadTask.addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    Toast.makeText(TaoDonActivity.this, "Lỗi!!!", Toast.LENGTH_SHORT).show();
+//                }
+//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+//                    // ...
+//                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri downloadPhotoUrl) {
+//                            //Now play with downloadPhotoUrl
+//                            //Store data into Firebase Realtime Database
+//                            URI_IMAGE = downloadPhotoUrl.toString();
+//                            progreDiaglog.dismiss();
+//
+//                            insertTeam(getTeam());
+//                            Toast.makeText(TaoDonActivity.this, "thanhcong", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                }
+//            });
+
+
+// Observe state change events such as progress, pause, and resume
+//            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+//                    Log.d(TAG, "Upload is " + progress + "% done");
+//                }
+//            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+//                    Log.d(TAG, "Upload is paused");
+//                }
+//            });
+//        }
+    }
+
+
+
+    private void updataTeam(Team team) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(123 + "");
+        //----------cach 1 update
+        // mDatabase.updateChildren(team.toMap());
+
+        //----------cach 2 update có hiển thị
+        mDatabase.setValue(team).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(TaoDonActivity.this, "update thành công", Toast.LENGTH_SHORT).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TaoDonActivity.this, "update thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void deleteTeam(int uid) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(uid + "");
+        //--------cach 1
+        //mDatabase.removeValue();
+        //----------cach 2 có hiện thông báo
+        mDatabase.setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(TaoDonActivity.this, "xóa thành công", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
 
 
     private byte[] imageViewToByte(ImageView imageView) {
@@ -294,205 +414,5 @@ public class TaoDonActivity extends AppCompatActivity {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void uploadImage() {
-        storage = FirebaseStorage.getInstance();
-        storegaRef = storage.getReference();
-        if (uri != null) {
-//            //--Dialog
-            final ProgressDialog progreDiaglog = new ProgressDialog(this);
-            progreDiaglog.setTitle("Đang trong quá trình tải");
-            progreDiaglog.show();
-            final StorageReference storageReference = storegaRef.child("imgTeam/" + "IDTeam_IMG: " + UIDLatter() + "/" + UUID.randomUUID().toString());
-
-            imgTaoDoi.setDrawingCacheEnabled(true);
-            imgTaoDoi.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable) imgTaoDoi.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] data = baos.toByteArray();
-
-            UploadTask uploadTask = storageReference.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(TaoDonActivity.this, "Lỗi!!!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri downloadPhotoUrl) {
-                            //Now play with downloadPhotoUrl
-                            //Store data into Firebase Realtime Database
-                            URI_IMAGE = downloadPhotoUrl.toString();
-                            progreDiaglog.dismiss();
-
-                            insertTeam(getTeam());
-                            Toast.makeText(TaoDonActivity.this, "thanhcong", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            });
-
-
-// Observe state change events such as progress, pause, and resume
-//            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-//                    Log.d(TAG, "Upload is " + progress + "% done");
-//                }
-//            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-//                    Log.d(TAG, "Upload is paused");
-//                }
-//            });
-        }
-    }
-
-    private Team getTeam() {
-        Team team = new Team();
-
-        team.setTenDoi(txtTenDoi.getText().toString());
-        team.setEmail(txtEmail.getText().toString());
-        team.setSdt(txtSDT.getText().toString());
-        team.setGioiThieu(txtGioiThieu.getText().toString());
-        team.setTieuChi(txtTieuChi.getText().toString());
-        team.setsLogan(txtSlogan.getText().toString());
-        team.setHinhAnh(URI_IMAGE);
-        return team;
-    }
-
-    private void addListTeam() {
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
-        listTeam.clear();
-        final List<String> keys = new ArrayList<>();
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                for (DataSnapshot dt :
-                        snapshot.getChildren()) {
-                    keys.add(dt.getKey());
-
-                    Team team = dt.getValue(Team.class);
-////                    team.setTenDoi(dt.child("tenDoi").getValue().toString());
-////                    team.setEmail(dt.child("email").getValue().toString());
-////                    team.setGioiThieu(dt.child("gioiThieu").getValue().toString());
-////                    team.setIdDoi(Integer.parseInt(dt.child("idDoi").getValue().toString()));
-////                    team.setsLogan(dt.child("sLogan").getValue().toString());
-////                    team.setSdt(dt.child("sdt").getValue().toString());
-////                    team.setTieuChi(dt.child("tieuChi").getValue().toString());
-                    listTeam.add(team);
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(null, "loadPost:onCancelled", error.toException());
-            }
-        });
-    }
-
-
-    public void insertTeam(Team team) {
-
-        //lay uid cuoi cung rồi tăng lên 1
-        for (int i = 0; i < listTeam.size(); i++) {
-
-            team.setIdDoi(listTeam.get(i).getIdDoi() + 1);
-
-        }
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(team.getIdDoi() + "");
-        mDatabase.setValue(team);
-    }
-
-    public void readTeam() {
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
-        //  List<String> keys = new ArrayList<>();
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dt :
-                        snapshot.getChildren()) {
-                    //   keys.add(dt.getKey());
-                    Team team = dt.getValue(Team.class);
-//                    team.setTenDoi(dt.child("tenDoi").getValue().toString());
-//                    team.setEmail(dt.child("email").getValue().toString());
-//                    team.setGioiThieu(dt.child("gioiThieu").getValue().toString());
-//                    team.setIdDoi(Integer.parseInt(dt.child("idDoi").getValue().toString()));
-//                    team.setsLogan(dt.child("sLogan").getValue().toString());
-//                    team.setSdt(dt.child("sdt").getValue().toString());
-//                    team.setTieuChi(dt.child("tieuChi").getValue().toString());
-                    listTeam.add(team);
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(null, "loadPost:onCancelled", error.toException());
-            }
-        });
-    }
-
-    //lay uid cuối cùng
-    public int UIDLatter() {
-        int idCuoi = 0;
-        //lay uid cuoi cung
-        for (int i = 0; i < listTeam.size(); i++) {
-
-            idCuoi = listTeam.get(i).getIdDoi() + 1;
-        }
-        return idCuoi;
-    }
-
-    private void updataTeam(Team team) {
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(123 + "");
-        //----------cach 1 update
-        // mDatabase.updateChildren(team.toMap());
-
-        //----------cach 2 update có hiển thị
-        mDatabase.setValue(team).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(TaoDonActivity.this, "update thành công", Toast.LENGTH_SHORT).show();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(TaoDonActivity.this, "update thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void deleteTeam(int uid) {
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(uid + "");
-        //--------cach 1
-        //mDatabase.removeValue();
-        //----------cach 2 có hiện thông báo
-        mDatabase.setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(TaoDonActivity.this, "xóa thành công", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
     }
 }

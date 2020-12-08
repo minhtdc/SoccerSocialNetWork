@@ -16,6 +16,15 @@ public class Team {
     public String tieuChi;
     public String sLogan;
     public String hinhAnh;
+    public String khuVuc;
+    public String getKhuVuc() {
+        return khuVuc;
+    }
+
+    public void setKhuVuc(String khuVuc) {
+        this.khuVuc = khuVuc;
+    }
+
 
 
     public int getIdDoi() {
@@ -82,7 +91,7 @@ public class Team {
         this.hinhAnh = hinhAnh;
     }
 
-    public Team(int idDoi, String tenDoi, String email, String sdt, String gioiThieu, String tieuChi, String sLogan, String hinhAnh) {
+    public Team(int idDoi, String tenDoi, String email, String sdt, String gioiThieu, String tieuChi, String sLogan, String hinhAnh, String khuVuc) {
         this.idDoi = idDoi;
         this.tenDoi = tenDoi;
         this.email = email;
@@ -91,6 +100,7 @@ public class Team {
         this.tieuChi = tieuChi;
         this.sLogan = sLogan;
         this.hinhAnh = hinhAnh;
+        this.khuVuc = khuVuc;
     }
 
     @Override
@@ -104,6 +114,7 @@ public class Team {
                 ", tieuChi='" + tieuChi + '\'' +
                 ", sLogan='" + sLogan + '\'' +
                 ", hinhAnh='" + hinhAnh + '\'' +
+                ", khuVuc='" + khuVuc + '\'' +
                 '}';
     }
 

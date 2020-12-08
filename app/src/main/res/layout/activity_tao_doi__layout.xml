@@ -14,13 +14,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="2"
-                android:orientation="horizontal">
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:layout_marginBottom="0.1in">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -43,21 +45,22 @@
                         <ImageView
                             android:id="@+id/imgTaoDoi"
                             android:layout_width="match_parent"
-                            android:layout_height="80dp"
+                            android:layout_height="90dp"
                             android:src="@drawable/log"></ImageView>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.3">
+                        android:layout_weight="0.4">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text="Nhấn để chỉnh sủa hình ảnh"
-                            android:textSize="10dp"></TextView>
+                            android:textSize="10dp"
+                            ></TextView>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -83,7 +86,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Tên đội"
+                        style="@style/textViewTaoDoi"
+                        android:text="@string/Doi_TenDoi"
                         android:textSize="15dp"></TextView>
                 </LinearLayout>
 
@@ -95,11 +99,12 @@
                     <EditText
                         android:id="@+id/txtTenDoi"
                         android:maxLength="6"
+                        android:maxLines="1"
+                        android:inputType="text|textCapWords"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></EditText>
                 </LinearLayout>
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -111,10 +116,45 @@
                     android:layout_weight="0.5">
 
                     <TextView
+                        style="@style/textViewTaoDoi"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Email"
+                        android:text="@string/Doi_KhuVuc"
+                        android:textSize="15dp"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                   <Spinner
+                       android:id="@+id/spKhuVuc"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:background="@color/colorXanhLa"
+                       android:textAlignment="center"
+                       android:entries="@array/listKhuVuc"
+                       android:gravity="center_horizontal"></Spinner>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+
+                    <TextView
+                        style="@style/textViewTaoDoi"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/Doi_Email"
                         android:textSize="15dp"></TextView>
                 </LinearLayout>
 
@@ -125,6 +165,9 @@
 
                     <EditText
                         android:id="@+id/txtEmail"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:maxLength="20"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></EditText>
                 </LinearLayout>
@@ -142,10 +185,11 @@
                     android:layout_weight="0.5">
 
                     <TextView
+                        style="@style/textViewTaoDoi"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="SĐT"
+                        android:text="@string/Doi_SDT"
                         android:textSize="15dp"></TextView>
                 </LinearLayout>
 
@@ -156,6 +200,9 @@
 
                     <EditText
                         android:id="@+id/txtSDT"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:maxLength="10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></EditText>
                 </LinearLayout>
@@ -164,7 +211,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="2">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -172,10 +219,11 @@
                     android:layout_weight="0.5">
 
                     <TextView
+                        style="@style/textViewTaoDoi"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Giới thiệu"
+                        android:text="@string/Doi_GioiThieu"
                         android:textSize="15dp"></TextView>
                 </LinearLayout>
 
@@ -187,7 +235,9 @@
                     <EditText
                         android:id="@+id/txtGioiThieu"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></EditText>
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:maxLength="100"></EditText>
                 </LinearLayout>
             </LinearLayout>
 
@@ -202,10 +252,11 @@
                     android:layout_weight="0.5">
 
                     <TextView
+                        style="@style/textViewTaoDoi"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Tiêu chí"
+                        android:text="@string/Doi_TieuChi"
                         android:textSize="15dp"></TextView>
                 </LinearLayout>
 
@@ -216,6 +267,9 @@
 
                     <EditText
                         android:id="@+id/txtTieuChi"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:maxLength="20"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"></EditText>
                 </LinearLayout>
@@ -232,10 +286,11 @@
                     android:layout_weight="0.5">
 
                     <TextView
+                        style="@style/textViewTaoDoi"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Slogan"
+                        android:text="@string/Doi_Slogan"
                         android:textSize="15dp"></TextView>
                 </LinearLayout>
 
@@ -246,6 +301,9 @@
 
                     <EditText
                         android:id="@+id/txtSlogan"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:maxLength="20"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></EditText>
                 </LinearLayout>

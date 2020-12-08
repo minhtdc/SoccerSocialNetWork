@@ -74,10 +74,10 @@ public class FireBaseTeam {
 
     public void insertTeam(Team team) {
         //lay uid cuoi cung rồi tăng lên
-        for (int i = 0; i < listTeam.size(); i++) {
-            team.setIdDoi(listTeam.get(i).getIdDoi() + 1);
-        }
-
+//        for (int i = 0; i < listTeam.size(); i++) {
+//            team.setIdDoi(listTeam.get(i).getIdDoi() + 1);
+//        }
+        team.setIdDoi(UIDLatter());
         mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(team.getIdDoi() + "");
         mDatabase.setValue(team);
     }
@@ -189,6 +189,7 @@ public class FireBaseTeam {
 
 
     private String uriIMG;
+
     //up ảnh và thêm dữ liệu firebase
     public void uploadImage(ImageView imageView, final ProgressDialog progreDiaglog, final Team team) {
 
@@ -228,6 +229,7 @@ public class FireBaseTeam {
                         uriIMG = downloadPhotoUrl.toString();
                         team.setHinhAnh(uriIMG);
                         insertTeam(team);
+
                         progreDiaglog.dismiss();
                     }
                 });
