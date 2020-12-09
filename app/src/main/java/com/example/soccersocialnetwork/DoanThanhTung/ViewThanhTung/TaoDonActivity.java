@@ -74,7 +74,7 @@ public class TaoDonActivity extends AppCompatActivity {
     final int REQUEST_CODE = 999;
 
     //test save show firebase
-    DatabaseReference db;
+
     // FireBaseHelp helper;
 
     @Override
@@ -127,21 +127,21 @@ public class TaoDonActivity extends AppCompatActivity {
                     // up ảnh lên và chuyền lên firebase data, store
                     uploadImage(imgTaoDoi, progreDiaglog, getTeam());
 
-                    // chuyển qua layout khác và dữ liệu
-                    Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("TaoDoi_IDDoi", IDLatter() + "");
-                    bundle.putString("TaoDoi_IMGDoi", uri.toString());
-                    bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
-                    bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
-                    bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
-                    bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
-                    bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
-                    bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
-                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+//                    // chuyển qua layout khác và dữ liệu
+//                    Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
+//
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("TaoDoi_IDDoi", IDLatter() + "");
+//                    bundle.putString("TaoDoi_IMGDoi", uri.toString());
+//                    bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
+//                    bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
+//                    bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
+//                    bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
+//                    bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
+//                    bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
+//                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
+//                    intent.putExtras(bundle);
+//                    startActivity(intent);
                 }
 
             }
@@ -209,14 +209,35 @@ public class TaoDonActivity extends AppCompatActivity {
         return idCuoi;
     }
 
-    public void insertTeam(Team team) {
+    public void insertTeam(Team team, final ProgressDialog progreDiaglog) {
         //lay uid cuoi cung rồi tăng lên
 //        for (int i = 0; i < listTeam.size(); i++) {
 //            team.setIdDoi(listTeam.get(i).getIdDoi() + 1);
 //        }
         team.setIdDoi(IDLatter());
         mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(team.getIdDoi() + "");
-        mDatabase.setValue(team);
+        mDatabase.setValue(team).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                progreDiaglog.dismiss();
+                // chuyển qua layout khác và dữ liệu
+                Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("TaoDoi_IDDoi", IDLatter()-1 + "");
+                bundle.putString("TaoDoi_IMGDoi", uri.toString());
+                bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
+                bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
+                bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
+                bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
+                bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
+                bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
+                bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
     public void uploadImage(ImageView imageView, final ProgressDialog progreDiaglog, final Team team) {
         storage = FirebaseStorage.getInstance();
@@ -247,12 +268,11 @@ public class TaoDonActivity extends AppCompatActivity {
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri downloadPhotoUrl) {
-                        //Now play with downloadPhotoUrl
-                        //Store data into Firebase Realtime Database
+
                        String uriIMG = downloadPhotoUrl.toString();
                         team.setHinhAnh(uriIMG);
-                        insertTeam(team);
-                        progreDiaglog.dismiss();
+                        insertTeam(team,progreDiaglog);
+                        //progreDiaglog.dismiss();
                         finish();
                     }
                 });

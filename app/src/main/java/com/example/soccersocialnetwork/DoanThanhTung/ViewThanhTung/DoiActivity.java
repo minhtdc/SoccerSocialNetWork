@@ -42,16 +42,14 @@ public class DoiActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private DatabaseReference mDatabase;
-    private FirebaseStorage storage;
-    private StorageReference storegaRef;
+
 
     ArrayList<Team> listTeam = new ArrayList<>();
 
     ImageView imgDoi;
     TextView tvTenDoi;
     String idDoi,uriIMG,tenDoi,khuVuc,email,sdt,gioiThieu,tieuChi,slogan;
-    ///test
-    DatabaseReference db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +73,15 @@ public class DoiActivity extends AppCompatActivity {
         tieuChi = getIntent().getExtras().getString("TaoDoi_TieuChi");
         slogan = getIntent().getExtras().getString("TaoDoi_Slogan");
 
-        //chuyển đổi ảnh bằng uri
-        Picasso.get().load(uriIMG).fit().into(imgDoi);
-        tvTenDoi.setText(tenDoi);
+//        //chuyển đổi ảnh bằng uri
+//        Picasso.get().load(uriIMG).fit().into(imgDoi);
+//        tvTenDoi.setText(tenDoi);
 
         //chuyen trang qua lại fragment và icon
         setupViewPager();
         setIcon();
+
+
         //Toast.makeText(this, fireBaseTeam.getListTeam().size() +"", Toast.LENGTH_SHORT).show();
         setEvent();
     }
@@ -98,7 +98,7 @@ public class DoiActivity extends AppCompatActivity {
 
     private void setEvent() {
         DBTeam dbTeam = new DBTeam(this);
-
+        readTeam();
 
 
 
@@ -155,17 +155,16 @@ public class DoiActivity extends AppCompatActivity {
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
                     keys.add(dt.getKey());
-                    Team team = dt.getValue(Team.class);
-//                    team.setTenDoi(dt.child("tenDoi").getValue().toString());
-//                    team.setEmail(dt.child("email").getValue().toString());
-//                    team.setGioiThieu(dt.child("gioiThieu").getValue().toString());
-//                    team.setIdDoi(Integer.parseInt(dt.child("idDoi").getValue().toString()));
-//                    team.setsLogan(dt.child("sLogan").getValue().toString());
-//                    team.setSdt(dt.child("sdt").getValue().toString());
-//                    team.setTieuChi(dt.child("tieuChi").getValue().toString());
-                    listTeam.add(team);
+                    if(idDoi.equals(dt.getKey())){
+                        Team team = dt.getValue(Team.class);
+                       // listTeam.add(team);
+                        Picasso.get().load(team.getHinhAnh()).into(imgDoi);
+                        tvTenDoi.setText(team.getTenDoi());
+                        break;
+                    }
 
-                    Toast.makeText(DoiActivity.this, listTeam.size() + "", Toast.LENGTH_SHORT).show();
+
+                   // Toast.makeText(DoiActivity.this, listTeam.size() + "", Toast.LENGTH_SHORT).show();
                 }
             }
 
