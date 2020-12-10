@@ -54,7 +54,7 @@ public class CustomAdapterFootballPitches extends ArrayAdapter {
         final FootballPitches footballPitches = data.get(position);
 
         holder.tvTenSan.setText(footballPitches.getTenSan());
-        holder.tvGia.setText(footballPitches.getGia());
+        holder.tvGia.setText(footballPitches.getGiaBT()+" - "+footballPitches.getGiaCD());
         holder.tvLHS.setText(footballPitches.getLoaiHinhSan());
         holder.tvLS.setText(footballPitches.getLoaiSan());
         return  view;

@@ -1,7 +1,7 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
 public class City {
-    int id;
+    String id;
     String name, type;
 
     @Override
@@ -9,11 +9,11 @@ public class City {
         return name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -33,7 +33,7 @@ public class City {
         this.type = type;
     }
 
-    public City(int id, String name, String type) {
+    public City(String id, String name, String type) {
         this.id = id;
         this.name = name;
         this.type = type;

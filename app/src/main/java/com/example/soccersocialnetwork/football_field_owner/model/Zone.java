@@ -1,12 +1,12 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
 public class Zone {
-    String tenKhu,anh,thanhPho,quan,diaChi,gioMo,phutMo,gioDong,phutDong;
+    String tenKhu, anh, thanhPho, quan, diaChi, gioMo, phutMo, gioDong, phutDong, pushId;;
 
     public Zone() {
     }
 
-    public Zone(String tenKhu, String anh, String thanhPho, String quan, String diaChi, String gioMo, String phutMo, String gioDong, String phutDong) {
+    public Zone(String tenKhu, String anh, String thanhPho, String quan, String diaChi, String gioMo, String phutMo, String gioDong, String phutDong, String pushId) {
         this.tenKhu = tenKhu;
         this.anh = anh;
         this.thanhPho = thanhPho;
@@ -16,6 +16,15 @@ public class Zone {
         this.phutMo = phutMo;
         this.gioDong = gioDong;
         this.phutDong = phutDong;
+        this.pushId = pushId;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
     public String getTenKhu() {
@@ -102,6 +111,7 @@ public class Zone {
                 ", phutMo='" + phutMo + '\'' +
                 ", gioDong='" + gioDong + '\'' +
                 ", phutDong='" + phutDong + '\'' +
+                ", pushId='" + pushId + '\'' +
                 '}';
     }
 }

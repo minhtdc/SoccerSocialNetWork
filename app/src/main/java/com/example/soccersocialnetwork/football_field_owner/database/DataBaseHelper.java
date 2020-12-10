@@ -108,7 +108,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         do {
             City city = new City();
-            city.setId(cursor.getInt(0));
+            city.setId(cursor.getString(0));
             city.setName(cursor.getString(1));
             city.setType(cursor.getString(2));
             cities.add(city);
@@ -117,7 +117,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return cities;
     }
-    public ArrayList<String> getAllDistrict(int key) {
+    public ArrayList<String> getAllDistrict(String key) {
         ArrayList<String> district = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 

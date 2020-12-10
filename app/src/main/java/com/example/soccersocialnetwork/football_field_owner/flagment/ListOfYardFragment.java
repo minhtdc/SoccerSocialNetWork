@@ -33,19 +33,19 @@ public class ListOfYardFragment extends Fragment {
     }
 
     private void setEvent() {
-        KhoiTao();
-        adapter_FootballPitches = new CustomAdapterFootballPitches(getContext(), R.layout.item_listview_yard, data_FootballPitches);
-        lvFootballPitches.setAdapter(adapter_FootballPitches);
+//        KhoiTao();
+//        adapter_FootballPitches = new CustomAdapterFootballPitches(getContext(), R.layout.item_listview_yard, data_FootballPitches);
+//        lvFootballPitches.setAdapter(adapter_FootballPitches);
     }
 
     private void KhoiTao() {
-        FootballPitches footballPitches = new FootballPitches("san 1", "200.000", "7 người","sân cỏ nhân tạo");
-        FootballPitches footballPitches1= new FootballPitches("san 2", "150.000", "5 người","sân cỏ nhân tạo");
-        FootballPitches footballPitches2 = new FootballPitches("san 3", "300.000", "7 người","sân cỏ tự nhiên");
-        FootballPitches footballPitches3 = new FootballPitches("san 4", "250.000", "5 người","sân cỏ tự nhiên");
-        data_FootballPitches.add(footballPitches);
-        data_FootballPitches.add(footballPitches1);
-        data_FootballPitches.add(footballPitches2);
-        data_FootballPitches.add(footballPitches3);
+//        FootballPitches footballPitches = new FootballPitches("san 1", "200.000", "7 người","sân cỏ nhân tạo");
+//        FootballPitches footballPitches1= new FootballPitches("san 2", "150.000", "5 người","sân cỏ nhân tạo");
+//        FootballPitches footballPitches2 = new FootballPitches("san 3", "300.000", "7 người","sân cỏ tự nhiên");
+//        FootballPitches footballPitches3 = new FootballPitches("san 4", "250.000", "5 người","sân cỏ tự nhiên");
+//        data_FootballPitches.add(footballPitches);
+//        data_FootballPitches.add(footballPitches1);
+//        data_FootballPitches.add(footballPitches2);
+//        data_FootballPitches.add(footballPitches3);
     }
 }

@@ -53,14 +53,14 @@ public class AddZoneActivity extends AppCompatActivity {
     ArrayList<String> data_quan = new ArrayList<>();
     ArrayList<String> data_gio = new ArrayList<>();
     ArrayList<String> data_phut = new ArrayList<>();
-    ArrayAdapter adapter_tp, adapter_gio, adapter_phut;
+    ArrayAdapter adapter_tp, adapter_quan, adapter_gio, adapter_phut;
     //    FirebaseDatabase database = FirebaseDatabase.getInstance();
     final int REQUEST_CODE_IMAGE = 999;
     DatabaseReference mFirebaseDatabase;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseDatabase mFirebaseInstance;
     String userId;
-    StorageReference storageRef = storage.getReference();
+    StorageReference storageRef = storage.getReference().child("anhKhu");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +88,7 @@ public class AddZoneActivity extends AppCompatActivity {
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
                 City items = data_tp.get(i);
                 data_quan = dataBaseHelper.getAllDistrict(items.getId());
-                setAdapterSpinner(data_quan, adapter_tp, spnQuan);
+                setAdapterSpinner(data_quan, adapter_quan, spnQuan);
             }
 
             @Override
@@ -134,7 +134,9 @@ public class AddZoneActivity extends AppCompatActivity {
                             public void onSuccess(Uri downloadPhotoUrl) {
                                 //Now play with downloadPhotoUrl
                                 //Store data into Firebase Realtime Database
-                                createZone(downloadPhotoUrl.toString());
+                                String id = mFirebaseDatabase.child("Khu").push().getKey();
+                                Zone zone = getZone(downloadPhotoUrl.toString(),id);
+                                mFirebaseDatabase.child("Khu").child(id).setValue(zone);
                                 Toast.makeText(AddZoneActivity.this, "thanhcong", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -186,12 +188,7 @@ public class AddZoneActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void createZone(String url) {
-        Zone zone = getZone(url);
-        mFirebaseDatabase.child("Khu").push().setValue(zone);
-    }
-
-    private Zone getZone(String url) {
+    private Zone getZone(String url, String id) {
         Zone zone = new Zone();
         zone.setTenKhu(txtTenKhu.getText().toString());
         zone.setThanhPho(spnTP.getSelectedItem().toString());
@@ -202,6 +199,7 @@ public class AddZoneActivity extends AppCompatActivity {
         zone.setPhutMo(spnGioDong.getSelectedItem().toString());
         zone.setPhutDong(spnPhutDong.getSelectedItem().toString());
         zone.setAnh(url);
+        zone.setPushId(id);
         return zone;
     }
 
