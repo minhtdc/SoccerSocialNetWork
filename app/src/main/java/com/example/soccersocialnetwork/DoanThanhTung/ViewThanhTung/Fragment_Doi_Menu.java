@@ -1,15 +1,22 @@
 package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.DialogTitle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,12 +34,14 @@ public class Fragment_Doi_Menu extends Fragment {
     ArrayList<Team> listTeam = new ArrayList<>();
 
 
-    LinearLayout llThongTinDoi;
+    LinearLayout llThongTinDoi, llThemThanhVien;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = (ViewGroup) inflater.inflate((R.layout.doi_menu_1), container, false);
         llThongTinDoi = rootView.findViewById(R.id.llThongTinDoi);
+        llThemThanhVien = rootView.findViewById(R.id.llThemThanhVien);
+
         //lay id bên trang chủ của đội
         idDoi = getArguments().getString("Doi_ID");
         uriIMG = getArguments().getString("Doi_uriIMG");
@@ -57,7 +66,6 @@ public class Fragment_Doi_Menu extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getContext(), email, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
                 Bundle bundle_menu = new Bundle();
                 bundle_menu.putString("Doi_ID", idDoi);
@@ -74,13 +82,27 @@ public class Fragment_Doi_Menu extends Fragment {
             }
         });
 
+        llThemThanhVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogThemThanh();
+            }
+        });
+
 
     }
 
 
-    private void setControl() {
+    private void dialogThemThanh() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_them_thanhvien);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        //ánh xạ
 
 
+        //them adapter hinh anh
+        dialog.show();
     }
 
 }

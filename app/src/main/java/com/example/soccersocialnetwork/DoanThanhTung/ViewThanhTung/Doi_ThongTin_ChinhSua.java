@@ -8,13 +8,16 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,11 +31,21 @@ import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
     ImageView imgChinhSuaTeam;
@@ -41,11 +54,15 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
     Button btnChinhSua;
 
     DatabaseReference mDatabase;
+    //img
+    private StorageReference storegaRef;
+    private FirebaseStorage storage;
 
     final int REQUEST_CODE = 999;
     Uri uri;
-
+    String uriIMGBase;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +74,12 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
 
         setControl();
         //nhận dữ liệu
+        readTeam();
         takeData();
 
         //------set hình ảnh edittext...
-        Picasso.get().load(uriIMG).into(imgChinhSuaTeam);
+//        Picasso.get().load(uriIMG).into(imgChinhSuaTeam);
+
         txtTenDoiChinhSua.setText(tenDoi + "");
         //spiner
         String[] arrayKhuVucSpinner = getResources().getStringArray(R.array.listKhuVuc);
@@ -93,6 +112,10 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
     }
 
     private void setEvent() {
+        final ProgressDialog progreDiaglog = new ProgressDialog(this);
+        progreDiaglog.setCancelable(false);
+        progreDiaglog.setTitle("Đang trong quá trình tạo");
+
         btnChinhSua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,8 +125,21 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        updateFirebase(getTeam());
-                        dialog.cancel();
+
+                        if(uri == null){
+                            dialog.cancel();
+                            progreDiaglog.show();
+                            //chỉ update firebase
+                            updateFirebase(getTeam(),progreDiaglog);
+                        }else{
+                            dialog.cancel();
+                            progreDiaglog.show();
+                            //up ảnh và sửa giá trị trong firebase
+
+                            uploadImage(imgChinhSuaTeam,progreDiaglog,getTeam());
+                        }
+
+
                     }
                 });
                 builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
@@ -112,17 +148,10 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
+
                 builder.show();
-//                AlertDialog.Builder builder = new AlertDialog.Builder(Doi_ThongTin_ChinhSua.this);
-//                builder.setTitle("Thiếu thông tin");
-//                builder.setMessage("Vui lòng thêm hình ảnh");
-//                builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//                builder.show();
+
+
             }
         });
 
@@ -146,17 +175,40 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
         team.setTieuChi(txtTieuChiChinhSua.getText().toString());
         team.setsLogan(txtSloganChinhSua.getText().toString());
 
-        if (uri != null) {
-            team.setHinhAnh(uri.toString());
-
-        } else {
-            team.setHinhAnh(uriIMG);
+        if (uri == null) {
+            team.setHinhAnh(uriIMGBase);
         }
+
 
         return team;
     }
 
-    private void updateFirebase(Team team) {
+    public void readTeam() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    if (idDoi.equals(dt.getKey())) {
+                        Team team = dt.getValue(Team.class);
+                        // listTeam.add(team);
+                        Picasso.get().load(team.getHinhAnh()).into(imgChinhSuaTeam);
+                        uriIMGBase = team.getHinhAnh();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(null, "loadPost:onCancelled", error.toException());
+            }
+        });
+
+    }
+
+    private void updateFirebase(Team team, final ProgressDialog progreDiaglog) {
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi);
         //----------cach 1 update
@@ -167,7 +219,9 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(Doi_ThongTin_ChinhSua.this, "update thành công", Toast.LENGTH_SHORT).show();
-
+                progreDiaglog.cancel();
+                onBackPressed();
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -175,6 +229,48 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
                 Toast.makeText(Doi_ThongTin_ChinhSua.this, "update thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void uploadImage(ImageView imageView, final ProgressDialog progreDiaglog, final Team team) {
+        storage = FirebaseStorage.getInstance();
+        storegaRef = storage.getReference();
+
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        final StorageReference storageReference = storegaRef.child("imgTeam/" + "IDTeam_IMG: " + idDoi + "/" + UUID.randomUUID().toString());
+
+        UploadTask uploadTask = storageReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                progreDiaglog.setMessage("Lỗi");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri downloadPhotoUrl) {
+
+                        String uriIMG = downloadPhotoUrl.toString();
+                        team.setHinhAnh(uriIMG);
+
+                        updateFirebase(team,progreDiaglog);
+                        //progreDiaglog.dismiss();
+
+                    }
+                });
+            }
+        });
+
+
     }
 
     private void setControl() {

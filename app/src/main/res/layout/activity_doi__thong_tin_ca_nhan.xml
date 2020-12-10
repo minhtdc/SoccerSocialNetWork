@@ -108,6 +108,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:gravity="center_horizontal"
+
+                    android:textAlignment="center"
                     android:text="xinlanthua@gmail.com"></TextView>
             </LinearLayout>
 
@@ -115,8 +118,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="0.1in">
+                android:layout_marginBottom="0.1in"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="200dp"
@@ -131,8 +134,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:textAlignment="center"
                     android:text="090610044798"></TextView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,15 +152,15 @@
                     android:text="@string/Doi_KhuVuc"
                     android:textStyle="bold"></TextView>
 
-               <Spinner
-                   android:id="@+id/spKhuThongTinDoi"
-                   android:layout_width="match_parent"
-                   android:layout_weight="2"
-                   android:layout_height="wrap_content"
-                   android:entries="@array/listKhuVuc"
-                   android:textAlignment="center"
-                   android:background="@color/colorXanhLa"
-                   android:gravity="center_horizontal"></Spinner>
+                <TextView
+                    android:id="@+id/tvKhuThongTinDoi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Khu vực"
+                    android:gravity="center_horizontal"
+
+                    android:textAlignment="center"></TextView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

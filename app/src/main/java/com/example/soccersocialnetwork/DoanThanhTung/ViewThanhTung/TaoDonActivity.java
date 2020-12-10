@@ -9,12 +9,15 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,9 +64,6 @@ public class TaoDonActivity extends AppCompatActivity {
     ImageView imgTaoDoi;
 
 
-
-
-
     ArrayList<Team> listTeam = new ArrayList<>();
     FireBaseTeam fireBaseTeam = new FireBaseTeam();
 
@@ -107,12 +107,18 @@ public class TaoDonActivity extends AppCompatActivity {
     }
 
 
+
+
     private void setEvent() {
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progreDiaglog.setCancelable(false);
+                progreDiaglog.setTitle("Đang trong quá trình tạo");
+                progreDiaglog.show();
                 if (uri == null) {
+                    progreDiaglog.cancel();
                     AlertDialog.Builder builder = new AlertDialog.Builder(TaoDonActivity.this);
                     builder.setTitle("Thiếu thông tin");
                     builder.setMessage("Vui lòng thêm hình ảnh");
@@ -124,8 +130,9 @@ public class TaoDonActivity extends AppCompatActivity {
                     });
                     builder.show();
                 } else {
-                    // up ảnh lên và chuyền lên firebase data, store
+
                     uploadImage(imgTaoDoi, progreDiaglog, getTeam());
+
 
 //                    // chuyển qua layout khác và dữ liệu
 //                    Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
@@ -142,11 +149,14 @@ public class TaoDonActivity extends AppCompatActivity {
 //                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
 //                    intent.putExtras(bundle);
 //                    startActivity(intent);
-                }
+                    // Toast.makeText(TaoDonActivity.this, "Không có mạng!", Toast.LENGTH_SHORT).show();
 
+                }
             }
 
         });
+
+
         //  deleteTeam(124);
         imgTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +165,7 @@ public class TaoDonActivity extends AppCompatActivity {
             }
         });
     }
+
     public void readTeam() {
         mDatabase = FirebaseDatabase.getInstance().getReference("Team");
         //  List<String> keys = new ArrayList<>();
@@ -220,31 +231,39 @@ public class TaoDonActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
 
-                progreDiaglog.dismiss();
-                // chuyển qua layout khác và dữ liệu
-                Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
+                    progreDiaglog.dismiss();
+                    // chuyển qua layout khác và dữ liệu
+                    Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("TaoDoi_IDDoi", IDLatter()-1 + "");
-                bundle.putString("TaoDoi_IMGDoi", uri.toString());
-                bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
-                bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
-                bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
-                bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
-                bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
-                bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
-                bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
-                intent.putExtras(bundle);
-                startActivity(intent);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("TaoDoi_IDDoi", IDLatter() - 1 + "");
+                    bundle.putString("TaoDoi_IMGDoi", uri.toString());
+                    bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
+                    bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
+                    bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
+                    bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
+                    bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
+                    bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
+                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progreDiaglog.dismiss();
+                Toast.makeText(TaoDonActivity.this, "Lỗi", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     public void uploadImage(ImageView imageView, final ProgressDialog progreDiaglog, final Team team) {
         storage = FirebaseStorage.getInstance();
         storegaRef = storage.getReference();
-        //dialog
-        progreDiaglog.setTitle("Đang trong quá trình tải");
-        progreDiaglog.show();
+
         imageView.setDrawingCacheEnabled(true);
         imageView.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
@@ -269,11 +288,11 @@ public class TaoDonActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri downloadPhotoUrl) {
 
-                       String uriIMG = downloadPhotoUrl.toString();
+                        String uriIMG = downloadPhotoUrl.toString();
                         team.setHinhAnh(uriIMG);
-                        insertTeam(team,progreDiaglog);
+                        insertTeam(team, progreDiaglog);
                         //progreDiaglog.dismiss();
-                        finish();
+
                     }
                 });
             }
@@ -281,65 +300,9 @@ public class TaoDonActivity extends AppCompatActivity {
 
 
     }
-    private void uploadImage() {
-//        storage = FirebaseStorage.getInstance();
-//        storegaRef = storage.getReference();
-//        if (uri != null) {
-////            //--Dialog
-//            final ProgressDialog progreDiaglog = new ProgressDialog(this);
-//            progreDiaglog.setTitle("Đang trong quá trình tải");
-//            progreDiaglog.show();
-//         //   final StorageReference storageReference = storegaRef.child("imgTeam/" + "IDTeam_IMG: " + UIDLatter() + "/" + UUID.randomUUID().toString());
-//
-//            imgTaoDoi.setDrawingCacheEnabled(true);
-//            imgTaoDoi.buildDrawingCache();
-//            Bitmap bitmap = ((BitmapDrawable) imgTaoDoi.getDrawable()).getBitmap();
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//            byte[] data = baos.toByteArray();
-//
-//            UploadTask uploadTask = storageReference.putBytes(data);
-//            uploadTask.addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception exception) {
-//                    Toast.makeText(TaoDonActivity.this, "Lỗi!!!", Toast.LENGTH_SHORT).show();
-//                }
-//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-//                    // ...
-//                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri downloadPhotoUrl) {
-//                            //Now play with downloadPhotoUrl
-//                            //Store data into Firebase Realtime Database
-//                            URI_IMAGE = downloadPhotoUrl.toString();
-//                            progreDiaglog.dismiss();
-//
-//                            insertTeam(getTeam());
-//                            Toast.makeText(TaoDonActivity.this, "thanhcong", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-//            });
 
 
-// Observe state change events such as progress, pause, and resume
-//            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-//                    Log.d(TAG, "Upload is " + progress + "% done");
-//                }
-//            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-//                    Log.d(TAG, "Upload is paused");
-//                }
-//            });
-//        }
-    }
+
 
 
 
@@ -383,15 +346,6 @@ public class TaoDonActivity extends AppCompatActivity {
 
 
 
-    private byte[] imageViewToByte(ImageView imageView) {
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bytes = stream.toByteArray();
-        OutputStream outputStream = new ByteArrayOutputStream();
-        return bytes;
-
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
