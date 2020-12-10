@@ -1,95 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorWhite"
-    tools:context=".TranDuyHuynh.edit_profile_user">
+    android:background="@color/colorAccent"
+    android:gravity="center"
+    android:padding="20dp">
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:padding="20dp"
-        android:orientation="vertical">
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/border_vertical"></ImageView>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/img_user">
-
-        </de.hdodenhof.circleimageview.CircleImageView>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/border_vertical">
-
-        </ImageView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="30dp">
-
-        <TextView
-            android:id="@+id/txtTenTaiKhoan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Tên tài khoản"
-            android:textColor="@color/colorBlack">
-
-        </TextView>
-
-        <TextView
-            android:layout_marginTop="15dp"
-            android:id="@+id/txtSlogen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Thể dục thể thao sức khỏe dồi dào"
-            android:textColor="@color/colorBlack">
-
-        </TextView>
-
-
-    </LinearLayout>
-
-    <ImageView
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_weight="1"
-        android:background="@drawable/border_vertical"></ImageView>
-
-    <LinearLayout
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_weight="7"
         android:orientation="vertical"
-        android:paddingLeft="20dp">
+        android:paddingLeft="20dp"
+     >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,21 +31,23 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:background="@color/colorWhite"
+                android:paddingLeft="10dp"
                 android:text="Trần Duy Huynh"
                 android:textColor="@color/colorBlack">
 
-            </TextView>
+            </EditText>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -131,21 +59,23 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:background="@color/colorWhite"
+                android:paddingLeft="10dp"
                 android:text="22/07/1997"
                 android:textColor="@color/colorBlack">
 
-            </TextView>
+            </EditText>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -157,21 +87,23 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:background="@color/colorWhite"
+                android:paddingLeft="10dp"
                 android:text="Nghệ An"
                 android:textColor="@color/colorBlack">
 
-            </TextView>
+            </EditText>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -183,21 +115,23 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:background="@color/colorWhite"
+                android:paddingLeft="10dp"
                 android:text="Pivo"
                 android:textColor="@color/colorBlack">
 
-            </TextView>
+            </EditText>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -209,21 +143,23 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:background="@color/colorWhite"
+                android:paddingLeft="10dp"
                 android:text="55kg"
                 android:textColor="@color/colorBlack">
 
-            </TextView>
+            </EditText>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -235,37 +171,47 @@
 
             </TextView>
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:background="@color/colorWhite"
+                android:paddingLeft="10dp"
                 android:text="1m65"
                 android:textColor="@color/colorBlack">
 
-            </TextView>
+            </EditText>
+
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnChinhSua"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:text="Chỉnh sửa"
-            android:textColor="@color/colorBlack">
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
-        </Button>
+            <Button
+                android:id="@+id/btnCapNhat"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorSilver"
+                android:text="Cập nhật">
+
+            </Button>
+
+            <Button
+                android:id="@+id/btnHuy"
+                android:layout_marginLeft="20dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSilver"
+                android:text="Hủy">
+
+            </Button>
+        </LinearLayout>
     </LinearLayout>
 
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>
