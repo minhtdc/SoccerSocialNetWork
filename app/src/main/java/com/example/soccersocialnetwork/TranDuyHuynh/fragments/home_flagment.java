@@ -1,6 +1,7 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiHinhSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_findTeams;
+import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ import java.util.List;
  */
 public class home_flagment extends Fragment {
     TextView txtDangTin;
+    ImageView imgUser;
 
     // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -133,6 +137,15 @@ public class home_flagment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(),infomation_dangtintimtran.class);
+                startActivity(intent);
+            }
+        });
+
+        imgUser = (ImageView) getView().findViewById(R.id.imgUser);
+        imgUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),edit_profile_user.class);
                 startActivity(intent);
             }
         });

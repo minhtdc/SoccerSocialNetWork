@@ -42,7 +42,7 @@
             </LinearLayout>
 
             <TextView
-
+                android:id="@+id/txtDang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đăng"
@@ -185,6 +185,7 @@
             </TextView>
 
             <Button
+                android:id="@+id/btnTimSan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shap_button_list_teams"

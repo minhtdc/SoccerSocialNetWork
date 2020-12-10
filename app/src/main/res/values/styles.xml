@@ -18,9 +18,15 @@
     </style>
 
     <string-array name="spnDoi">
-        <item>thủ đức</item>
-        <item>bình dương</item>
-        <item>cà mau</item>
-        <item>hà nội</item>
+        <item>Đội 1</item>
+        <item>Đội 2</item>
+        <item>Đội 3</item>
+        <item>Đội 4</item>
+    </string-array>
+    <string-array name="spnKhuVuc">
+        <item>Thủ Đức</item>
+        <item>Bình Dương</item>
+        <item>Hà Nội</item>
+        <item>Vũng tàu</item>
     </string-array>
 </resources>
