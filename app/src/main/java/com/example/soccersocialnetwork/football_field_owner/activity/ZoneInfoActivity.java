@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.football_field_owner.adapter.ViewPagerAdapter;
-import com.example.soccersocialnetwork.football_field_owner.flagment.AddSoccerFieldFragment;
+import com.example.soccersocialnetwork.football_field_owner.flagment.AddFootballPitchesFragment;
 import com.example.soccersocialnetwork.football_field_owner.flagment.ListOfYardFragment;
 import com.example.soccersocialnetwork.football_field_owner.flagment.WaitingListFragment;
 import com.example.soccersocialnetwork.football_field_owner.flagment.ZoneInfoFragment;
@@ -36,7 +36,7 @@ public class ZoneInfoActivity extends AppCompatActivity {
         adapter.addFragment(new ZoneInfoFragment(), "");
         adapter.addFragment(new ListOfYardFragment(), "");
         adapter.addFragment(new WaitingListFragment(), "");
-        adapter.addFragment(new AddSoccerFieldFragment(), "");
+        adapter.addFragment(new AddFootballPitchesFragment(), "");
         viewPager.setAdapter(adapter);
 
     }
