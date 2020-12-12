@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_dialog_signout"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="50dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bạn có muốn đăng suất không ?"
+        android:textColor="@color/colorBlack"
+        android:textSize="20dp">
+    </TextView>
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/btnHuy"
+            android:background="@color/colorWhite"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="Hủy">
+
+        </Button>
+        <Button
+            android:id="@+id/btnDong_y"
+            android:background="@color/colorWhite"
+            android:layout_marginLeft="30dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="Đồng ý">
+
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,5 +1,43 @@
 <resources>
     <string name="app_name">SoccerSocialNetwork</string>
+    <string name="tensan">Tên Sân</string>
+    <string name="nhapgia">Nhập Giá</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="menu_fragment">Menu</string>
+    <string name="notification_fragment">Notification</string>
+    <string name="stadium_flagment">Stadium</string>
+    <string name="team_fragmen">Team</string>
+    <string name="home_fragmen">Home</string>
+    <string name="txtDiaDiem_lstView">Địa điểm : </string>
+    <string name="txtThoiGian_lstView">Thời gian : </string>
+    <string name="txtNgay_lstView">Ngày : </string>
+    <string name="btn_danh_sach_doi">Danh sách đội</string>
+    <string name="btn_doi_cua_ban">Đội của bạn</string>
+    <string name="txtKhuVuc_lstTeams">Khu vực</string>
+    <string name="txtSoLuong_cauThu_lstTeam">Cầu thủ</string>
+    <string name="txtGioiThieuTeam_lstTeam">Giới thiệu</string>
+
+    <string name="txtDoi">ĐỘI</string>
+    <string name="txtSan">SÂN</string>
+    <string name="txtThongBao">Thông báo</string>
+    <string name="txtMenu">Menu</string>
+    <string name="txtXemTrangCaNhan">Xem trang cá nhân của bạn</string>
+
+    <string name="btn_danh_sach_san">Danh sách sân</string>
+    <string name="btn_san_cua_ban">Sân của bạn</string>
+    <string name="txtLoaiHinhSan">Loại hình sân</string>
+    <string name="txtLoaiSan">Loại sân</string>
+    <string name="txtDiaChiSan">Địa chỉ</string>
+
+    <string name="txtSetting_TaiKhoan">Tài Khoản </string>
+    <string name="txtSetting_NgonNgu">Ngôn ngữ</string>
+    <string name="txtSetting_GiaoDien">Giao diện</string>
+    <string name="txtTroGiup_LienHe">Liên hệ</string>
+    <string name="txtTroGiup_BCSC">Báo cáo sự cố</string>
+    <string name="txtTroGiup_DieuKhoan">Điều khoản và chính sách</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
 
     <string name="Doi_GioiThieu">Giới thiệu</string>
     <string name="Doi_TenDoi">Tên đội</string>
