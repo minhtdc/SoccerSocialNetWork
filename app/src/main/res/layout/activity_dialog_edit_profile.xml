@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBg_signout"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".TranDuyHuynh.dialog_edit_profile"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:paddingLeft="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Họ tên :"
+                    android:textColor="@color/colorBlack">
+
+                </TextView>
+
+                <EditText
+                    android:padding="5dp"
+                    android:background="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Trần Duy Huynh"
+                    android:textColor="@color/colorBlack">
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="Ngày sinh :"
+                    android:textColor="@color/colorBlack">
+
+                </TextView>
+
+                <EditText
+                    android:padding="5dp"
+                    android:background="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="22/07/1997"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Quê quán : "
+                    android:textColor="@color/colorBlack">
+
+                </TextView>
+
+                <EditText
+                    android:padding="5dp"
+                    android:background="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Nghệ An"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Vị trŕ : "
+                    android:textColor="@color/colorBlack">
+
+                </TextView>
+
+                <EditText
+                    android:padding="5dp"
+                    android:background="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Pivo"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cân nặng : "
+                    android:textColor="@color/colorBlack">
+
+                </TextView>
+
+                <EditText
+                    android:padding="5dp"
+                    android:background="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="55kg"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Chiều cao :"
+                    android:textColor="@color/colorBlack">
+
+                </TextView>
+
+                <EditText
+                    android:padding="5dp"
+                    android:background="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="1m65"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Slogen :"
+                    android:textColor="@color/colorBlack">
+
+                </TextView>
+
+                <EditText
+                    android:padding="5dp"
+                    android:background="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Thể dục thể thao sức khỏe dồi dào"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnCapnhat"
+                    android:background="@color/colorSilver"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cập nhật">
+
+                </Button>
+                <Button
+                    android:id="@+id/btnHuy"
+                    android:background="@color/colorSilver"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Hủy">
+
+                </Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
