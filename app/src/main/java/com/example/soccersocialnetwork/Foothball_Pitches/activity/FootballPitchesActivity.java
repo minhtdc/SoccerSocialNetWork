@@ -11,7 +11,6 @@ import com.example.soccersocialnetwork.Foothball_Pitches.flagment.ListFreeTimeFr
 import com.example.soccersocialnetwork.Foothball_Pitches.flagment.ListOfBookingFragment;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.football_field_owner.adapter.ViewPagerAdapter;
-import com.example.soccersocialnetwork.football_field_owner.flagment.AddSoccerFieldFragment;
 import com.example.soccersocialnetwork.football_field_owner.flagment.ListOfYardFragment;
 import com.example.soccersocialnetwork.football_field_owner.flagment.WaitingListFragment;
 import com.example.soccersocialnetwork.football_field_owner.flagment.ZoneInfoFragment;

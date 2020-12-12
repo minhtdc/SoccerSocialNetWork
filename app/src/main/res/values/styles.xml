@@ -5,15 +5,34 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
-    <style name="EditTextStyle" >
+    <style name="EditTextStyle">
         <item name="android:background">@drawable/bg_shape_register</item>
         <item name="android:padding">10dp</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
         <item name="android:textColorHint">#615D5D</item>
         <item name="android:alpha">0.8</item>
         <item name="android:layout_height">50dp</item>
     </style>
+    <style name="textViewTaoDoi">
+        <item name="android:textColor">@color/colorXam</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
+
+
+    <string-array name="spnDoi">
+        <item>Đội 1</item>
+        <item>Đội 2</item>
+        <item>Đội 3</item>
+        <item>Đội 4</item>
+    </string-array>
+    <string-array name="spnKhuVuc">
+        <item>Thủ Đức</item>
+        <item>Bình Dương</item>
+        <item>Hà Nội</item>
+        <item>Vũng tàu</item>
+    </string-array>
 </resources>
