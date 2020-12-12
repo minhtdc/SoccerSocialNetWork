@@ -3,6 +3,9 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorXam">#3d527b</color>
+    <color name="colorXanhLa">#5e8b50</color>
+    <color name="colorRed">#ff0808</color>
 
     <color name="colorForAlPha">#212226</color>
     <color name="colorBtnYellow">#f4c613</color>

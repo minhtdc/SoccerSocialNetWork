@@ -7,279 +7,217 @@
     android:orientation="vertical"
     tools:context=".DoanThanhTung.ViewThanhTung.TaoDonActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/imgTaoDoi"
+                android:layout_width="180dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:src="@drawable/log"></ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Nhấn để chỉnh sủa ảnh"
+                android:textSize="10dp"></TextView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="2">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/log"></ImageView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2">
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Nhấn để chỉnh sủa hình ảnh"
-                    android:textSize="10dp"></TextView>
+                    android:text="@string/Doi_TenDoi">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/txtTenDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="8"
+                    android:maxLines="1"></EditText>
+
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Tên đội"
-                android:textSize="15dp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></EditText>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Email"
-                android:textSize="15dp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></EditText>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="SĐT"
-                android:textSize="15dp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></EditText>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Giới thiệu"
-                android:textSize="15dp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></EditText>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Tiêu chí"
-                android:textSize="15dp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></EditText>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Slogan"
-                android:textSize="15dp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></EditText>
-        </LinearLayout>
-    </LinearLayout>
-
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5">
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5">
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
 
-                <Button
-                    android:layout_width="match_parent"
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/btn_shape_login"
-                    android:text="Tạo đội"></Button>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_KhuVuc"
+                    ></TextView>
+
+                <Spinner
+                    android:id="@+id/spKhuVuc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@color/colorXanhLa"
+                    android:entries="@array/listKhuVuc"
+                    android:gravity="center_horizontal"
+                    android:textAlignment="center"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_Email"
+                    ></TextView>
+
+                <EditText
+                    android:id="@+id/txtEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="30"
+                    android:maxLines="1"></EditText>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_SDT"
+                    ></TextView>
+
+                <EditText
+                    android:id="@+id/txtSDT"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="11"
+                    android:maxLines="1"></EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="2">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_GioiThieu"
+                    ></TextView>
+
+                <EditText
+                    android:id="@+id/txtGioiThieu"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="100"
+                    android:maxLines="5"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_TieuChi"
+                    ></TextView>
+
+                <EditText
+                    android:id="@+id/txtTieuChi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="20"
+                    android:maxLines="1"></EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/textViewTaoDoi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/Doi_Slogan"
+                    ></TextView>
+
+                <EditText
+                    android:id="@+id/txtSlogan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="text|textCapWords"
+                    android:maxLength="20"
+                    android:maxLines="1"></EditText>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnTaoDoi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_shape_login"
+                android:text="Tạo Đội"
+                ></Button>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-
-        </LinearLayout>
-    </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

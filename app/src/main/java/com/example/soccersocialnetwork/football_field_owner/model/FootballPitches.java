@@ -1,13 +1,20 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
-public class FootballPitches {
-    String tenSan, gia, loaiHinhSan, LoaiSan;
+import java.util.ArrayList;
 
-    public FootballPitches(String tenSan, String gia, String loaiHinhSan, String loaiSan) {
-        this.tenSan = tenSan;
-        this.gia = gia;
-        this.loaiHinhSan = loaiHinhSan;
-        LoaiSan = loaiSan;
+public class FootballPitches {
+    String tenSan, loaiHinhSan, LoaiSan, giaBT, giaCD, id;
+
+    @Override
+    public String toString() {
+        return "FootballPitches{" +
+                "tenSan='" + tenSan + '\'' +
+                ", loaiHinhSan='" + loaiHinhSan + '\'' +
+                ", LoaiSan='" + LoaiSan + '\'' +
+                ", giaBT='" + giaBT + '\'' +
+                ", giaCD='" + giaCD + '\'' +
+                ", id='" + id + '\'' +
+                '}';
     }
 
     public String getTenSan() {
@@ -16,14 +23,6 @@ public class FootballPitches {
 
     public void setTenSan(String tenSan) {
         this.tenSan = tenSan;
-    }
-
-    public String getGia() {
-        return gia;
-    }
-
-    public void setGia(String gia) {
-        this.gia = gia;
     }
 
     public String getLoaiHinhSan() {
@@ -42,13 +41,39 @@ public class FootballPitches {
         LoaiSan = loaiSan;
     }
 
-    @Override
-    public String toString() {
-        return "FootballPitches{" +
-                "tenSan='" + tenSan + '\'' +
-                ", gia='" + gia + '\'' +
-                ", loaiHinhSan='" + loaiHinhSan + '\'' +
-                ", LoaiSan='" + LoaiSan + '\'' +
-                '}';
+    public String getGiaBT() {
+        return giaBT;
+    }
+
+    public void setGiaBT(String giaBT) {
+        this.giaBT = giaBT;
+    }
+
+    public String getGiaCD() {
+        return giaCD;
+    }
+
+    public void setGiaCD(String giaCD) {
+        this.giaCD = giaCD;
+    }
+
+    public FootballPitches() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public FootballPitches(String tenSan, String loaiHinhSan, String loaiSan, String giaBT, String giaCD, String id) {
+        this.tenSan = tenSan;
+        this.loaiHinhSan = loaiHinhSan;
+        LoaiSan = loaiSan;
+        this.giaBT = giaBT;
+        this.giaCD = giaCD;
+        this.id = id;
     }
 }

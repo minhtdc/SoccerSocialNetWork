@@ -5,126 +5,153 @@
     android:background="#5BA63B"
     android:orientation="vertical">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent">
 
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="50dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_thumbtack"></ImageView>
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:text="Thông tin đội"
-            android:textStyle="bold"></TextView>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llThongTinDoi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_weight="0.05">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_thumbtack"></ImageView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_shape_register"></TextView>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tvThongTinDoi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Thông tin đội"
+                    android:textSize="30dp"
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:orientation="vertical">
 
-        android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></TextView>
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_users"></ImageView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_shape_register"></TextView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:text="Thành viên"
-            android:textStyle="bold"></TextView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></TextView>
+            </LinearLayout>
 
-        android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_adduser"></ImageView>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_users"></ImageView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:text="Thêm thành viên"
-            android:textStyle="bold"></TextView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Thành viên"
+                    android:textSize="30dp"
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
 
-        android:gravity="center">
+            <LinearLayout
+                android:id="@+id/llThemThanhVien"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_loading"></ImageView>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_adduser"></ImageView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:text="Chờ duyệt"
-            android:textStyle="bold"></TextView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_weight="0.05">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Thêm thành viên"
+                    android:textSize="30dp"
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_shape_register"></TextView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_sad"></ImageView>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_loading"></ImageView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:text="Rời đội"
-            android:textStyle="bold"></TextView>
-    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Chờ duyệt"
+                    android:textSize="30dp"
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    ></TextView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_shape_register"></TextView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    ></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_sad"></ImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="30dp"
+                    android:text="Rời đội"
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
