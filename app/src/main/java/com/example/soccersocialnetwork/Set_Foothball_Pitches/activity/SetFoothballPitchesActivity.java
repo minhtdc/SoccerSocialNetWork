@@ -5,18 +5,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
-import com.example.soccersocialnetwork.Foothball_Pitches.flagment.EditFootballPitchesFragment;
-import com.example.soccersocialnetwork.Foothball_Pitches.flagment.FootballPitchesInfoFragment;
-import com.example.soccersocialnetwork.Foothball_Pitches.flagment.ListFreeTimeFragment;
-import com.example.soccersocialnetwork.Foothball_Pitches.flagment.ListOfBookingFragment;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Foothball_Pitches.flagment.SetFootballPitchesInfoFragment;
 import com.example.soccersocialnetwork.Set_Foothball_Pitches.flagment.SetListFreeTimeFragment;
 import com.example.soccersocialnetwork.football_field_owner.adapter.ViewPagerAdapter;
-import com.example.soccersocialnetwork.football_field_owner.flagment.AddSoccerFieldFragment;
-import com.example.soccersocialnetwork.football_field_owner.flagment.ListOfYardFragment;
-import com.example.soccersocialnetwork.football_field_owner.flagment.WaitingListFragment;
-import com.example.soccersocialnetwork.football_field_owner.flagment.ZoneInfoFragment;
+
 import com.google.android.material.tabs.TabLayout;
 
 public class SetFoothballPitchesActivity extends AppCompatActivity {
