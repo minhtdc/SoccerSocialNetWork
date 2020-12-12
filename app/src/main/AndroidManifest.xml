@@ -20,6 +20,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTinCaNhan" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity">
+        <activity android:name=".Set_Foothball_Pitches.activity.SetFoothballPitchesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
