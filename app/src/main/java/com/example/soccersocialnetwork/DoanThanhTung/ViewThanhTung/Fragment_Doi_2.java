@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.R;
 
@@ -22,7 +21,7 @@ public class Fragment_Doi_2 extends Fragment {
     RecyclerView recyclerView;
 
     ArrayList<Feeds> listFeeds = new ArrayList<>();
-    Adapter_FeedsDoi adapterFeedsDoi;
+  //  Adapter_FeedsDoi adapterFeedsDoi;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,9 +36,9 @@ public class Fragment_Doi_2 extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-
-        adapterFeedsDoi = new Adapter_FeedsDoi(getContext(), listFeeds);
-        recyclerView.setAdapter(adapterFeedsDoi);
+//
+//        adapterFeedsDoi = new Adapter_FeedsDoi(getContext());
+//        recyclerView.setAdapter(adapterFeedsDoi);
 
        // ThemBaiVietDaBong();
 //

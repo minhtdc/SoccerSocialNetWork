@@ -205,7 +205,7 @@ public class DoiActivity extends AppCompatActivity {
         bundle_menu.putString("Doi_Slogan",slogan);
 
         fragment_doi.setArguments(bundle_menu);
-
+//
         adapter.addFragment(fragment_doi, "");
 
         viewPager.setAdapter(adapter);

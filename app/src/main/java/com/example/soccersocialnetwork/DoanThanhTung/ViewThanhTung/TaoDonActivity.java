@@ -106,9 +106,6 @@ public class TaoDonActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private void setEvent() {
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {
