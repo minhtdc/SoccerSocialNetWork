@@ -1,5 +1,7 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
+import java.util.ArrayList;
+
 public class FootballPitches {
     String tenSan, loaiHinhSan, LoaiSan, giaBT, giaCD, id;
 
