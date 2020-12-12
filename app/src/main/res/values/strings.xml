@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">SoccerSocialNetwork</string>
+
+    <string name="Doi_GioiThieu">Giới thiệu</string>
+    <string name="Doi_TenDoi">Tên đội</string>
+    <string name="Doi_KhuVuc">Khu vực hoạt động</string>
+    <string name="Doi_TieuChi">Tiêu chí</string>
+    <string name="Doi_Slogan">Slogan</string>
+    <string name="Doi_Email">Email</string>
+    <string name="Doi_SDT">SĐT</string>
+    <array name="listKhuVuc">
+        <item>Đà Nẳng</item>
+        <item>Hà Nội</item>
+        <item>Hồ Chí Minh</item>
+    </array>
 </resources>
