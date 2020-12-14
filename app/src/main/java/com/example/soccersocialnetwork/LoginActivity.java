@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userName = edtLoginEmail.getText().toString();
                 String userPass = edtLoginPassword.getText().toString();
+                fAuth = FirebaseAuth.getInstance();
                 if(!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")){
                     fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
