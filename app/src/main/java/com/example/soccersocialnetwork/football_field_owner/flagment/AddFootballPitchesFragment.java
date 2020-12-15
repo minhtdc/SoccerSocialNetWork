@@ -1,6 +1,7 @@
 package com.example.soccersocialnetwork.football_field_owner.flagment;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,35 +23,39 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.activity.AddZoneActivity;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.RushHour;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AddFootballPitchesFragment extends Fragment {
     View view;
     EditText txtTenSan, txtGiaGioCD, txtGiaGioBT;
     Spinner spLoaiSan, spLoaiHinhSan;
-    Spinner spnGioBD, spnPhutBD, spnGioKT, spnPhutKT;
+    TextView tvGioBD, tvGioKT;
     ListView lvDSGioCD;
     Button btnGioCD, btnThemSan;
     DatabaseReference mFirebase;
     DatabaseReference mFirebaseHour;
     String idHour = "";
+    int gioBD, phutBD, gioKT, phutKT;
+
     ArrayList<RushHour> data_rh = new ArrayList<>();
     ArrayList<String> data_ls = new ArrayList<>();
     ArrayList<String> data_lhs = new ArrayList<>();
-    ArrayList<String> data_gio = new ArrayList<>();
-    ArrayList<String> data_phut = new ArrayList<>();
-    ArrayAdapter adapter_gioCD;
-    ArrayAdapter adapter_phutCD;
     ArrayAdapter adapter_lvCD;
     ArrayAdapter adapter;
 
@@ -71,6 +76,14 @@ public class AddFootballPitchesFragment extends Fragment {
         setAdapterSpinner(data_ls, adapter, spLoaiSan);
         setAdapterSpinner(data_lhs, adapter, spLoaiHinhSan);
 
+        lvDSGioCD.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    data_rh.remove(i);
+                    adapter_lvCD.notifyDataSetChanged();
+                return false;
+            }
+        });
         btnGioCD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,24 +116,72 @@ public class AddFootballPitchesFragment extends Fragment {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_rush_hour, null);
         //ánh xạ
-        spnGioBD = alertLayout.findViewById(R.id.spnGioBD);
-        spnPhutBD = alertLayout.findViewById(R.id.spnPhutBD);
-        spnGioKT = alertLayout.findViewById(R.id.spnGioKT);
-        spnPhutKT = alertLayout.findViewById(R.id.spnPhutKT);
+        tvGioBD = alertLayout.findViewById(R.id.tvGioBD);
+        tvGioKT = alertLayout.findViewById(R.id.tvGioKT);
         //khởi tạo dữ liệu
         KhoiTao();
-        //set adapter
-        adapter_gioCD = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data_gio);
-        spnGioBD.setAdapter(adapter_gioCD);
-        spnGioKT.setAdapter(adapter_gioCD);
-        adapter_phutCD = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data_phut);
-        spnPhutBD.setAdapter(adapter_phutCD);
-        spnPhutKT.setAdapter(adapter_phutCD);
         //set title dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle("Giờ Cao Điểm");
         alert.setView(alertLayout);
         alert.setCancelable(false);
+        tvGioBD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        getContext(),
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                gioBD = hourOfDay;
+                                phutBD = minute;
+                                String time = gioBD + ":" + phutBD;
+
+                                try {
+                                    SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
+                                    Date date = f24hours.parse(time);
+                                    Toast.makeText(getContext(), time+"", Toast.LENGTH_SHORT).show();
+                                    tvGioBD.setText(time);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 12, 00, true);
+                timePickerDialog.setTitle("Thời gian");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
+                timePickerDialog.updateTime(gioBD,phutBD);
+                timePickerDialog.show();
+            }
+        });
+        tvGioKT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        getContext(),
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                gioKT = hourOfDay;
+                                phutKT = minute;
+                                String time = gioKT + ":" + phutKT;
+                                SimpleDateFormat f24hours = new SimpleDateFormat("hh:mm");
+                                try {
+                                    Date date = f24hours.parse(time);
+                                    Toast.makeText(getContext(), time+"", Toast.LENGTH_SHORT).show();
+                                    tvGioKT.setText(time);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 12, 00, true);
+                timePickerDialog.setTitle("Thời gian");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
+                timePickerDialog.updateTime(gioKT,phutKT);
+                timePickerDialog.show();
+            }
+        });
         //cancel
         alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
@@ -139,7 +200,6 @@ public class AddFootballPitchesFragment extends Fragment {
                 if (adapter_lvCD == null) {
                     adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1,data_rh);
                     lvDSGioCD.setAdapter(adapter_lvCD);
-                    adapter_gioCD.notifyDataSetChanged();
                 } else {
                     adapter_lvCD.notifyDataSetChanged();
                     lvDSGioCD.setSelection(adapter_lvCD.getCount() - 1);
@@ -152,10 +212,10 @@ public class AddFootballPitchesFragment extends Fragment {
 
     private RushHour getRushHour(String idHour) {
         RushHour rushHour = new RushHour();
-        rushHour.setGioBD(spnGioBD.getSelectedItem().toString());
-        rushHour.setPhutBD(spnPhutBD.getSelectedItem().toString());
-        rushHour.setGioKT(spnGioKT.getSelectedItem().toString());
-        rushHour.setPhutKT(spnPhutKT.getSelectedItem().toString());
+        rushHour.setGioBD(gioBD);
+        rushHour.setPhutBD(phutBD);
+        rushHour.setGioKT(gioKT);
+        rushHour.setPhutKT(phutKT);
         rushHour.setId(idHour);
         return rushHour;
     }
@@ -187,18 +247,6 @@ public class AddFootballPitchesFragment extends Fragment {
         data_lhs.add("5 người");
         data_lhs.add("7 người");
         data_lhs.add("9 người");
-        String a, b;
-        for (int i = 1; i < 25; i++) {
-            if (i < 10) {
-                a = String.valueOf(i);
-                b = "0" + a;
-            } else {
-                b = String.valueOf(i);
-            }
-            data_gio.add(b);
-        }
-        data_phut.add("00");
-        data_phut.add("30");
     }
 
     private void setControl() {

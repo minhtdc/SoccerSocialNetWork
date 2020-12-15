@@ -3,7 +3,9 @@ package com.example.soccersocialnetwork.Foothball_Pitches.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.soccersocialnetwork.Foothball_Pitches.flagment.EditFootballPitchesFragment;
 import com.example.soccersocialnetwork.Foothball_Pitches.flagment.FootballPitchesInfoFragment;
@@ -21,14 +23,22 @@ public class FootballPitchesActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    String key = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_football_pitches);
         setControl();
+        Intent intent = getIntent();
+        key = intent.getStringExtra("key");
+
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
         setIcon();
+    }
+
+    public String getKey() {
+        return key;
     }
 
     private void setControl() {
