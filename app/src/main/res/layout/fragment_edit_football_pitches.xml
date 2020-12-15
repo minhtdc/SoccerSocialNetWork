@@ -113,10 +113,10 @@
             android:layout_height="170dp" />
 
         <Button
-            android:id="@+id/btnThemSan"
+            android:id="@+id/btnSuaSan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Thêm sân" />
+            android:text="Sửa sân" />
     </LinearLayout>
 </ScrollView>

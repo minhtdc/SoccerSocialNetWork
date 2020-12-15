@@ -54,8 +54,8 @@ public class AddFootballPitchesFragment extends Fragment {
     int gioBD, phutBD, gioKT, phutKT;
 
     ArrayList<RushHour> data_rh = new ArrayList<>();
-    ArrayList<String> data_ls = new ArrayList<>();
-    ArrayList<String> data_lhs = new ArrayList<>();
+    ArrayList<String> data_ls;
+    ArrayList<String> data_lhs;
     ArrayAdapter adapter_lvCD;
     ArrayAdapter adapter;
 
@@ -79,8 +79,12 @@ public class AddFootballPitchesFragment extends Fragment {
         lvDSGioCD.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    data_rh.remove(i);
-                    adapter_lvCD.notifyDataSetChanged();
+                data_rh.remove(i);
+                adapter_lvCD.notifyDataSetChanged();
+                for (int k = 0; k < data_rh.size(); k++) {
+                    RushHour rushHour = data_rh.get(k);
+                    rushHour.setId(String.valueOf(k));
+                }
                 return false;
             }
         });
@@ -141,7 +145,7 @@ public class AddFootballPitchesFragment extends Fragment {
                                 try {
                                     SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
                                     Date date = f24hours.parse(time);
-                                    Toast.makeText(getContext(), time+"", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), time + "", Toast.LENGTH_SHORT).show();
                                     tvGioBD.setText(time);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -150,7 +154,7 @@ public class AddFootballPitchesFragment extends Fragment {
                         }, 12, 00, true);
                 timePickerDialog.setTitle("Thời gian");
                 timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
-                timePickerDialog.updateTime(gioBD,phutBD);
+                timePickerDialog.updateTime(gioBD, phutBD);
                 timePickerDialog.show();
             }
         });
@@ -169,7 +173,7 @@ public class AddFootballPitchesFragment extends Fragment {
                                 SimpleDateFormat f24hours = new SimpleDateFormat("hh:mm");
                                 try {
                                     Date date = f24hours.parse(time);
-                                    Toast.makeText(getContext(), time+"", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), time + "", Toast.LENGTH_SHORT).show();
                                     tvGioKT.setText(time);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -178,7 +182,7 @@ public class AddFootballPitchesFragment extends Fragment {
                         }, 12, 00, true);
                 timePickerDialog.setTitle("Thời gian");
                 timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
-                timePickerDialog.updateTime(gioKT,phutKT);
+                timePickerDialog.updateTime(gioKT, phutKT);
                 timePickerDialog.show();
             }
         });
@@ -198,7 +202,7 @@ public class AddFootballPitchesFragment extends Fragment {
                 RushHour rushHour = getRushHour(idHour);
                 data_rh.add(rushHour);
                 if (adapter_lvCD == null) {
-                    adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1,data_rh);
+                    adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, data_rh);
                     lvDSGioCD.setAdapter(adapter_lvCD);
                 } else {
                     adapter_lvCD.notifyDataSetChanged();
@@ -242,6 +246,8 @@ public class AddFootballPitchesFragment extends Fragment {
     }
 
     private void KhoiTao() {
+        data_lhs = new ArrayList<>();
+        data_ls = new ArrayList<>();
         data_ls.add("Cỏ Tự Nhiên");
         data_ls.add("Cỏ Nhân Tạo");
         data_lhs.add("5 người");
