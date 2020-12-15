@@ -18,7 +18,7 @@
             android:layout_marginBottom="20dp">
 
             <TextView
-                android:id="@+id/trangThai"
+                android:id="@+id/tvTrangThai"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
@@ -32,6 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+
                 android:src="@drawable/icon_pencil"></ImageView>
         </LinearLayout>
 

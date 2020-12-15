@@ -127,55 +127,6 @@
             android:layout_weight="0.1"></LinearLayout>
     </LinearLayout>
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_weight="0.5">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_weight="0.1"></LinearLayout>-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_weight="1">-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:src="@drawable/icon_home"></ImageView>-->
-    <!--        </LinearLayout>-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_weight="1">-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:src="@drawable/icon_delicious"></ImageView>-->
-    <!--        </LinearLayout>-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_weight="1">-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:src="@drawable/icon_bars"></ImageView>-->
-    <!--        </LinearLayout>-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_weight="0.1"></LinearLayout>-->
-    <!--    </LinearLayout>-->
-
 
     <LinearLayout
         android:id="@+id/fragmentMainDoi"
@@ -195,13 +146,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        <!--        <androidx.viewpager.widget.ViewPager-->
-        <!--            android:id="@+id/pagerMain"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent">-->
-
-        <!--        </androidx.viewpager.widget.ViewPager>-->
     </LinearLayout>
 
 </LinearLayout>

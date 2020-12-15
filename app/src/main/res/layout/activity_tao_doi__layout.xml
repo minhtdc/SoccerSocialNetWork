@@ -129,8 +129,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:inputType="text|textCapWords"
+                    android:inputType="text|textCapWords|numberDecimal"
                     android:maxLength="11"
+
                     android:maxLines="1"></EditText>
             </LinearLayout>
 
@@ -154,8 +155,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:inputType="text|textCapWords"
+                    android:inputType="text"
                     android:maxLength="100"
+
                     android:maxLines="5"></EditText>
 
             </LinearLayout>
@@ -216,8 +218,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/btn_shape_login"
-                android:text="Tạo Đội"
-                ></Button>
+
+
+
+                android:text="Tạo Đội"></Button>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

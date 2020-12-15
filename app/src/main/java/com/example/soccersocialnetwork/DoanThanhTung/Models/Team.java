@@ -17,6 +17,9 @@ public class Team {
     public String sLogan;
     public String hinhAnh;
     public String khuVuc;
+
+
+
     public String getKhuVuc() {
         return khuVuc;
     }

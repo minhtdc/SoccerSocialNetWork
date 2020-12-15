@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -87,7 +89,6 @@ public class TaoDonActivity extends AppCompatActivity {
         actionBar.hide();
 
         setControl();
-        readTeam();
         setEvent();
     }
 
@@ -107,7 +108,9 @@ public class TaoDonActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        readTeam();
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
+
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,6 +208,8 @@ public class TaoDonActivity extends AppCompatActivity {
         team.setTieuChi(txtTieuChi.getText().toString());
         team.setsLogan(txtSlogan.getText().toString());
         team.setHinhAnh(uri.toString());
+
+
         return team;
     }
 
@@ -228,23 +233,23 @@ public class TaoDonActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
 
-                    progreDiaglog.dismiss();
-                    // chuyển qua layout khác và dữ liệu
-                    Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
+                progreDiaglog.dismiss();
+                // chuyển qua layout khác và dữ liệu
+                Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("TaoDoi_IDDoi", IDLatter() - 1 + "");
-                    bundle.putString("TaoDoi_IMGDoi", uri.toString());
-                    bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
-                    bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
-                    bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
-                    bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
-                    bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
-                    bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
-                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    finish();
+                Bundle bundle = new Bundle();
+                bundle.putString("TaoDoi_IDDoi", IDLatter() - 1 + "");
+                bundle.putString("TaoDoi_IMGDoi", uri.toString());
+                bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
+                bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
+                bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
+                bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
+                bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
+                bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
+                bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
 
 
             }
@@ -299,10 +304,6 @@ public class TaoDonActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     private void updataTeam(Team team) {
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(123 + "");
@@ -340,8 +341,6 @@ public class TaoDonActivity extends AppCompatActivity {
         });
 
     }
-
-
 
 
     @Override
