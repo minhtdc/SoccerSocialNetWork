@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.soccersocialnetwork.TranDuyHuynh.home_layout;
 import com.example.soccersocialnetwork.data_models.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtLoginEmail, edtLoginPassword;
     private FirebaseAuth fAuth;
     Users user = new Users();
+    public static String userIDCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,18 +86,25 @@ public class LoginActivity extends AppCompatActivity {
                 String userName = edtLoginEmail.getText().toString();
                 String userPass = edtLoginPassword.getText().toString();
                 fAuth = FirebaseAuth.getInstance();
-                if(!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")){
+                if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
                     fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()) {
+                                userIDCurrent = fAuth.getCurrentUser().getUid();
+                                Toast.makeText(LoginActivity.this, userIDCurrent, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, home_layout.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+
                             }
 
                         }
                     });
 
-                }else {
+                } else {
                     Toast.makeText(LoginActivity.this, "Vui lòng nhập đủ dữ liệu!", Toast.LENGTH_SHORT).show();
                 }
             }
