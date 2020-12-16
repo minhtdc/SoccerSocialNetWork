@@ -5,14 +5,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,8 +31,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,9 +53,14 @@ public class LoginActivity extends AppCompatActivity {
     TextView txtFogetPassword, txtLogo;
     ImageView imgLogo;
     EditText edtLoginEmail, edtLoginPassword;
-    private FirebaseAuth fAuth;
+    public static FirebaseAuth fAuth;
     Users user = new Users();
-    public static String userIDCurrent;
+    public static String USER_ID_CURRENT;
+    public static String USER_NAME_CURRENT;
+    public static boolean IS_LOGIN;
+    public static SharedPreferences sharedPreferences;
+    public static SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,19 @@ public class LoginActivity extends AppCompatActivity {
 
         //Ánh xạ
         anhXa();
+
+        //kiểm tra trạng thái đăng nhập
+        initPreferences();
+        if (sharedPreferences.getBoolean("IS_LOGIN", IS_LOGIN) == true) {
+            USER_ID_CURRENT = sharedPreferences.getString("USER_ID_CURRENT", "");
+            USER_NAME_CURRENT = sharedPreferences.getString("USER_NAME_CURRENT", "");
+            Toast.makeText(LoginActivity.this, "Wellcome back " + USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, home_layout.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            finish();
+        }
+
 
         //animation
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
@@ -89,17 +110,44 @@ public class LoginActivity extends AppCompatActivity {
                 if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
                     fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        public void onComplete(@NonNull final Task<AuthResult> task) {
+
                             if (task.isSuccessful()) {
-                                userIDCurrent = fAuth.getCurrentUser().getUid();
-                                Toast.makeText(LoginActivity.this, userIDCurrent, Toast.LENGTH_SHORT).show();
+                                //lấy thông tin người dùng
+                                USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
+                                IS_LOGIN = true;
+
+                                //lấy tên người dùng
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference myRef = database.getReference(String.format("/users/%s/userName", LoginActivity.USER_ID_CURRENT));
+                                myRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        USER_NAME_CURRENT = snapshot.getValue().toString();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                                editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
+                                editor.putBoolean("IS_LOGIN", IS_LOGIN);
+//                                editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
+                                editor.commit();
+                                Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, home_layout.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(intent);
+                                finish();
+
+
                             } else {
                                 Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
 
                             }
+
 
                         }
                     });
@@ -361,5 +409,11 @@ public class LoginActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(data, Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
         return Integer.parseInt(currentDateandTime);
+    }
+
+    //lưu thông tin vô bộ nhớ
+    public void initPreferences() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        editor = sharedPreferences.edit();
     }
 }
