@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Set_Foothball_Pitches.flagment;
+package com.example.soccersocialnetwork.Set_Football_Pitches.flagment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

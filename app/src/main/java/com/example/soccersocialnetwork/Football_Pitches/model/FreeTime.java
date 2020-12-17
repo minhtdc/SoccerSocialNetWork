@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Foothball_Pitches.model;
+package com.example.soccersocialnetwork.Football_Pitches.model;
 
 public class FreeTime {
     String gioBatDau, gioKetThuc;

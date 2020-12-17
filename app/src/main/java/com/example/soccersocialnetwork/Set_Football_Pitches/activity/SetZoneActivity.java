@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Set_Foothball_Pitches.activity;
+package com.example.soccersocialnetwork.Set_Football_Pitches.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -6,8 +6,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.Set_Foothball_Pitches.flagment.SetListOfYardFragment;
-import com.example.soccersocialnetwork.Set_Foothball_Pitches.flagment.SetZoneInfoFragment;
+import com.example.soccersocialnetwork.Set_Football_Pitches.flagment.SetListOfYardFragment;
+import com.example.soccersocialnetwork.Set_Football_Pitches.flagment.SetZoneInfoFragment;
 import com.example.soccersocialnetwork.football_field_owner.adapter.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 

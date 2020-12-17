@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Foothball_Pitches.flagment;
+package com.example.soccersocialnetwork.Football_Pitches.flagment;
 
 import android.os.Bundle;
 
@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.soccersocialnetwork.Foothball_Pitches.adapter.CustomAdapterBooked;
-import com.example.soccersocialnetwork.Foothball_Pitches.adapter.CustomAdapterFreeTime;
-import com.example.soccersocialnetwork.Foothball_Pitches.model.Book;
-import com.example.soccersocialnetwork.Foothball_Pitches.model.FreeTime;
+import com.example.soccersocialnetwork.Football_Pitches.adapter.CustomAdapterBooked;
+import com.example.soccersocialnetwork.Football_Pitches.model.Book;
 import com.example.soccersocialnetwork.R;
 
 import java.util.ArrayList;

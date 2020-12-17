@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Set_Foothball_Pitches.adapter;
+package com.example.soccersocialnetwork.Set_Football_Pitches.adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

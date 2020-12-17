@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Set_Foothball_Pitches.model;
+package com.example.soccersocialnetwork.Set_Football_Pitches.model;
 
 public class Zone {
     String tenKhu, anh, thanhPho, quan, diaChi, gioMo, phutMo, gioDong, phutDong, pushId;;

@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.football_field_owner.flagment;
+package com.example.soccersocialnetwork.Set_Football_Pitches.flagment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.soccersocialnetwork.Football_Pitches.activity.FootballPitchesActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
 import com.example.soccersocialnetwork.football_field_owner.adapter.CustomAdapterFootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.google.firebase.database.ChildEventListener;
@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class ListOfYardFragment extends Fragment {
+public class SetListOfYardFragment extends Fragment {
     ListView lvFootballPitches;
     ArrayList<FootballPitches> data_FootballPitches;
     ArrayAdapter adapter_FootballPitches;
@@ -52,7 +52,7 @@ public class ListOfYardFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 FootballPitches footballPitches = data_FootballPitches.get(i);
                 String key = footballPitches.getId();
-                Intent intent = new Intent(getContext(), FootballPitchesActivity.class);
+                Intent intent = new Intent(getContext(), SetFootballPitchesActivity.class);
                 intent.putExtra("key", key);
                 startActivity(intent);
             }

@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.Set_Foothball_Pitches.model;
+package com.example.soccersocialnetwork.Set_Football_Pitches.model;
 
 public class FootballPitches {
     String tenSan, loaiHinhSan, LoaiSan, giaBT, giaCD, id;
