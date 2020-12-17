@@ -1,16 +1,10 @@
 package com.example.soccersocialnetwork;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -24,6 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.TranDuyHuynh.home_layout;
 import com.example.soccersocialnetwork.data_models.Users;
@@ -225,6 +224,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         alert.show();
+        onBackPressed();
     }
 
     //hiển thị dialog signup 2
@@ -415,5 +415,26 @@ public class LoginActivity extends AppCompatActivity {
     public void initPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         editor = sharedPreferences.edit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(" Thoát ứng dụng");
+        builder.setMessage("Bạn muốn thoát ứng dụng ?");
+        builder.setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.show();
     }
 }

@@ -180,14 +180,8 @@ public class menu_flagment extends Fragment {
                 startActivity(intent);
                 Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                onDetach();
             }
         });
         dialog.show();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

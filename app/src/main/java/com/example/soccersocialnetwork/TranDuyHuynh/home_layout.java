@@ -3,9 +3,11 @@
 // Trần Duy Huynh
 package com.example.soccersocialnetwork.TranDuyHuynh;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -46,7 +48,6 @@ public class home_layout extends AppCompatActivity {
 
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
-
         // khởi tạo các flagment
         home_flagment = new home_flagment();
         team_flagment = new team_flagment();
@@ -57,6 +58,34 @@ public class home_layout extends AppCompatActivity {
         // tạo tab yêu cầu cho từng trang, khi người dùng click vào 1 tab thì thay đổi các viewpage và hiển thị theo yêu cầu
         tabLayout.setupWithViewPager(viewPager);
         getViewPagerAdapter();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0 ){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(" Thoát ứng dụng");
+            builder.setMessage("Bạn muốn thoát ứng dụng ?");
+            builder.setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            builder.show();
+
+        }
+        else {
+            viewPager.setCurrentItem(0);
+        }
     }
 
     private void getViewPagerAdapter(){
@@ -75,9 +104,6 @@ public class home_layout extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(R.drawable.icon_stadium);
         tabLayout.getTabAt(3).setIcon(R.drawable.icon_notification);
         tabLayout.getTabAt(4).setIcon(R.drawable.icon_menu);
-//        BadgeDrawable badgeDrawable = tabLayout.getTabAt(3).getOrCreateBadge();
-//        badgeDrawable.setVisible(true);
-//        badgeDrawable.setNumber(0);
 
     }
 
