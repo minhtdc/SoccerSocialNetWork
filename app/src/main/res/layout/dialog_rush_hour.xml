@@ -16,12 +16,37 @@
             android:layout_height="wrap_content"
             android:text="Bắt đầu:" />
 
+<<<<<<< HEAD
         <TextView
             android:id="@+id/tvGioBD"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="00:00" />
+=======
+        <Spinner
+            android:id="@+id/spnGioBD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:text=":" />
+
+        <Spinner
+            android:id="@+id/spnPhutBD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textAlignment="center" />
+
+
+>>>>>>> origin/Minh-Nguyễn
     </LinearLayout>
 
     <LinearLayout
@@ -34,11 +59,34 @@
             android:layout_height="wrap_content"
             android:text="Kết thúc" />
 
+<<<<<<< HEAD
         <TextView
             android:id="@+id/tvGioKT"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="00:00" />
+=======
+        <Spinner
+            android:id="@+id/spnGioKT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:text=":" />
+
+        <Spinner
+            android:id="@+id/spnPhutKT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textAlignment="center" />
+>>>>>>> origin/Minh-Nguyễn
     </LinearLayout>
 </LinearLayout>

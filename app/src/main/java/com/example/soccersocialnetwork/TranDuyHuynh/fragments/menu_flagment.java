@@ -7,6 +7,11 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,6 +24,17 @@ import android.widget.Toast;
 
 import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
 import com.example.soccersocialnetwork.R;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.soccersocialnetwork.LoginActivity;
+import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.example.soccersocialnetwork.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +46,11 @@ public class menu_flagment extends Fragment {
     LinearLayout lnUser;
     ImageView imageView_icHelps, imageView_Setting, imageView_user;
     LinearLayout ln_choose_Helps, ln_choose_Settings,lnDangXuat;
+    Dialog dialog;
+    LinearLayout lnUser;
+    ImageView imageView_icHelps, imageView_Setting, imageView_user;
+    LinearLayout ln_choose_Helps, ln_choose_Settings, lnDangXuat;
+    TextView name_user_menu;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -86,6 +107,14 @@ public class menu_flagment extends Fragment {
         imageView_user = rootView.findViewById(R.id.img_user_menu);
         lnUser = rootView.findViewById(R.id.ln_user);
         lnDangXuat = rootView.findViewById(R.id.lnDangXuat);
+        name_user_menu = rootView.findViewById(R.id.name_user_menu);
+
+        //set ảnh đại diện
+        //imageView_user.setImageResource(R.drawable.img_team5);
+
+        //set tên người dùng
+        name_user_menu.setText(LoginActivity.USER_NAME_CURRENT);
+
 
         // click vào img down của button  trợ giúp sẽ hiện thị các item chức năng trợ giúp
         imageView_icHelps.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +162,7 @@ public class menu_flagment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(),edit_profile_user.class);
+                Intent intent = new Intent(getContext(), edit_profile_user.class);
                 startActivity(intent);
             }
         });
@@ -148,7 +178,7 @@ public class menu_flagment extends Fragment {
         return rootView;
     }
 
-    public void showDialog_DangXuat(){
+    public void showDialog_DangXuat() {
         dialog = new Dialog(getContext());
         dialog.setTitle("Đăng xuất");
         dialog.setCancelable(true); // khi bấm ra ngoài dialog thì dialog sẽ tự tắt đi
@@ -165,6 +195,12 @@ public class menu_flagment extends Fragment {
         btnDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LoginActivity.fAuth.signOut();
+                LoginActivity.editor.clear();
+                LoginActivity.editor.commit();
+                LoginActivity.IS_LOGIN = false;
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
                 Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }

@@ -1,21 +1,12 @@
-package com.example.soccersocialnetwork.football_field_owner.model;
+package com.example.soccersocialnetwork.Set_Foothball_Pitches.model;
 
 public class Zone {
-<<<<<<< HEAD
-    String tenKhu, anh, thanhPho, quan, diaChi, pushId;
-    int gioMo, phutMo, gioDong, phutDong;
-=======
     String tenKhu, anh, thanhPho, quan, diaChi, gioMo, phutMo, gioDong, phutDong, pushId;;
->>>>>>> origin/Minh-Nguyễn
 
     public Zone() {
     }
 
-<<<<<<< HEAD
-    public Zone(String tenKhu, String anh, String thanhPho, String quan, String diaChi, int gioMo, int phutMo, int gioDong, int phutDong, String pushId) {
-=======
     public Zone(String tenKhu, String anh, String thanhPho, String quan, String diaChi, String gioMo, String phutMo, String gioDong, String phutDong, String pushId) {
->>>>>>> origin/Minh-Nguyễn
         this.tenKhu = tenKhu;
         this.anh = anh;
         this.thanhPho = thanhPho;
@@ -76,37 +67,6 @@ public class Zone {
         this.diaChi = diaChi;
     }
 
-<<<<<<< HEAD
-    public int getGioMo() {
-        return gioMo;
-    }
-
-    public void setGioMo(int gioMo) {
-        this.gioMo = gioMo;
-    }
-
-    public int getPhutMo() {
-        return phutMo;
-    }
-
-    public void setPhutMo(int phutMo) {
-        this.phutMo = phutMo;
-    }
-
-    public int getGioDong() {
-        return gioDong;
-    }
-
-    public void setGioDong(int gioDong) {
-        this.gioDong = gioDong;
-    }
-
-    public int getPhutDong() {
-        return phutDong;
-    }
-
-    public void setPhutDong(int phutDong) {
-=======
     public String getGioMo() {
         return gioMo;
     }
@@ -136,7 +96,6 @@ public class Zone {
     }
 
     public void setPhutDong(String phutDong) {
->>>>>>> origin/Minh-Nguyễn
         this.phutDong = phutDong;
     }
 

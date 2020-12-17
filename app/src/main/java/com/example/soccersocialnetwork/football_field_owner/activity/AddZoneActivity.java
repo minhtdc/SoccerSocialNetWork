@@ -49,18 +49,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AddZoneActivity extends AppCompatActivity {
     private static final String TAG = AddZoneActivity.class.getSimpleName();
     EditText txtTenKhu, txtDiaChi;
     Spinner spnTP, spnQuan;
     TextView tvGioMo, tvGioDong;
+    Spinner spnTP, spnQuan, spnGioMo, spnPhutMo, spnGioDong, spnPhutDong;
     ImageView imgAnh;
     Button btnThem;
     ArrayList<City> data_tp = new ArrayList<>();
     ArrayList<String> data_quan = new ArrayList<>();
     ArrayAdapter adapter_tp, adapter_quan;
     int gioMo, phutMo, gioDong, phutDong;
+    ArrayList<String> data_gio = new ArrayList<>();
+    ArrayList<String> data_phut = new ArrayList<>();
+    ArrayAdapter adapter_tp, adapter_quan, adapter_gio, adapter_phut;
     //    FirebaseDatabase database = FirebaseDatabase.getInstance();
     final int REQUEST_CODE_IMAGE = 999;
     DatabaseReference mFirebaseDatabase;
@@ -85,6 +91,10 @@ public class AddZoneActivity extends AppCompatActivity {
         KhoiTao();
         data_tp = dataBaseHelper.getAllCity();
         setAdapterSpinner(data_tp, adapter_tp, spnTP);
+        setAdapterSpinner(data_gio, adapter_gio, spnGioMo);
+        setAdapterSpinner(data_gio, adapter_phut, spnGioDong);
+        setAdapterSpinner(data_phut, adapter_gio, spnPhutMo);
+        setAdapterSpinner(data_phut, adapter_phut, spnPhutDong);
         spnTP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -259,6 +269,10 @@ public class AddZoneActivity extends AppCompatActivity {
         zone.setGioDong(phutMo);
         zone.setPhutMo(gioDong);
         zone.setPhutDong(phutDong);
+        zone.setGioMo(spnGioMo.getSelectedItem().toString());
+        zone.setGioDong(spnPhutMo.getSelectedItem().toString());
+        zone.setPhutMo(spnGioDong.getSelectedItem().toString());
+        zone.setPhutDong(spnPhutDong.getSelectedItem().toString());
         zone.setAnh(url);
         zone.setPushId(id);
         return zone;
@@ -282,11 +296,27 @@ public class AddZoneActivity extends AppCompatActivity {
         spnQuan = findViewById(R.id.spnQuan);
         tvGioMo = findViewById(R.id.tvGioMo);
         tvGioDong = findViewById(R.id.tvGioDong);
+        spnGioMo = findViewById(R.id.spnGioMo);
+        spnPhutMo = findViewById(R.id.spnPhutMo);
+        spnGioDong = findViewById(R.id.spnGioDong);
+        spnPhutDong = findViewById(R.id.spnPhutDong);
         imgAnh = findViewById(R.id.imgAnhKhu);
         btnThem = findViewById(R.id.btnThem);
 
     }
 
     void KhoiTao() {
+        String a,b;
+        for (int i = 1; i < 25; i++) {
+            if(i<10){
+                a = String.valueOf(i);
+                b = "0" + a;
+            }else {
+                b = String.valueOf(i);
+            }
+            data_gio.add(b);
+        }
+        data_phut.add("00");
+        data_phut.add("30");
     }
 }

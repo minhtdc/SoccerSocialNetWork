@@ -40,12 +40,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 
 public class AddFootballPitchesFragment extends Fragment {
     View view;
     EditText txtTenSan, txtGiaGioCD, txtGiaGioBT;
     Spinner spLoaiSan, spLoaiHinhSan;
     TextView tvGioBD, tvGioKT;
+    Spinner spnGioBD, spnPhutBD, spnGioKT, spnPhutKT;
     ListView lvDSGioCD;
     Button btnGioCD, btnThemSan;
     DatabaseReference mFirebase;
@@ -56,6 +58,13 @@ public class AddFootballPitchesFragment extends Fragment {
     ArrayList<RushHour> data_rh = new ArrayList<>();
     ArrayList<String> data_ls;
     ArrayList<String> data_lhs;
+    ArrayList<RushHour> data_rh = new ArrayList<>();
+    ArrayList<String> data_ls = new ArrayList<>();
+    ArrayList<String> data_lhs = new ArrayList<>();
+    ArrayList<String> data_gio = new ArrayList<>();
+    ArrayList<String> data_phut = new ArrayList<>();
+    ArrayAdapter adapter_gioCD;
+    ArrayAdapter adapter_phutCD;
     ArrayAdapter adapter_lvCD;
     ArrayAdapter adapter;
 
@@ -124,6 +133,19 @@ public class AddFootballPitchesFragment extends Fragment {
         tvGioKT = alertLayout.findViewById(R.id.tvGioKT);
         //khởi tạo dữ liệu
         KhoiTao();
+        spnGioBD = alertLayout.findViewById(R.id.spnGioBD);
+        spnPhutBD = alertLayout.findViewById(R.id.spnPhutBD);
+        spnGioKT = alertLayout.findViewById(R.id.spnGioKT);
+        spnPhutKT = alertLayout.findViewById(R.id.spnPhutKT);
+        //khởi tạo dữ liệu
+        KhoiTao();
+        //set adapter
+        adapter_gioCD = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data_gio);
+        spnGioBD.setAdapter(adapter_gioCD);
+        spnGioKT.setAdapter(adapter_gioCD);
+        adapter_phutCD = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data_phut);
+        spnPhutBD.setAdapter(adapter_phutCD);
+        spnPhutKT.setAdapter(adapter_phutCD);
         //set title dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle("Giờ Cao Điểm");
@@ -204,6 +226,9 @@ public class AddFootballPitchesFragment extends Fragment {
                 if (adapter_lvCD == null) {
                     adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, data_rh);
                     lvDSGioCD.setAdapter(adapter_lvCD);
+                    adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1,data_rh);
+                    lvDSGioCD.setAdapter(adapter_lvCD);
+                    adapter_gioCD.notifyDataSetChanged();
                 } else {
                     adapter_lvCD.notifyDataSetChanged();
                     lvDSGioCD.setSelection(adapter_lvCD.getCount() - 1);
@@ -220,6 +245,10 @@ public class AddFootballPitchesFragment extends Fragment {
         rushHour.setPhutBD(phutBD);
         rushHour.setGioKT(gioKT);
         rushHour.setPhutKT(phutKT);
+        rushHour.setGioBD(spnGioBD.getSelectedItem().toString());
+        rushHour.setPhutBD(spnPhutBD.getSelectedItem().toString());
+        rushHour.setGioKT(spnGioKT.getSelectedItem().toString());
+        rushHour.setPhutKT(spnPhutKT.getSelectedItem().toString());
         rushHour.setId(idHour);
         return rushHour;
     }
@@ -253,6 +282,18 @@ public class AddFootballPitchesFragment extends Fragment {
         data_lhs.add("5 người");
         data_lhs.add("7 người");
         data_lhs.add("9 người");
+        String a, b;
+        for (int i = 1; i < 25; i++) {
+            if (i < 10) {
+                a = String.valueOf(i);
+                b = "0" + a;
+            } else {
+                b = String.valueOf(i);
+            }
+            data_gio.add(b);
+        }
+        data_phut.add("00");
+        data_phut.add("30");
     }
 
     private void setControl() {
