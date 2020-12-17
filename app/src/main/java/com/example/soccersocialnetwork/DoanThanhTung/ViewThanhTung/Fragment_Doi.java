@@ -3,11 +3,13 @@ package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -53,7 +56,7 @@ public class Fragment_Doi extends Fragment {
 
     RecyclerView recyclerView;
     ImageView imgDangBai;
-    TextView tvTrangThai;
+    TextView tvTrangThai,tvChuaCoBai;
 
     TextView tvGioStart;
     TextView tvGioEnd;
@@ -78,13 +81,17 @@ public class Fragment_Doi extends Fragment {
         recyclerView = rootView.findViewById(R.id.rcv_Feed);
         imgDangBai = rootView.findViewById(R.id.imgDangBai);
         tvTrangThai = rootView.findViewById(R.id.tvTrangThai);
+        tvChuaCoBai = rootView.findViewById(R.id.tvChuaCoBai);
 
         // tvTime = rootView.findViewById(R.id.tvTime);
 
 //        imgDangBai.setVisibility(View.GONE);
-//        tvTrangThai.setVisibility(View.GONE);
-        readFirebaseDangBai();
+       // tvTrangThai.setVisibility(View.GONE);
         idDoi = getArguments().getString("Doi_ID");
+
+
+        readFirebaseDangBai();
+
         setEvent();
 
         return rootView;
@@ -206,21 +213,26 @@ public class Fragment_Doi extends Fragment {
                 datePickerDialog.show();
             }
         });
+        final ProgressDialog progreDiaglog = new ProgressDialog(getActivity());
+
         btnDangBai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Xác nhận đăng bài");
                 builder.setMessage("Bạn có muốn đăng bài này lên ?");
+
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         insertFirebaseDangBai(getFeeds());
 
-
-                        timePickerDialogGioStart.dismiss();
-                        dialog.dismiss();
                         dialogFullScreen.dismiss();
+
+                        readFirebaseDangBai();
+
                     }
                 });
                 builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -269,7 +281,11 @@ public class Fragment_Doi extends Fragment {
     ArrayList<Feeds> listFirebaseDangBai = new ArrayList<>();
 
     public void readFirebaseDangBai() {
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Feeds").child("10");
+//        final ProgressDialog progreDiaglog = new ProgressDialog(getActivity());
+//        progreDiaglog.setTitle("Tải dữ liệu");
+//        progreDiaglog.setMessage("Đang tải dữ liệu");
+//        progreDiaglog.show();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Feeds").child(idDoi);
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -287,7 +303,15 @@ public class Fragment_Doi extends Fragment {
                     feeds.setHanGio(1);
                     listFirebaseDangBai.add(feeds);
 
+
+
                 }
+                if(listFirebaseDangBai.size() == 0){
+                    tvChuaCoBai.setVisibility(View.VISIBLE);
+                }else{
+                    tvChuaCoBai.setVisibility(View.GONE);
+                }
+
                 adapter2 = new Adapter_FeedsDoi2(getContext(),listFirebaseDangBai);
                 recyclerView.setAdapter(adapter2);
                 adapter2.notifyDataSetChanged();
@@ -312,25 +336,24 @@ public class Fragment_Doi extends Fragment {
 ////        adapterFeedsDoi = new Adapter_FeedsDoi(getContext());
 ////        adapterFeedsDoi.setData(listFeeds);
 //        recyclerView.setAdapter(adapter2);
-        tvTrangThai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                readFirebaseDangBai();
-            }
-        });
+
         imgDangBai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                fullscreenDialog();
+               fullscreenDialog();
             }
         });
-
-
-//
-
     }
 
+    private ProgressDialog progressDialogLoading(){
+        final ProgressDialog progreDiaglog = new ProgressDialog(getActivity());
+        progreDiaglog.setTitle("Tải dữ liệu");
+        progreDiaglog.setMessage("Đang tải dữ liệu");
+        progreDiaglog.show();
+        return progreDiaglog;
+
+    }
 
     private void setControl() {
 
