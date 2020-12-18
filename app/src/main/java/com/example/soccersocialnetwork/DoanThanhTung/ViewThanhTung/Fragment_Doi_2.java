@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.R;
 

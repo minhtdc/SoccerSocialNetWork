@@ -218,9 +218,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/btn_shape_login"
-
-
-
                 android:text="Tạo Đội"></Button>
         </LinearLayout>
     </ScrollView>

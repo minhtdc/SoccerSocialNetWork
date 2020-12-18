@@ -95,7 +95,8 @@ public class menu_flagment extends Fragment {
         name_user_menu = rootView.findViewById(R.id.name_user_menu);
 
         //set ảnh đại diện
-        //imageView_user.setImageResource(R.drawable.img_team5);
+        //imageView_user.setImageResource(R.drawable.img_team5)
+
 
         //set tên người dùng
         name_user_menu.setText(LoginActivity.USER_NAME_CURRENT);
@@ -184,6 +185,7 @@ public class menu_flagment extends Fragment {
                 LoginActivity.editor.commit();
                 LoginActivity.IS_LOGIN = false;
                 Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

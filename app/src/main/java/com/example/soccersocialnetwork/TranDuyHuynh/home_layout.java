@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.home_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.menu_flagment;
@@ -22,6 +23,11 @@ import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +65,21 @@ public class home_layout extends AppCompatActivity {
         // tạo tab yêu cầu cho từng trang, khi người dùng click vào 1 tab thì thay đổi các viewpage và hiển thị theo yêu cầu
         tabLayout.setupWithViewPager(viewPager);
         getViewPagerAdapter();
+
+        //lấy tên người dùng
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(String.format("/users/%s/userName", LoginActivity.USER_ID_CURRENT));
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                LoginActivity.USER_NAME_CURRENT = snapshot.getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void getViewPagerAdapter(){

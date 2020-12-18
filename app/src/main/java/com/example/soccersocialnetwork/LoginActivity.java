@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView txtFogetPassword, txtLogo;
     ImageView imgLogo;
     EditText edtLoginEmail, edtLoginPassword;
-    public static FirebaseAuth fAuth;
+    public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
     Users user = new Users();
     public static String USER_ID_CURRENT;
     public static String USER_NAME_CURRENT;
@@ -77,8 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         //kiểm tra trạng thái đăng nhập
         initPreferences();
         if (sharedPreferences.getBoolean("IS_LOGIN", IS_LOGIN) == true) {
-            USER_ID_CURRENT = sharedPreferences.getString("USER_ID_CURRENT", "");
-            USER_NAME_CURRENT = sharedPreferences.getString("USER_NAME_CURRENT", "");
+            USER_ID_CURRENT = sharedPreferences.getString("USER_ID_CURRENT", USER_ID_CURRENT);
+            USER_NAME_CURRENT = sharedPreferences.getString("USER_NAME_CURRENT", USER_NAME_CURRENT);
             Toast.makeText(LoginActivity.this, "Wellcome back " + USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, home_layout.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userName = edtLoginEmail.getText().toString();
                 String userPass = edtLoginPassword.getText().toString();
-                fAuth = FirebaseAuth.getInstance();
                 if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
                     fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -116,32 +115,15 @@ public class LoginActivity extends AppCompatActivity {
                                 //lấy thông tin người dùng
                                 USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
                                 IS_LOGIN = true;
-
-                                //lấy tên người dùng
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference(String.format("/users/%s/userName", LoginActivity.USER_ID_CURRENT));
-                                myRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        USER_NAME_CURRENT = snapshot.getValue().toString();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-
                                 editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
                                 editor.putBoolean("IS_LOGIN", IS_LOGIN);
-//                                editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
+//                              editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
                                 editor.commit();
-                                Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, home_layout.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(intent);
                                 finish();
-
 
                             } else {
                                 Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();

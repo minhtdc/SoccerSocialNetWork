@@ -22,6 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -323,6 +327,28 @@ public class Fragment_Doi extends Fragment {
             }
         });
     }
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
+import com.example.soccersocialnetwork.R;
+
+import java.util.ArrayList;
+
+public class Fragment_Doi extends Fragment {
+
+    RecyclerView recyclerView;
+
+    ArrayList<Feeds> listFeeds = new ArrayList<>();
+    Adapter_FeedsDoi adapterFeedsDoi;
+
+
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = (ViewGroup) inflater.inflate((R.layout.doi_feeds_2), container, false);
+        recyclerView = rootView.findViewById(R.id.recyclerView);
+
+        setEvent();
+        return  rootView;
+    }
+
 
     private void setEvent() {
 

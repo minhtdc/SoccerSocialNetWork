@@ -191,12 +191,11 @@ public class DoiActivity extends AppCompatActivity {
         fragment_doi.setArguments(bundle_Doi);
         adapter.addFragment(fragment_doi, "");
 
-
-
+        adapter.addFragment(new Fragment_Doi(), "");
         adapter.addFragment(new Fragment_Doi_2(), "");
 
         //chuyền dữ liệu qua fragment
-        Fragment_Doi_Menu fragment_doi_menu = new Fragment_Doi_Menu();
+        Fragment_Doi_Menu fragment_doi = new Fragment_Doi_Menu();
 
 
         Bundle bundle_menu = new Bundle();
@@ -213,6 +212,9 @@ public class DoiActivity extends AppCompatActivity {
         fragment_doi_menu.setArguments(bundle_menu);
 //
         adapter.addFragment(fragment_doi_menu, "");
+        fragment_doi.setArguments(bundle_menu);
+
+        adapter.addFragment(fragment_doi, "");
 
         viewPager.setAdapter(adapter);
 
