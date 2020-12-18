@@ -144,8 +144,6 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
                         tvSloganThongTinDoi.setText(team.getsLogan());
                         break;
                     }
-
-
                     // Toast.makeText(DoiActivity.this, listTeam.size() + "", Toast.LENGTH_SHORT).show();
                 }
             }

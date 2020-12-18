@@ -17,6 +17,15 @@ public class Team {
     public String sLogan;
     public String hinhAnh;
     public String khuVuc;
+    public String idDoiTruong;
+    public String getIdDoiTruong() {
+        return idDoiTruong;
+    }
+
+    public void setIdDoiTruong(String idDoiTruong) {
+        this.idDoiTruong = idDoiTruong;
+    }
+
 
 
 
@@ -94,7 +103,7 @@ public class Team {
         this.hinhAnh = hinhAnh;
     }
 
-    public Team(int idDoi, String tenDoi, String email, String sdt, String gioiThieu, String tieuChi, String sLogan, String hinhAnh, String khuVuc) {
+    public Team(int idDoi, String tenDoi, String email, String sdt, String gioiThieu, String tieuChi, String sLogan, String hinhAnh, String khuVuc,String idDoiTruong) {
         this.idDoi = idDoi;
         this.tenDoi = tenDoi;
         this.email = email;
@@ -104,6 +113,7 @@ public class Team {
         this.sLogan = sLogan;
         this.hinhAnh = hinhAnh;
         this.khuVuc = khuVuc;
+        this.idDoiTruong = idDoiTruong;
     }
 
     @Override

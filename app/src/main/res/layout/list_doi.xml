@@ -12,6 +12,7 @@
         android:layout_height="50dp"
         android:layout_weight="1"></ImageView>
 
+
     <LinearLayout
 
         android:paddingLeft="20dp"
@@ -47,7 +48,7 @@
             <TextView
                 android:id="@+id/txtThongTinKhuVuc_lstTeams"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:textColor="@color/colorBlack">
 
