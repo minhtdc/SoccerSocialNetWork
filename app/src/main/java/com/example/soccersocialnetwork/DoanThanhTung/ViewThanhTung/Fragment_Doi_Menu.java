@@ -40,13 +40,14 @@ public class Fragment_Doi_Menu extends Fragment {
     ArrayList<Team> listTeam = new ArrayList<>();
 
 
-    LinearLayout llThongTinDoi, llThemThanhVien;
+    LinearLayout llThongTinDoi, llThemThanhVien,llThanhVien;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = (ViewGroup) inflater.inflate((R.layout.doi_menu_1), container, false);
         llThongTinDoi = rootView.findViewById(R.id.llThongTinDoi);
         llThemThanhVien = rootView.findViewById(R.id.llThemThanhVien);
+        llThanhVien = rootView.findViewById(R.id.llThanhVien);
 
         //lay id bên trang chủ của đội
         idDoi = getArguments().getString("Doi_ID");
@@ -95,10 +96,22 @@ public class Fragment_Doi_Menu extends Fragment {
             }
         });
 
+        llThanhVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
+    private void dialogFullScreenThanhVien(){
+        final Dialog dialogFullScreen = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialogFullScreen.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
 
+
+        dialogFullScreen.show();
+    }
     private void dialogThemThanh() {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

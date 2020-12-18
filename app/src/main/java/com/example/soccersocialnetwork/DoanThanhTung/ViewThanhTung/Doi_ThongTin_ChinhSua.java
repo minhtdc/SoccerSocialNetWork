@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -179,7 +180,7 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
             team.setHinhAnh(uriIMGBase);
         }
 
-
+        team.setIdDoiTruong(LoginActivity.USER_ID_CURRENT);
         return team;
     }
 

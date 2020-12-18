@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi2;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.slider.Slider;
@@ -94,7 +95,7 @@ public class Fragment_Doi extends Fragment {
         idDoi = getArguments().getString("Doi_ID");
 
 
-        readFirebaseDangBai();
+       readFirebaseDangBai();
 
         setEvent();
 
@@ -217,7 +218,6 @@ public class Fragment_Doi extends Fragment {
                 datePickerDialog.show();
             }
         });
-        final ProgressDialog progreDiaglog = new ProgressDialog(getActivity());
 
         btnDangBai.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,11 +231,12 @@ public class Fragment_Doi extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+
                         insertFirebaseDangBai(getFeeds());
 
                         dialogFullScreen.dismiss();
 
-                        readFirebaseDangBai();
+
 
                     }
                 });
@@ -257,15 +258,25 @@ public class Fragment_Doi extends Fragment {
             }
         });
         //them adapter hinh anh
+
         dialogFullScreen.show();
     }
 
     public void insertFirebaseDangBai(Feeds feeds) {
-        mDatabase = FirebaseDatabase.getInstance().getReference("Feeds").child(idDoi);
-
+        final ProgressDialog progreDiaglogLoadding = new ProgressDialog(getContext());
+        progreDiaglogLoadding.setTitle("Tải dữ liệu lên trang chủ");
+        progreDiaglogLoadding.setMessage("Đang tải dữ liệu");
+        progreDiaglogLoadding.show();
+      //  mDatabase = FirebaseDatabase.getInstance().getReference("Feeds").child(idDoi);
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("listFeeds");
         listFeedTest.add(feeds);
 
-        mDatabase.setValue(listFeedTest);
+        mDatabase.setValue(listFeedTest).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                progreDiaglogLoadding.dismiss();
+            }
+        });
     }
 
     public Feeds getFeeds() {
@@ -289,8 +300,9 @@ public class Fragment_Doi extends Fragment {
 //        progreDiaglog.setTitle("Tải dữ liệu");
 //        progreDiaglog.setMessage("Đang tải dữ liệu");
 //        progreDiaglog.show();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Feeds").child(idDoi);
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Team").child(idDoi).child("listFeeds");
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listFirebaseDangBai.clear();
@@ -306,12 +318,10 @@ public class Fragment_Doi extends Fragment {
                     feeds.setGio(data.get("gio") +"");
                     feeds.setHanGio(1);
                     listFirebaseDangBai.add(feeds);
-
-
-
                 }
                 if(listFirebaseDangBai.size() == 0){
                     tvChuaCoBai.setVisibility(View.VISIBLE);
+
                 }else{
                     tvChuaCoBai.setVisibility(View.GONE);
                 }
@@ -356,7 +366,7 @@ public class Fragment_Doi extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         // adapter2 = new Adapter_FeedsDoi2(getContext(),listFeeds);
         //  adapterFeedsDoi.setSetLayout(false);
-        listFeeds.clear();
+        //listFeeds.clear();
 //        ThemBaiVietDaBong();
 //        adapter2 = new Adapter_FeedsDoi2(getContext(), listFeeds);
 ////        adapterFeedsDoi = new Adapter_FeedsDoi(getContext());
@@ -368,6 +378,12 @@ public class Fragment_Doi extends Fragment {
             public void onClick(View v) {
 
                fullscreenDialog();
+            }
+        });
+        tvTrangThai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), LoginActivity.USER_ID_CURRENT+"", Toast.LENGTH_SHORT).show();
             }
         });
     }
