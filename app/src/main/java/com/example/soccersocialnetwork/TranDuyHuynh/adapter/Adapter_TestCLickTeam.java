@@ -1,13 +1,17 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.ListTeamUser;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Doi_ThongTinCaNhan;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.google.firebase.database.DataSnapshot;
@@ -56,6 +63,7 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
     static class Holder {
         ImageView imageView;
         TextView txtTenDoi, txtKhuVuc, txtThongtinGioiHieu, txtNgay;
+        LinearLayout llDanhSachDoi;
 //
 //
 ////        TextView tv_DangBai;
@@ -75,6 +83,7 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
             holder.txtTenDoi = view.findViewById(R.id.txtTendoi_list_teams);
             holder.txtKhuVuc = view.findViewById(R.id.txtThongTinKhuVuc_lstTeams);
             holder.txtThongtinGioiHieu = view.findViewById(R.id.txtThongTinGioiThieu_lstTeams);
+            holder.llDanhSachDoi = view.findViewById(R.id.llDanhSachDoi);
            // holder.txtNgay = view.findViewById(R.id.tv_Gio);
 
             view.setTag(holder);
@@ -85,28 +94,34 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
 
         readuser(team.idDoi+"");
 
-
         Picasso.get().load(team.getHinhAnh()).into(holder.imageView);
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for(int i = 0; i<listTeamUsers.size();i++){
-                    if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i)) ){
-                        Toast.makeText(context, "win", Toast.LENGTH_SHORT).show();
-                        break;
-                    }else{
-
-                    Toast.makeText(context, "thua", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-
-
-            }
-        });
         holder.txtTenDoi.setText(team.getTenDoi());
         holder.txtKhuVuc.setText(team.getKhuVuc());
         holder.txtThongtinGioiHieu.setText(team.getGioiThieu());
+        holder.llDanhSachDoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for(int i = 0; i<listTeamUsers.size();i++){
+                    if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i)) ){
+                        Intent intent = new Intent(getContext(), DoiActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("TaoDoi_IDDoi",team.idDoi+"");
+                        intent.putExtras(bundle);
+
+                        context.startActivity(intent);
+                        break;
+                    }else{
+                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Doi_ID",team.idDoi+"");
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                        break;
+                    }
+                }
+            }
+        });
 //        holder.imgDoiAdapter.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -118,6 +133,7 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
 
     ArrayList<String> listTeamUsers = new ArrayList<>();
     public void readuser(String key){
+
        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
        mDatabase.addValueEventListener(new ValueEventListener() {
            @Override
@@ -127,8 +143,8 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
                     snapshot.getChildren()) {
                    listTeamUsers.add(dt.getKey());
                }
-           }
 
+           }
            @Override
            public void onCancelled(@NonNull DatabaseError error) {
 

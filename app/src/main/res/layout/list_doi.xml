@@ -5,7 +5,8 @@
     android:background="@drawable/bg_listview_doi_tim_tran"
     android:gravity="center"
     android:padding="10dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/llDanhSachDoi">
     <ImageView
         android:id="@+id/imgLogo_Teams_list_teams"
         android:layout_width="50dp"

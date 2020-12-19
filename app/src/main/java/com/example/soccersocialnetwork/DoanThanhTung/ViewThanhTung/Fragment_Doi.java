@@ -22,10 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,11 +87,11 @@ public class Fragment_Doi extends Fragment {
         // tvTime = rootView.findViewById(R.id.tvTime);
 
 //        imgDangBai.setVisibility(View.GONE);
-       // tvTrangThai.setVisibility(View.GONE);
+        // tvTrangThai.setVisibility(View.GONE);
         idDoi = getArguments().getString("Doi_ID");
 
 
-       readFirebaseDangBai();
+        readFirebaseDangBai();
 
         setEvent();
 
@@ -127,7 +123,7 @@ public class Fragment_Doi extends Fragment {
         spQuan = dialogFullScreen.findViewById(R.id.spQuan);
         btnBackTeam = dialogFullScreen.findViewById(R.id.btnBackTeam);
 
-       // btnDangBai.setVisibility(View.INVISIBLE);
+        // btnDangBai.setVisibility(View.INVISIBLE);
         final Calendar calendar = Calendar.getInstance();
         final int ihours = calendar.get(Calendar.HOUR);
         final int iminute = calendar.get(Calendar.MINUTE);
@@ -267,7 +263,7 @@ public class Fragment_Doi extends Fragment {
         progreDiaglogLoadding.setTitle("Tải dữ liệu lên trang chủ");
         progreDiaglogLoadding.setMessage("Đang tải dữ liệu");
         progreDiaglogLoadding.show();
-      //  mDatabase = FirebaseDatabase.getInstance().getReference("Feeds").child(idDoi);
+        //  mDatabase = FirebaseDatabase.getInstance().getReference("Feeds").child(idDoi);
         mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("listFeeds");
         listFeedTest.add(feeds);
 
@@ -337,28 +333,6 @@ public class Fragment_Doi extends Fragment {
             }
         });
     }
-import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi;
-import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
-import com.example.soccersocialnetwork.R;
-
-import java.util.ArrayList;
-
-public class Fragment_Doi extends Fragment {
-
-    RecyclerView recyclerView;
-
-    ArrayList<Feeds> listFeeds = new ArrayList<>();
-    Adapter_FeedsDoi adapterFeedsDoi;
-
-
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = (ViewGroup) inflater.inflate((R.layout.doi_feeds_2), container, false);
-        recyclerView = rootView.findViewById(R.id.recyclerView);
-
-        setEvent();
-        return  rootView;
-    }
-
 
     private void setEvent() {
 
@@ -377,7 +351,7 @@ public class Fragment_Doi extends Fragment {
             @Override
             public void onClick(View v) {
 
-               fullscreenDialog();
+                fullscreenDialog();
             }
         });
         tvTrangThai.setOnClickListener(new View.OnClickListener() {
