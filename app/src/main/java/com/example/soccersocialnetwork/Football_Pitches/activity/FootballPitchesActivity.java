@@ -27,7 +27,6 @@ public class FootballPitchesActivity extends AppCompatActivity {
         setControl();
         Intent intent = getIntent();
         key = intent.getStringExtra("key");
-
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
         setIcon();

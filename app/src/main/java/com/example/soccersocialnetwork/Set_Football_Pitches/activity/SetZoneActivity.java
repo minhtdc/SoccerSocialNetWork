@@ -3,6 +3,7 @@ package com.example.soccersocialnetwork.Set_Football_Pitches.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.soccersocialnetwork.R;
@@ -14,14 +15,21 @@ import com.google.android.material.tabs.TabLayout;
 public class SetZoneActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    String idKhu = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zone_info);
         setControl();
         setupViewPager();
+        Intent intent = getIntent();
+        idKhu = intent.getStringExtra("idKhu");
         tabLayout.setupWithViewPager(viewPager);
         setIcon();
+    }
+
+    public String getIdKhu() {
+        return idKhu;
     }
 
     private void setControl() {

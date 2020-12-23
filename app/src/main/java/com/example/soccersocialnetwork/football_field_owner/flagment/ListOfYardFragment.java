@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import com.example.soccersocialnetwork.Football_Pitches.activity.FootballPitchesActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
+import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
 import com.example.soccersocialnetwork.football_field_owner.adapter.CustomAdapterFootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.google.firebase.database.ChildEventListener;
@@ -31,6 +33,8 @@ public class ListOfYardFragment extends Fragment {
     ArrayList<FootballPitches> data_FootballPitches;
     ArrayAdapter adapter_FootballPitches;
     DatabaseReference mFirebaseDatabase;
+    String idKhu ;
+    public static String idSan;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +43,7 @@ public class ListOfYardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_of_yard, container, false);
         lvFootballPitches = view.findViewById(R.id.lvFootballPitches);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        idKhu = ListZone.idKhu;
         setEvent();
         return view;
     }
@@ -51,9 +56,9 @@ public class ListOfYardFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 FootballPitches footballPitches = data_FootballPitches.get(i);
-                String key = footballPitches.getId();
+                idSan = footballPitches.getId();
                 Intent intent = new Intent(getContext(), FootballPitchesActivity.class);
-                intent.putExtra("key", key);
+
                 startActivity(intent);
             }
         });
@@ -66,10 +71,12 @@ public class ListOfYardFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
                 FootballPitches footballPitches = snapshot.getValue(FootballPitches.class);
-                data_FootballPitches.add(new FootballPitches(footballPitches.getTenSan(),
-                        footballPitches.getLoaiHinhSan(), footballPitches.getLoaiSan(),
-                        footballPitches.getGiaBT(), footballPitches.getGiaCD(), footballPitches.getId()));
-                adapter_FootballPitches.notifyDataSetChanged();
+                if (footballPitches.getIdKhu().equals(idKhu)) {
+                    data_FootballPitches.add(new FootballPitches(footballPitches.getTenSan(),
+                            footballPitches.getLoaiHinhSan(), footballPitches.getLoaiSan(),
+                            footballPitches.getGiaBT(), footballPitches.getGiaCD(), footballPitches.getId(), "aaa"));
+                    adapter_FootballPitches.notifyDataSetChanged();
+                }
             }
 
             @Override

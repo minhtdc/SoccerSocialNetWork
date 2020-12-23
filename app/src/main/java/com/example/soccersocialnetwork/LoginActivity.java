@@ -64,10 +64,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView txtFogetPassword, txtLogo;
     ImageView imgLogo;
     EditText edtLoginEmail, edtLoginPassword;
-    private FirebaseAuth fAuth;
     Users user = new Users();
     public static FirebaseAuth fAuth;
-    Users user = new Users();
     public static String USER_ID_CURRENT;
     public static String USER_NAME_CURRENT;
     public static boolean IS_LOGIN;

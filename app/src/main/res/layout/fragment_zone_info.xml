@@ -111,5 +111,6 @@
                 android:layout_height="match_parent"
                 android:text="6h - 21h"></TextView>
     </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

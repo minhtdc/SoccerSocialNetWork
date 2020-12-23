@@ -22,14 +22,11 @@ public class SetFootballPitchesInfoFragment extends Fragment {
     View view;
     TextView tvTenSan, tvLoaiSan, tvLoaiHinhSan, tvGia;
     DatabaseReference mFirebase;
-    String key = "";
-    private SetFootballPitchesActivity mPitchesActivity;
+    String key = SetListOfYardFragment.idSan;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_football_pitches_info, container, false);
-        mPitchesActivity = (SetFootballPitchesActivity) getActivity();
-        key = mPitchesActivity.getKey();
         setControl();
         setEvent();
         return view;

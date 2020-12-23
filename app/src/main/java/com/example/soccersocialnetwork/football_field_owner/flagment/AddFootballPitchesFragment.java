@@ -29,10 +29,14 @@ import android.widget.Toast;
 
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
 import com.example.soccersocialnetwork.football_field_owner.activity.AddZoneActivity;
+import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
+import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.RushHour;
 
+import com.example.soccersocialnetwork.football_field_owner.model.Zone;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -55,12 +59,12 @@ public class AddFootballPitchesFragment extends Fragment {
     String idHour = "";
     int gioBD, phutBD, gioKT, phutKT;
 
+    String idKhu = ListZone.idKhu;
+    private ZoneInfoActivity mActivity;
+
     ArrayList<RushHour> data_rh = new ArrayList<>();
     ArrayList<String> data_ls;
     ArrayList<String> data_lhs;
-    ArrayList<RushHour> data_rh = new ArrayList<>();
-    ArrayList<String> data_ls = new ArrayList<>();
-    ArrayList<String> data_lhs = new ArrayList<>();
     ArrayList<String> data_gio = new ArrayList<>();
     ArrayList<String> data_phut = new ArrayList<>();
     ArrayAdapter adapter_gioCD;
@@ -111,6 +115,7 @@ public class AddFootballPitchesFragment extends Fragment {
                 String key = mFirebase.child("San").push().getKey();
                 FootballPitches footballPitches = getFootballPitches(key);
                 mFirebase.child("San").child(key).setValue(footballPitches);
+                getZone();
                 mFirebaseHour.child(footballPitches.getId()).setValue(data_rh);
 
                 txtTenSan.setText("");
@@ -245,14 +250,27 @@ public class AddFootballPitchesFragment extends Fragment {
         rushHour.setPhutBD(phutBD);
         rushHour.setGioKT(gioKT);
         rushHour.setPhutKT(phutKT);
-        rushHour.setGioBD(spnGioBD.getSelectedItem().toString());
-        rushHour.setPhutBD(spnPhutBD.getSelectedItem().toString());
-        rushHour.setGioKT(spnGioKT.getSelectedItem().toString());
-        rushHour.setPhutKT(spnPhutKT.getSelectedItem().toString());
         rushHour.setId(idHour);
         return rushHour;
     }
+    private void getZone(){
 
+
+        Zone zone = new Zone();
+        if (spLoaiSan.getSelectedItem().toString().equals("Cỏ Tự Nhiên")){
+            zone.setCoTuNhien(true);
+            mFirebase.child("Khu").child(idKhu).child("coNhanTao").setValue(true);
+        }else {
+            mFirebase.child("Khu").child(idKhu).child("coTuNhien").setValue(true);
+        }
+        if (spLoaiHinhSan.getSelectedItem().toString().equals("5 người")){
+            mFirebase.child("Khu").child(idKhu).child("namNguoi").setValue(true);
+        }else if (spLoaiHinhSan.getSelectedItem().toString().equals("7 người")){
+            mFirebase.child("Khu").child(idKhu).child("bayNguoi").setValue(true);
+        }else{
+            mFirebase.child("Khu").child(idKhu).child("chinNguoi").setValue(true);
+        }
+    }
     private FootballPitches getFootballPitches(String id) {
         FootballPitches footballPitches = new FootballPitches();
         footballPitches.setTenSan(txtTenSan.getText().toString());
@@ -261,6 +279,7 @@ public class AddFootballPitchesFragment extends Fragment {
         footballPitches.setGiaBT(txtGiaGioBT.getText().toString());
         footballPitches.setGiaCD(txtGiaGioCD.getText().toString());
         footballPitches.setId(id);
+        footballPitches.setIdKhu(idKhu);
         return footballPitches;
     }
 
@@ -282,18 +301,6 @@ public class AddFootballPitchesFragment extends Fragment {
         data_lhs.add("5 người");
         data_lhs.add("7 người");
         data_lhs.add("9 người");
-        String a, b;
-        for (int i = 1; i < 25; i++) {
-            if (i < 10) {
-                a = String.valueOf(i);
-                b = "0" + a;
-            } else {
-                b = String.valueOf(i);
-            }
-            data_gio.add(b);
-        }
-        data_phut.add("00");
-        data_phut.add("30");
     }
 
     private void setControl() {

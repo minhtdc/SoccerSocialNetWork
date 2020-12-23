@@ -1,9 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/com/example/soccersocialnetwork/Set_Football_Pitches/flagment/SetZoneInfoFragment.java
 package com.example.soccersocialnetwork.Set_Football_Pitches.flagment;
-=======
-package com.example.soccersocialnetwork.Set_Foothball_Pitches.flagment;
->>>>>>> origin/Minh-Nguyễn:app/src/main/java/com/example/soccersocialnetwork/Set_Foothball_Pitches/flagment/SetZoneInfoFragment.java
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

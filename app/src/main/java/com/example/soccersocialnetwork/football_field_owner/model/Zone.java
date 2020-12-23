@@ -1,31 +1,113 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
 public class Zone {
-<<<<<<< HEAD
-    String tenKhu, anh, thanhPho, quan, diaChi, pushId;
+    String tenKhu, anh, thanhPho, quan, diaChi, pushId, idUser;
     int gioMo, phutMo, gioDong, phutDong;
-=======
-    String tenKhu, anh, thanhPho, quan, diaChi, gioMo, phutMo, gioDong, phutDong, pushId;;
->>>>>>> origin/Minh-Nguyễn
+    boolean coTuNhien, coNhanTao, namNguoi, bayNguoi, chinNguoi;
 
-    public Zone() {
-    }
-
-<<<<<<< HEAD
-    public Zone(String tenKhu, String anh, String thanhPho, String quan, String diaChi, int gioMo, int phutMo, int gioDong, int phutDong, String pushId) {
-=======
-    public Zone(String tenKhu, String anh, String thanhPho, String quan, String diaChi, String gioMo, String phutMo, String gioDong, String phutDong, String pushId) {
->>>>>>> origin/Minh-Nguyễn
+    public Zone(String tenKhu, String anh, String thanhPho, String quan,
+                String diaChi, String pushId, String idUser, int gioMo,
+                int phutMo, int gioDong, int phutDong, boolean coTuNhien, boolean coNhanTao,
+                boolean namNguoi, boolean bayNguoi, boolean chinNguoi) {
         this.tenKhu = tenKhu;
         this.anh = anh;
         this.thanhPho = thanhPho;
         this.quan = quan;
         this.diaChi = diaChi;
+        this.pushId = pushId;
+        this.idUser = idUser;
         this.gioMo = gioMo;
         this.phutMo = phutMo;
         this.gioDong = gioDong;
         this.phutDong = phutDong;
+        this.coTuNhien = coTuNhien;
+        this.coNhanTao = coNhanTao;
+        this.namNguoi = namNguoi;
+        this.bayNguoi = bayNguoi;
+        this.chinNguoi = chinNguoi;
+    }
+
+    public Zone() {
+    }
+
+    public Zone(String tenKhu, String anh, String thanhPho, String quan, String diaChi, String pushId, String idUser, int gioMo, int phutMo, int gioDong, int phutDong) {
+        this.tenKhu = tenKhu;
+        this.anh = anh;
+        this.thanhPho = thanhPho;
+        this.quan = quan;
+        this.diaChi = diaChi;
         this.pushId = pushId;
+        this.idUser = idUser;
+        this.gioMo = gioMo;
+        this.phutMo = phutMo;
+        this.gioDong = gioDong;
+        this.phutDong = phutDong;
+    }
+
+    public boolean isCoTuNhien() {
+        return coTuNhien;
+    }
+
+    public void setCoTuNhien(boolean coTuNhien) {
+        this.coTuNhien = coTuNhien;
+    }
+
+    public boolean isCoNhanTao() {
+        return coNhanTao;
+    }
+
+    public void setCoNhanTao(boolean coNhanTao) {
+        this.coNhanTao = coNhanTao;
+    }
+
+    public boolean isNamNguoi() {
+        return namNguoi;
+    }
+
+    public void setNamNguoi(boolean namNguoi) {
+        this.namNguoi = namNguoi;
+    }
+
+    public boolean isBayNguoi() {
+        return bayNguoi;
+    }
+
+    public void setBayNguoi(boolean bayNguoi) {
+        this.bayNguoi = bayNguoi;
+    }
+
+    public boolean isChinNguoi() {
+        return chinNguoi;
+    }
+
+    public void setChinNguoi(boolean chinNguoi) {
+        this.chinNguoi = chinNguoi;
+    }
+
+    @Override
+    public String toString() {
+        return "Zone{" +
+                "tenKhu='" + tenKhu + '\'' +
+                ", anh='" + anh + '\'' +
+                ", thanhPho='" + thanhPho + '\'' +
+                ", quan='" + quan + '\'' +
+                ", diaChi='" + diaChi + '\'' +
+                ", pushId='" + pushId + '\'' +
+                ", idUser='" + idUser + '\'' +
+                ", gioMo=" + gioMo +
+                ", phutMo=" + phutMo +
+                ", gioDong=" + gioDong +
+                ", phutDong=" + phutDong +
+                '}';
+    }
+
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 
     public String getPushId() {
@@ -76,7 +158,6 @@ public class Zone {
         this.diaChi = diaChi;
     }
 
-<<<<<<< HEAD
     public int getGioMo() {
         return gioMo;
     }
@@ -106,53 +187,7 @@ public class Zone {
     }
 
     public void setPhutDong(int phutDong) {
-=======
-    public String getGioMo() {
-        return gioMo;
-    }
-
-    public void setGioMo(String gioMo) {
-        this.gioMo = gioMo;
-    }
-
-    public String getPhutMo() {
-        return phutMo;
-    }
-
-    public void setPhutMo(String phutMo) {
-        this.phutMo = phutMo;
-    }
-
-    public String getGioDong() {
-        return gioDong;
-    }
-
-    public void setGioDong(String gioDong) {
-        this.gioDong = gioDong;
-    }
-
-    public String getPhutDong() {
-        return phutDong;
-    }
-
-    public void setPhutDong(String phutDong) {
->>>>>>> origin/Minh-Nguyễn
         this.phutDong = phutDong;
     }
 
-    @Override
-    public String toString() {
-        return "Zone{" +
-                "tenKhu='" + tenKhu + '\'' +
-                ", anh='" + anh + '\'' +
-                ", thanhPho='" + thanhPho + '\'' +
-                ", quan='" + quan + '\'' +
-                ", diaChi='" + diaChi + '\'' +
-                ", gioMo='" + gioMo + '\'' +
-                ", phutMo='" + phutMo + '\'' +
-                ", gioDong='" + gioDong + '\'' +
-                ", phutDong='" + phutDong + '\'' +
-                ", pushId='" + pushId + '\'' +
-                '}';
-    }
 }

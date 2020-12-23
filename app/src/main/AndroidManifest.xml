@@ -20,11 +20,12 @@
         <activity android:name=".TranDuyHuynh.infomation_dangtintimtran" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.DoiActivity" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity"/>
         <activity android:name=".Football_Pitches.activity.FootballPitchesActivity"/>
         <activity android:name=".Set_Football_Pitches.activity.SetFootballPitchesActivity"/>
-        <activity android:name=".Set_Football_Pitches.activity.SetZoneActivity">
+        <activity android:name=".Set_Football_Pitches.activity.SetZoneActivity"/>
+        <activity android:name=".football_field_owner.activity.ListZone"/>
+        <activity android:name=".football_field_owner.activity.ZoneInfoActivity"/>
         <activity android:name=".football_field_owner.activity.AddZoneActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -35,10 +36,6 @@
         </activity>
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTinCaNhan" />
         <activity android:name=".TranDuyHuynh.home_layout" >
-
-        </activity>
-        <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity"/>
-        <activity android:name=".Set_Foothball_Pitches.activity.SetFoothballPitchesActivity">
 
         </activity>
     </application>

@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.example.soccersocialnetwork.Football_Pitches.activity.FootballPitchesActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
+import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
+import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
+import com.example.soccersocialnetwork.football_field_owner.flagment.ListOfYardFragment;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,20 +27,19 @@ public class FootballPitchesInfoFragment extends Fragment {
     TextView tvTenSan, tvLoaiSan, tvLoaiHinhSan, tvGia;
     DatabaseReference mFirebase;
     String key = "";
-    private SetFootballPitchesActivity mPitchesActivity;
+    String idKhu = ListZone.idKhu;
+    String idSan = ListOfYardFragment.idSan;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_football_pitches_info, container, false);
-        mPitchesActivity = (SetFootballPitchesActivity) getActivity();
-        key = mPitchesActivity.getKey();
         setControl();
         setEvent();
         return view;
     }
 
     private void setEvent() {
-        mFirebase = FirebaseDatabase.getInstance().getReference().child("San").child(key);
+        mFirebase = FirebaseDatabase.getInstance().getReference().child("San").child(idSan);
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

@@ -46,10 +46,6 @@ public class menu_flagment extends Fragment {
     LinearLayout lnUser;
     ImageView imageView_icHelps, imageView_Setting, imageView_user;
     LinearLayout ln_choose_Helps, ln_choose_Settings,lnDangXuat;
-    Dialog dialog;
-    LinearLayout lnUser;
-    ImageView imageView_icHelps, imageView_Setting, imageView_user;
-    LinearLayout ln_choose_Helps, ln_choose_Settings, lnDangXuat;
     TextView name_user_menu;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -162,7 +158,6 @@ public class menu_flagment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(),edit_profile_user.class);
-                Intent intent = new Intent(getContext(), edit_profile_user.class);
                 startActivity(intent);
             }
         });
