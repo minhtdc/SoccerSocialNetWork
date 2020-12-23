@@ -23,6 +23,7 @@ import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -244,8 +245,9 @@ public class DoiActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
+                team_flagment.kiemTraLayout = false;
                 onBackPressed();
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

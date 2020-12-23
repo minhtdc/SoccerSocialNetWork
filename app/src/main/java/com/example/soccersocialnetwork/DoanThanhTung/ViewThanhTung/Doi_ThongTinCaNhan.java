@@ -63,33 +63,16 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         takeData();
         readTeam();
         readUser(idDoi);
-        for(int i = 0; i<listTeamUsers.size();i++){
-            if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))){
-
-                break;
-            }else {
-                mnEdit.setVisible(false);
-                break;
-            }
-        }
 
         imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Doi_ThongTinCaNhan.this, imageViewToByte(imgThongTinDoi) + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Doi_ThongTinCaNhan.this, listTeamUsers.get(0) + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Doi_ThongTinCaNhan.this, LoginActivity.USER_ID_CURRENT + "", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private byte[] imageViewToByte(ImageView imageView) {
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bytes = stream.toByteArray();
-        OutputStream outputStream = new ByteArrayOutputStream();
-        return bytes;
-
-    }
 
     private void takeData() {
 
@@ -137,7 +120,7 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         tvEmailThongTinDoi = findViewById(R.id.tvEmailThongTinDoi);
         tvSDTThongTinDoi = findViewById(R.id.tvSDTThongTinDoi);
 
-        mnEdit = findViewById(R.id.mnEdit);
+
 
     }
 
@@ -205,12 +188,24 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mnEdit = menu.findItem(R.id.mnEdit);
+
+           // if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(0))){
+                mnEdit.setVisible(true);
+          //  }
+
+        return true;
+    }
+
     //click actionbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                finish();
                 return true;
             case R.id.mnEdit:
                 takeData();

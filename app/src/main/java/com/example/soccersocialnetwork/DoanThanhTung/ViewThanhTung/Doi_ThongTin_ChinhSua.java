@@ -45,7 +45,9 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
@@ -211,12 +213,18 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
 
     private void updateFirebase(Team team, final ProgressDialog progreDiaglog) {
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi);
-        //----------cach 1 update
-        // mDatabase.updateChildren(team.toMap());
+        Map<String, Object> data  = new HashMap();
+        data.put("email",team.getEmail());
+        data.put("gioiThieu",team.getGioiThieu());
+        data.put("hinhAnh",team.getHinhAnh());
+        data.put("khuVuc",team.getKhuVuc());
+        data.put("sLogan",team.getsLogan());
+        data.put("sdt",team.getSdt());
+        data.put("tenDoi",team.getTenDoi());
+        data.put("tieuChi",team.getTieuChi());
 
-        //----------cach 2 update có hiển thị
-        mDatabase.setValue(team).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi);
+        mDatabase.updateChildren(data).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(Doi_ThongTin_ChinhSua.this, "update thành công", Toast.LENGTH_SHORT).show();
@@ -224,12 +232,26 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
                 onBackPressed();
                 finish();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Doi_ThongTin_ChinhSua.this, "update thất bại", Toast.LENGTH_SHORT).show();
-            }
         });
+        //----------cach 1 update
+        // mDatabase.updateChildren(team.toMap());
+
+
+        //----------cach 2 update có hiển thị
+//        mDatabase.setValue(team).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Toast.makeText(Doi_ThongTin_ChinhSua.this, "update thành công", Toast.LENGTH_SHORT).show();
+//                progreDiaglog.cancel();
+//                onBackPressed();
+//                finish();
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(Doi_ThongTin_ChinhSua.this, "update thất bại", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     public void uploadImage(ImageView imageView, final ProgressDialog progreDiaglog, final Team team) {

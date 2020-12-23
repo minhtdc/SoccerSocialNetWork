@@ -226,14 +226,8 @@ public class Fragment_Doi extends Fragment {
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
                         insertFirebaseDangBai(getFeeds());
-
                         dialogFullScreen.dismiss();
-
-
-
                     }
                 });
                 builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -264,10 +258,10 @@ public class Fragment_Doi extends Fragment {
         progreDiaglogLoadding.setMessage("Đang tải dữ liệu");
         progreDiaglogLoadding.show();
         //  mDatabase = FirebaseDatabase.getInstance().getReference("Feeds").child(idDoi);
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("listFeeds");
-        listFeedTest.add(feeds);
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("listFeeds").push();
+        //listFeedTest.add(feeds);
 
-        mDatabase.setValue(listFeedTest).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDatabase.setValue(feeds).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 progreDiaglogLoadding.dismiss();
@@ -376,19 +370,9 @@ public class Fragment_Doi extends Fragment {
 
     }
 
-    private void ThemBaiVietDaBong() {
-        Feeds model_feedsDoi_view = new Feeds(24, "Hà Nội", "Cái Làn", "14/11/2020", "13h - 16h", "Ae mình zui vẽ");
-        Feeds model_feedsDoi_view1 = new Feeds(72, "xxx", "Cái Làn", "14/11/2020", "13h - 16h", "Ae mình zui vẽ");
-        Feeds model_feedsDoi_view2 = new Feeds(123, "x", "Cái Làn", "14/11/2020", "13h - 16h", "Ae mình zui vẽ");
-        Feeds model_feedsDoi_view3 = new Feeds(234, "Hà Nội", "Cái Làn", "14/11/2020", "13h - 16h", "Ae mình zui vẽ");
-        Feeds model_feedsDoi_view4 = new Feeds(234, "Hà Nội", "Cái Làn", "14/11/2020", "13h - 16h", "Ae mình zui vẽ");
-        listFeeds.add(model_feedsDoi_view);
-        listFeeds.add(model_feedsDoi_view1);
-        listFeeds.add(model_feedsDoi_view2);
-        listFeeds.add(model_feedsDoi_view3);
-        listFeeds.add(model_feedsDoi_view4);
-//       adapter2.notifyDataSetChanged();
-    }
+
+
+
 
 
 }

@@ -10,15 +10,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi2;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Doi_ThongTinCaNhan;
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.TaoDonActivity;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.Adapter_TestCLickTeam;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_KhuVuc;
@@ -26,6 +31,7 @@ import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_findTeam
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_listTeams_Adapter;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_listTeams;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -101,14 +107,16 @@ public class team_flagment extends Fragment {
 
     }
 
+    public static boolean kiemTraLayout = false;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         spinner = getView().findViewById(R.id.spnKhuVuc_lstDoi);
         imgTaoDoi = getView().findViewById(R.id.imgTaoDoi);
         listView = (ListView) getView().findViewById(R.id.lstTeam);
-        readDoiFirebase();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        //   setEvent();
 //        categoryAdapter_khuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, createDataForSpn_KhuVuc());
 //        spinner.setAdapter(categoryAdapter_khuVuc);
 //
@@ -120,7 +128,45 @@ public class team_flagment extends Fragment {
 //        information_listTeams_Adapter information_listTeams_adapter = new information_listTeams_Adapter(getContext(), R.layout.list_doi, list);
 //        listView = (ListView) getView().findViewById(R.id.lstTeam);
 //        listView.setAdapter(information_listTeams_adapter);
+        readDoiFirebase();
+        final Intent intent = new Intent(getContext(), DoiActivity.class);
+        final Bundle bundle = new Bundle();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+              final String key = listTeams.get(position).getIdDoi() + "";
+                Toast.makeText(getContext(), listTeams.get(position).getIdDoi() + "", Toast.LENGTH_SHORT).show();
 
+                mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
+                mDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listTeamUsers.clear();
+                        for (DataSnapshot dt :
+                                snapshot.getChildren()) {
+                            listTeamUsers.add(dt.getKey());
+                        }
+                        for (int i = 0; i < listTeamUsers.size(); i++) {
+                            if (LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))) {
+                                if(kiemTraLayout == false){
+                                    bundle.putString("TaoDoi_IDDoi", key);
+                                    intent.putExtras(bundle);
+                                    kiemTraLayout = true;
+                                    startActivity(intent);
+                                }
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
         imgTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +174,7 @@ public class team_flagment extends Fragment {
             }
         });
     }
+
 
     // tạo dữ liệu giả cho spinner khu vực
     private List<Category_KhuVuc> createDataForSpn_KhuVuc() {
@@ -142,6 +189,7 @@ public class team_flagment extends Fragment {
 
     ArrayList<Team> listTeams = new ArrayList<>();
     ArrayAdapter adapterDoi;
+
     private void readDoiFirebase() {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Team");
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -153,9 +201,7 @@ public class team_flagment extends Fragment {
                     Team team = dt.getValue(Team.class);
                     listTeams.add(team);
                 }
-
-
-                adapterDoi = new Adapter_TestCLickTeam(getContext(),R.layout.list_doi,listTeams);
+                adapterDoi = new Adapter_TestCLickTeam(getContext(), R.layout.list_doi, listTeams);
                 listView.setAdapter(adapterDoi);
                 adapterDoi.notifyDataSetChanged();
             }
@@ -166,12 +212,67 @@ public class team_flagment extends Fragment {
             }
         });
     }
-        private void createDataForLst () {
-            list = new ArrayList<information_listTeams>();
 
-            list.add(new information_listTeams(R.drawable.img_team2, "doi 2", "Hà Nội", "16", "CLB đến từ Hà Nội"));
-            list.add(new information_listTeams(R.drawable.img_team3, "doi 3", "Đà Nẵng", "17", "CLB đến từ Đà Nẵng"));
-            list.add(new information_listTeams(R.drawable.img_team4, "doi 4", "Nghệ An", "18", "CLB đến từ Nghệ An"));
-            list.add(new information_listTeams(R.drawable.img_team5, "doi 5", "Vũng Tàu", "19", "CLB đến từ Vũng Tàu"));
-        }
+    ArrayList<String> listTeamUsers = new ArrayList<>();
+
+    public void readUser(final String key) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listTeamUsers.clear();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    listTeamUsers.add(dt.getKey());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
+    //    private void loadData(){
+//
+//        mDatabase.child("Team").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                Team team = snapshot.getValue(Team.class);
+//                listTeams.add(team);
+//                adapterDoi.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+    private void createDataForLst() {
+        list = new ArrayList<information_listTeams>();
+
+        list.add(new information_listTeams(R.drawable.img_team2, "doi 2", "Hà Nội", "16", "CLB đến từ Hà Nội"));
+        list.add(new information_listTeams(R.drawable.img_team3, "doi 3", "Đà Nẵng", "17", "CLB đến từ Đà Nẵng"));
+        list.add(new information_listTeams(R.drawable.img_team4, "doi 4", "Nghệ An", "18", "CLB đến từ Nghệ An"));
+        list.add(new information_listTeams(R.drawable.img_team5, "doi 5", "Vũng Tàu", "19", "CLB đến từ Vũng Tàu"));
+    }
+}

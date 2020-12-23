@@ -27,6 +27,7 @@ import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Doi_ThongTinC
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +48,7 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
     ArrayList<Team> data;
     int resource;
     DatabaseReference mDatabase;
+
     public Adapter_TestCLickTeam(@NonNull Context context, int resource, ArrayList<Team> data) {
         super(context, resource, data);
         this.context = context;
@@ -84,7 +86,7 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
             holder.txtKhuVuc = view.findViewById(R.id.txtThongTinKhuVuc_lstTeams);
             holder.txtThongtinGioiHieu = view.findViewById(R.id.txtThongTinGioiThieu_lstTeams);
             holder.llDanhSachDoi = view.findViewById(R.id.llDanhSachDoi);
-           // holder.txtNgay = view.findViewById(R.id.tv_Gio);
+            // holder.txtNgay = view.findViewById(R.id.tv_Gio);
 
             view.setTag(holder);
         } else
@@ -92,36 +94,39 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
 
         final Team team = data.get(position);
 
-        readuser(team.idDoi+"");
 
+        readuser(team.getIdDoi() + "");
         Picasso.get().load(team.getHinhAnh()).into(holder.imageView);
         holder.txtTenDoi.setText(team.getTenDoi());
         holder.txtKhuVuc.setText(team.getKhuVuc());
         holder.txtThongtinGioiHieu.setText(team.getGioiThieu());
-        holder.llDanhSachDoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                for(int i = 0; i<listTeamUsers.size();i++){
-                    if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i)) ){
-                        Intent intent = new Intent(getContext(), DoiActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("TaoDoi_IDDoi",team.idDoi+"");
-                        intent.putExtras(bundle);
-
-                        context.startActivity(intent);
-                        break;
-                    }else{
-                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Doi_ID",team.idDoi+"");
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                        break;
-                    }
-                }
-            }
-        });
+//        holder.llDanhSachDoi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//
+////
+//                for(int i = 0; i<listTeamUsers.size();i++){
+//                    if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i)) ){
+//                        Intent intent = new Intent(getContext(), DoiActivity.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("TaoDoi_IDDoi",team.idDoi+"");
+//                        intent.putExtras(bundle);
+//
+//                        context.startActivity(intent);
+////                        break;
+////                    }else{
+////                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
+////                        Bundle bundle = new Bundle();
+////                        bundle.putString("Doi_ID",team.idDoi+"");
+////                        intent.putExtras(bundle);
+////                        context.startActivity(intent);
+////
+//                    }
+//                }
+//            }
+//        });
 //        holder.imgDoiAdapter.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -132,23 +137,51 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
     }
 
     ArrayList<String> listTeamUsers = new ArrayList<>();
-    public void readuser(String key){
 
-       mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
-       mDatabase.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot snapshot) {
-               listTeamUsers.clear();
-               for (DataSnapshot dt:
-                    snapshot.getChildren()) {
-                   listTeamUsers.add(dt.getKey());
-               }
+    public void readuser(final String key) {
 
-           }
-           @Override
-           public void onCancelled(@NonNull DatabaseError error) {
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listTeamUsers.clear();
 
-           }
-       });
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    listTeamUsers.add(dt.getKey());
+
+                }
+
+//                for (int i = 0; i < listTeamUsers.size(); i++) {
+//                    if (LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))) {
+//                        Intent intent = new Intent(getContext(), DoiActivity.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("TaoDoi_IDDoi", key);
+//                        intent.putExtras(bundle);
+//
+//                        context.startActivity(intent);
+//                        listTeamUsers.clear();
+//                        return;
+//                    }
+//                    else {
+//                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("Doi_ID", key);
+//                        intent.putExtras(bundle);
+//                        context.startActivity(intent);
+//                    }
+
+
+             //   }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 }
