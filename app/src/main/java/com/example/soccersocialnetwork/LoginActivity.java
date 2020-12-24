@@ -5,6 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -45,6 +49,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class LoginActivity extends AppCompatActivity {
     private support_func support_func;
     Animation topAnimation, bottomAnimation;
@@ -52,14 +58,15 @@ public class LoginActivity extends AppCompatActivity {
     TextView txtFogetPassword, txtLogo;
     ImageView imgLogo;
     EditText edtLoginEmail, edtLoginPassword;
-    public static FirebaseAuth fAuth;
+    public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
     Users user = new Users();
     public static String USER_ID_CURRENT;
     public static String USER_NAME_CURRENT;
     public static boolean IS_LOGIN;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
-    
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
         //kiểm tra trạng thái đăng nhập
         initPreferences();
         if (sharedPreferences.getBoolean("IS_LOGIN", IS_LOGIN) == true) {
-            USER_ID_CURRENT = sharedPreferences.getString("USER_ID_CURRENT", "");
-            USER_NAME_CURRENT = sharedPreferences.getString("USER_NAME_CURRENT", "");
+            USER_ID_CURRENT = sharedPreferences.getString("USER_ID_CURRENT", USER_ID_CURRENT);
+            USER_NAME_CURRENT = sharedPreferences.getString("USER_NAME_CURRENT", USER_NAME_CURRENT);
             Toast.makeText(LoginActivity.this, "Wellcome back " + USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, home_layout.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -102,56 +109,40 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = edtLoginEmail.getText().toString();
-                String userPass = edtLoginPassword.getText().toString();
-                fAuth = FirebaseAuth.getInstance();
-                if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
-                    fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull final Task<AuthResult> task) {
+                if (isOnline()) {
+                    String userName = edtLoginEmail.getText().toString();
+                    String userPass = edtLoginPassword.getText().toString();
+                    if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
+                        fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull final Task<AuthResult> task) {
 
-                            if (task.isSuccessful()) {
-                                //lấy thông tin người dùng
-                                USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
-                                IS_LOGIN = true;
+                                if (task.isSuccessful()) {
+                                    //lấy thông tin người dùng
+                                    USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
+                                    IS_LOGIN = true;
+                                    editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
+                                    editor.putBoolean("IS_LOGIN", IS_LOGIN);
+//                              editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
+                                    editor.commit();
+                                    // Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, home_layout.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                    startActivity(intent);
+                                    finish();
 
-                                //lấy tên người dùng
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference(String.format("/users/%s/userName", LoginActivity.USER_ID_CURRENT));
-                                myRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        USER_NAME_CURRENT = snapshot.getValue().toString();
-                                    }
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-
-                                editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
-                                editor.putBoolean("IS_LOGIN", IS_LOGIN);
-//                                editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
-                                editor.commit();
-                                Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, home_layout.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                startActivity(intent);
-                                finish();
-
-
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-
+                                }
                             }
+                        });
 
-
-                        }
-                    });
-
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Vui lòng nhập đủ dữ liệu!", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Vui lòng nhập đủ dữ liệu!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Không có kết nối internet", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -159,7 +150,12 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dislayDialogLogin1();
+                if (isOnline()) {
+                    dislayDialogLogin1();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Không có kết nối internet", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
@@ -416,24 +412,13 @@ public class LoginActivity extends AppCompatActivity {
         editor = sharedPreferences.edit();
     }
 
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(" Thoát ứng dụng");
-        builder.setMessage("Bạn muốn thoát ứng dụng ?");
-        builder.setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-        builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        builder.show();
+    //check internet
+    public Boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni != null && ni.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }

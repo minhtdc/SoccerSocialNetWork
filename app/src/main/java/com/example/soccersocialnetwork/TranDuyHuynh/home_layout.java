@@ -8,6 +8,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -15,6 +18,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Bundle;
+
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.home_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.menu_flagment;
@@ -22,6 +28,13 @@ import com.example.soccersocialnetwork.TranDuyHuynh.fragments.notification_flagm
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +56,9 @@ public class home_layout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_layout);
 
-        toolbar = findViewById(R.id.toolbar);
+        //toolbar = findViewById(R.id.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 //        setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.viewPager);
@@ -59,33 +74,20 @@ public class home_layout extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         getViewPagerAdapter();
 
-    }
+        //lấy tên người dùng
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(String.format("/users/%s/userName", LoginActivity.USER_ID_CURRENT));
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                LoginActivity.USER_NAME_CURRENT = snapshot.getValue().toString();
+            }
 
-    @Override
-    public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 0 ){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(" Thoát ứng dụng");
-            builder.setMessage("Bạn muốn thoát ứng dụng ?");
-            builder.setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    finish();
-                }
-            });
-            builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-            builder.show();
-
-        }
-        else {
-            viewPager.setCurrentItem(0);
-        }
+            }
+        });
     }
 
     private void getViewPagerAdapter(){
@@ -104,6 +106,9 @@ public class home_layout extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(R.drawable.icon_stadium);
         tabLayout.getTabAt(3).setIcon(R.drawable.icon_notification);
         tabLayout.getTabAt(4).setIcon(R.drawable.icon_menu);
+//        BadgeDrawable badgeDrawable = tabLayout.getTabAt(3).getOrCreateBadge();
+//        badgeDrawable.setVisible(true);
+//        badgeDrawable.setNumber(0);
 
     }
 
@@ -135,9 +140,5 @@ public class home_layout extends AppCompatActivity {
             return fragments.size();
         }
 
-    }
-
-    public  void finish() {
-        finish();
     }
 }

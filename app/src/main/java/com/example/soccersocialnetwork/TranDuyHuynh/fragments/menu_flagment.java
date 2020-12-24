@@ -3,6 +3,10 @@ package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.soccersocialnetwork.LoginActivity;
-import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.example.soccersocialnetwork.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +36,7 @@ public class menu_flagment extends Fragment {
     ImageView imageView_icHelps, imageView_Setting, imageView_user;
     LinearLayout ln_choose_Helps, ln_choose_Settings, lnDangXuat;
     TextView name_user_menu;
+    Button btnTimKiem;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -88,7 +96,8 @@ public class menu_flagment extends Fragment {
         name_user_menu = rootView.findViewById(R.id.name_user_menu);
 
         //set ảnh đại diện
-        //imageView_user.setImageResource(R.drawable.img_team5);
+        //imageView_user.setImageResource(R.drawable.img_team5)
+
 
         //set tên người dùng
         name_user_menu.setText(LoginActivity.USER_NAME_CURRENT);
@@ -177,6 +186,7 @@ public class menu_flagment extends Fragment {
                 LoginActivity.editor.commit();
                 LoginActivity.IS_LOGIN = false;
                 Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

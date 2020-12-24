@@ -3,6 +3,8 @@ package com.example.soccersocialnetwork;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 
 import org.json.JSONArray;
@@ -16,10 +18,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 //các hàm hỗ trợ
 public class support_func {
     AlertDialog dialog;
     Activity activity;
+
+    //kiểm tra internet
+
 
     // chuyển đối tượng sang dạng json add vào firebase
     public static Map<String, Object> toMap(JSONObject object) throws JSONException {
