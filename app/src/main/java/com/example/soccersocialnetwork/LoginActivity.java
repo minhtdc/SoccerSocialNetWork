@@ -59,8 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     public static boolean IS_LOGIN;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
