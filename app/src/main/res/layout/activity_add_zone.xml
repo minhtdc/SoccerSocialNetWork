@@ -106,48 +106,28 @@
                 android:layout_height="wrap_content"
                 android:text="từ:" />
 
-            <Spinner
-                android:id="@+id/spnGioMo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dp"
-                android:layout_weight="1" />
-
             <TextView
-                android:layout_width="5dp"
-                android:layout_height="wrap_content"
-                android:text=":" />
-
-            <Spinner
-                android:id="@+id/spnPhutMo"
+                android:id="@+id/tvGioMo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:paddingRight="10dp"
-                android:layout_weight="1" />
-
+                android:gravity="center"
+                android:text="00:00" />
             <TextView
                 android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:text="đến" />
 
-            <Spinner
-                android:id="@+id/spnGioDong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dp"
-                android:layout_weight="1" />
-
             <TextView
-                android:layout_width="5dp"
-                android:layout_height="wrap_content"
-                android:text=":" />
-
-            <Spinner
-                android:id="@+id/spnPhutDong"
+                android:id="@+id/tvGioDong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="10dp"
+                android:gravity="center"
+                android:text="00:00"
                 android:layout_weight="1" />
+
         </LinearLayout>
 
         <Button

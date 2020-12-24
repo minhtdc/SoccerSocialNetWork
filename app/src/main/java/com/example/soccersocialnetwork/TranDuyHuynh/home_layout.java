@@ -44,7 +44,7 @@ public class home_layout extends AppCompatActivity {
         setContentView(R.layout.activity_home_layout);
 
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);

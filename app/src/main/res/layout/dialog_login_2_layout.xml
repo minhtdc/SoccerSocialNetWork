@@ -48,6 +48,7 @@
         android:ems="10"
         android:hint="Chọn ngày sinh"
         android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView" />
@@ -60,6 +61,7 @@
         android:ems="10"
         android:hint="Nhập khu vực"
         android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="@+id/edtDialogBirthday"
         app:layout_constraintStart_toStartOf="@+id/edtDialogBirthday"
         app:layout_constraintTop_toTopOf="@+id/guideline" />

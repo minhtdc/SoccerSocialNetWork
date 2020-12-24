@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_listStadium;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class information_listStadiums_Adapter extends ArrayAdapter<information_l
         }
 
         information_listStadium listStadium = objects.get(position);
-        holder.imageView.setImageResource(listStadium.getHinhSan());
+        Picasso.get().load(listStadium.getHinhSan()).fit().into(holder.imageView);
         holder.txtTenSan.setText(listStadium.getmTenSan());
         holder.txtLoaiHinhSan.setText(listStadium.getmLoaiHinhSan());
         holder.txtLoaiSan.setText(listStadium.getmLoaiSan());
