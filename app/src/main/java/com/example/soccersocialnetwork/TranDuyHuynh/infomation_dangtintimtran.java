@@ -47,12 +47,12 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         btnTimSan = (Button) findViewById(R.id.btnTimSan);
         spinner = (Spinner) findViewById(R.id.spnChonDoi);
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Team").child("listThanhVien");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Team team = snapshot.getValue(Team.class);
-                Toast.makeText(infomation_dangtintimtran.this,team.idDoi,Toast.LENGTH_LONG).show();
+                Toast.makeText(infomation_dangtintimtran.this,team.tenDoi,Toast.LENGTH_LONG).show();
             }
 
             @Override

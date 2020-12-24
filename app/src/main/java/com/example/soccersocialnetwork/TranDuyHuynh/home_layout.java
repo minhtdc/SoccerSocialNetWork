@@ -3,13 +3,9 @@
 // Trần Duy Huynh
 package com.example.soccersocialnetwork.TranDuyHuynh;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,8 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.home_flagment;
@@ -27,8 +21,6 @@ import com.example.soccersocialnetwork.TranDuyHuynh.fragments.menu_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.notification_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -102,10 +94,7 @@ public class home_layout extends AppCompatActivity {
 
             }
         });
-
-
     }
-
     private void getViewPagerAdapter(){
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),0);
