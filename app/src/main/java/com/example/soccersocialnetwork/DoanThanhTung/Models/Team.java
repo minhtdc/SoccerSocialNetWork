@@ -1,13 +1,6 @@
 package com.example.soccersocialnetwork.DoanThanhTung.Models;
 
-import com.google.firebase.database.Exclude;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-public class Team {
+ public class Team extends ListTeamUser{
     public int idDoi;
     public String tenDoi;
     public String email;
