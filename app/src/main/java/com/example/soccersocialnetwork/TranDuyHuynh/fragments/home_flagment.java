@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.infomation_dangtintimtran;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_KhuVuc;
@@ -26,6 +28,7 @@ import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiHinhSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_findTeams;
 import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +145,7 @@ public class home_flagment extends Fragment {
         });
 
         imgUser = (ImageView) getView().findViewById(R.id.imgUser);
+        Picasso.get().load(LoginActivity.USER_IMG_CURRENT).into(imgUser);
         imgUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

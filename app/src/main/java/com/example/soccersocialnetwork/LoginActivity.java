@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     Users user = new Users();
     public static String USER_ID_CURRENT;
     public static String USER_NAME_CURRENT;
+    public static String USER_IMG_CURRENT;
     public static boolean IS_LOGIN;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;

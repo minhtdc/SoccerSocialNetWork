@@ -83,6 +83,22 @@ public class home_layout extends AppCompatActivity {
 
             }
         });
+
+        //lấy ảnh người dùng
+        DatabaseReference link = FirebaseDatabase.getInstance().getReference(String.format("/users/%s/userImage", LoginActivity.USER_ID_CURRENT));
+        link.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                LoginActivity.USER_IMG_CURRENT = snapshot.getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     private void getViewPagerAdapter(){

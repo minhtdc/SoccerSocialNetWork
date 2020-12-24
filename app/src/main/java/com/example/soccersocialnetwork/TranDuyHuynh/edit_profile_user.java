@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.security.DigestInputStream;
@@ -66,6 +67,8 @@ public class edit_profile_user extends AppCompatActivity {
 
         txtTenTaiKhoan.setText(LoginActivity.USER_NAME_CURRENT);
 
+        //set anh dai dien
+        Picasso.get().load(LoginActivity.USER_IMG_CURRENT).into(imgUserPage);
 
         //lay thong tin nguoi dung
         FirebaseDatabase database = FirebaseDatabase.getInstance();
