@@ -90,8 +90,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
-
         //animation
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
         bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
