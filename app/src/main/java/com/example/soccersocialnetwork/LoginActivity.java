@@ -4,11 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -34,11 +32,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,8 +43,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class LoginActivity extends AppCompatActivity {
     private support_func support_func;
@@ -90,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+
         //animation
         topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
         bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
@@ -128,31 +123,6 @@ public class LoginActivity extends AppCompatActivity {
                                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                     startActivity(intent);
                                     finish();
-                String userName = edtLoginEmail.getText().toString();
-                String userPass = edtLoginPassword.getText().toString();
-                if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
-                    fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull final Task<AuthResult> task) {
-
-                            if (task.isSuccessful()) {
-                                //lấy thông tin người dùng
-                                USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
-                                IS_LOGIN = true;
-                                editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
-                                editor.putBoolean("IS_LOGIN", IS_LOGIN);
-//                              editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
-                                editor.commit();
-                                // Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, home_layout.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                startActivity(intent);
-                                finish();
-
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-
-                            }
 
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
@@ -242,7 +212,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         alert.show();
-        onBackPressed();
     }
 
     //hiển thị dialog signup 2
