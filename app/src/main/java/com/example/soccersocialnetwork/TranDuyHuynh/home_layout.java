@@ -5,6 +5,7 @@ package com.example.soccersocialnetwork.TranDuyHuynh;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -49,7 +50,9 @@ public class home_layout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_layout);
 
-        toolbar = findViewById(R.id.toolbar);
+        //toolbar = findViewById(R.id.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 //        setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.viewPager);

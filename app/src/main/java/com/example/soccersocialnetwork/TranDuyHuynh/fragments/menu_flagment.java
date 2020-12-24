@@ -36,6 +36,7 @@ public class menu_flagment extends Fragment {
     ImageView imageView_icHelps, imageView_Setting, imageView_user;
     LinearLayout ln_choose_Helps, ln_choose_Settings, lnDangXuat;
     TextView name_user_menu;
+    Button btnTimKiem;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
