@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
 
-                android:src="@drawable/icon_pencil"></ImageView>
+                android:src="@drawable/ic_back"></ImageView>
         </LinearLayout>
         <TextView
             android:id="@+id/tvChuaCoBai"

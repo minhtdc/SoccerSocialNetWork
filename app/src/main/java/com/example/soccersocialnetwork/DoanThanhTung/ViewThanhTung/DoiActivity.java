@@ -1,26 +1,20 @@
 package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.ViewPagerAdapter;
 import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
-import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
@@ -30,8 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -194,14 +186,10 @@ public class DoiActivity extends AppCompatActivity {
         fragment_doi.setArguments(bundle_Doi);
         adapter.addFragment(fragment_doi, "");
 
-
-
         adapter.addFragment(new Fragment_Doi_2(), "");
 
         //chuyền dữ liệu qua fragment
         Fragment_Doi_Menu fragment_doi_menu = new Fragment_Doi_Menu();
-
-
         Bundle bundle_menu = new Bundle();
         bundle_menu.putString("Doi_ID",idDoi);
         bundle_menu.putString("Doi_uriIMG",uriIMG);
@@ -255,5 +243,9 @@ public class DoiActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        team_flagment.kiemTraLayoutDoi = false;
+        super.onBackPressed();
+    }
 }
