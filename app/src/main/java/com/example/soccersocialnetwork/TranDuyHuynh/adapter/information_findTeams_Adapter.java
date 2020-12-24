@@ -50,6 +50,7 @@ public class information_findTeams_Adapter extends ArrayAdapter<information_find
         }
 
         information_findTeams information_findTeams = object.get(position);
+
         information_findTeams_holder.imageView.setImageResource(information_findTeams.getmIcon());
         information_findTeams_holder.txtTenDoi.setText(information_findTeams.getmTenDoi());
         information_findTeams_holder.txtDiaDiem.setText(information_findTeams.getmDiaDiem());

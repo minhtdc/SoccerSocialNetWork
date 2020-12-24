@@ -128,6 +128,31 @@ public class LoginActivity extends AppCompatActivity {
                                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                     startActivity(intent);
                                     finish();
+                String userName = edtLoginEmail.getText().toString();
+                String userPass = edtLoginPassword.getText().toString();
+                if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
+                    fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull final Task<AuthResult> task) {
+
+                            if (task.isSuccessful()) {
+                                //lấy thông tin người dùng
+                                USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
+                                IS_LOGIN = true;
+                                editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
+                                editor.putBoolean("IS_LOGIN", IS_LOGIN);
+//                              editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
+                                editor.commit();
+                                // Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, home_layout.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(intent);
+                                finish();
+
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+
+                            }
 
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();

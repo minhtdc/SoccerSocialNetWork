@@ -2,6 +2,18 @@ package com.example.soccersocialnetwork.data_models;
 
 public class Users {
     private String userID;
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "userID='" + userID + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userBirth='" + userBirth + '\'' +
+                ", userAria='" + userAria + '\'' +
+                '}';
+    }
+
     private String userEmail;
     private String userName;
     private String userBirth;

@@ -18,10 +18,17 @@
         <activity android:name=".TranDuyHuynh.all_stadiums"></activity>
         <activity android:name=".TranDuyHuynh.TimKiemUserActivity"></activity>
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua" />
+        <activity android:name=".DoanThanhTung.ViewThanhTung.ThemThanhVien"></activity>
+        <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua" />
+        <activity android:name=".TranDuyHuynh.edit_profile_user" />
+        <activity android:name=".TranDuyHuynh.all_stadiums" />
         <activity android:name=".TranDuyHuynh.infomation_dangtintimtran" />
         <activity android:name=".football_field_owner.activity.AddZoneActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.DoiActivity" />
+        <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTinCaNhan" />
+        <activity android:name=".Set_Foothball_Pitches.activity.SetFoothballPitchesActivity" />
+        <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity" />
         <activity android:name=".LoginActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

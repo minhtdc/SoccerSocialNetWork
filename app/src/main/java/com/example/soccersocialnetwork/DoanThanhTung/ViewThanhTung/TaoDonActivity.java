@@ -20,7 +20,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -30,7 +32,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.ListTeamUser;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -84,10 +89,11 @@ public class TaoDonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tao_doi__layout);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        actionBar.setTitle("Tạo dội");
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         setControl();
-        readTeam();
         setEvent();
     }
 
@@ -106,11 +112,10 @@ public class TaoDonActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private void setEvent() {
+        readTeam();
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
+
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +205,7 @@ public class TaoDonActivity extends AppCompatActivity {
     private Team getTeam() {
         Team team = new Team();
 
+        team.setIdDoi(IDLatter());
         team.setTenDoi(txtTenDoi.getText().toString());
         team.setKhuVuc(spKhuVuc.getSelectedItem().toString());
         team.setEmail(txtEmail.getText().toString());
@@ -208,9 +214,31 @@ public class TaoDonActivity extends AppCompatActivity {
         team.setTieuChi(txtTieuChi.getText().toString());
         team.setsLogan(txtSlogan.getText().toString());
         team.setHinhAnh(uri.toString());
+
+      //  team.setIdDoiTruong(LoginActivity.USER_ID_CURRENT);
+
         return team;
     }
 
+    ArrayList<String> listTeamUsers = new ArrayList<>();
+    public void insertFirebaseUserDoiTruong() {
+//        final ProgressDialog progreDiaglogLoadding = new ProgressDialog(this);
+//        progreDiaglogLoadding.setTitle("Tải dữ liệu lên trang chủ");
+//        progreDiaglogLoadding.setMessage("Đang tải dữ liệu");
+//        progreDiaglogLoadding.show();
+
+        //  mDatabase = FirebaseDatabase.getInstance().getReference("Feeds").child(idDoi);
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(IDLatter()+"").child("listThanhVien");
+        mDatabase.child(LoginActivity.USER_ID_CURRENT).setValue("Admin");
+//        listTeamUsers.add(listTeamUser);
+
+//        mDatabase.setValue(listTeamUsers).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                progreDiaglogLoadding.dismiss();
+//            }
+//        });
+    }
     public int IDLatter() {
         int idCuoi = 0;
         //lay uid cuoi cung
@@ -225,29 +253,29 @@ public class TaoDonActivity extends AppCompatActivity {
 //        for (int i = 0; i < listTeam.size(); i++) {
 //            team.setIdDoi(listTeam.get(i).getIdDoi() + 1);
 //        }
-        team.setIdDoi(IDLatter());
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(team.getIdDoi() + "");
+//        team.setIdDoi(IDLatter());
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(IDLatter() + "");
         mDatabase.setValue(team).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
 
-                    progreDiaglog.dismiss();
-                    // chuyển qua layout khác và dữ liệu
-                    Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
+                progreDiaglog.dismiss();
+                // chuyển qua layout khác và dữ liệu
+                Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("TaoDoi_IDDoi", IDLatter() - 1 + "");
-                    bundle.putString("TaoDoi_IMGDoi", uri.toString());
-                    bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
-                    bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
-                    bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
-                    bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
-                    bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
-                    bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
-                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    finish();
+                Bundle bundle = new Bundle();
+                bundle.putString("TaoDoi_IDDoi", IDLatter() - 1 + "");
+                bundle.putString("TaoDoi_IMGDoi", uri.toString());
+                bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
+                bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
+                bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
+                bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
+                bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
+                bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
+                bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
 
 
             }
@@ -291,6 +319,7 @@ public class TaoDonActivity extends AppCompatActivity {
                         String uriIMG = downloadPhotoUrl.toString();
                         team.setHinhAnh(uriIMG);
                         insertTeam(team, progreDiaglog);
+                        insertFirebaseUserDoiTruong();
                         //progreDiaglog.dismiss();
 
                     }
@@ -300,10 +329,6 @@ public class TaoDonActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
 
 
     private void updataTeam(Team team) {
@@ -343,8 +368,6 @@ public class TaoDonActivity extends AppCompatActivity {
         });
 
     }
-
-
 
 
     @Override
@@ -388,5 +411,16 @@ public class TaoDonActivity extends AppCompatActivity {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

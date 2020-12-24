@@ -23,6 +23,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,9 +40,11 @@ import java.util.List;
 public class Doi_ThongTinCaNhan extends AppCompatActivity {
 
     ImageView imgThongTinDoi;
-
-    TextView tvTenDoiThongTinDoi, tvGioiThieuThongTinDoi, tvTieuChiThongTinDoi, tvSloganThongTinDoi, tvEmailThongTinDoi, tvSDTThongTinDoi,tvKhuThongTinDoi;
+    MenuItem mnEdit;
+    TextView tvTenDoiThongTinDoi, tvGioiThieuThongTinDoi, tvTieuChiThongTinDoi, tvSloganThongTinDoi, tvEmailThongTinDoi, tvSDTThongTinDoi, tvKhuThongTinDoi;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
+
+    ArrayList<String> listTeamUsers = new ArrayList<>();
 
     private DatabaseReference mDatabase;
 
@@ -54,40 +57,36 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setControl();
-       // spKhuThongTinDoi.setEnabled(false);
+        // spKhuThongTinDoi.setEnabled(false);
         //Toast.makeText(this, fireBaseTeam.getListTeam().size() +"", Toast.LENGTH_SHORT).show();
-      //  setEvent();
+        //  setEvent();
         takeData();
         readTeam();
-
+        readUser(idDoi);
 
         imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Doi_ThongTinCaNhan.this, imageViewToByte(imgThongTinDoi) +"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Doi_ThongTinCaNhan.this, listTeamUsers.get(0) + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Doi_ThongTinCaNhan.this, LoginActivity.USER_ID_CURRENT + "", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    private byte[] imageViewToByte(ImageView imageView) {
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bytes = stream.toByteArray();
-        OutputStream outputStream = new ByteArrayOutputStream();
-        return bytes;
 
-    }
-    private void takeData(){
-        tenDoi = getIntent().getExtras().getString("Doi_TenDoi");
-        uriIMG = getIntent().getExtras().getString("Doi_uriIMG");
+
+    private void takeData() {
+
         idDoi = getIntent().getExtras().getString("Doi_ID");
-        khuVuc = getIntent().getExtras().getString("Doi_KhuVuc");
-        email = getIntent().getExtras().getString("Doi_Email");
-        sdt = getIntent().getExtras().getString("Doi_SDT");
-        gioiThieu = getIntent().getExtras().getString("Doi_GioiThieu");
-        tieuChi = getIntent().getExtras().getString("Doi_TieuChi");
-        slogan = getIntent().getExtras().getString("Doi_Slogan");
+//        tenDoi = getIntent().getExtras().getString("Doi_TenDoi");
+//        uriIMG = getIntent().getExtras().getString("Doi_uriIMG");
+//        khuVuc = getIntent().getExtras().getString("Doi_KhuVuc");
+//        email = getIntent().getExtras().getString("Doi_Email");
+//        sdt = getIntent().getExtras().getString("Doi_SDT");
+//        gioiThieu = getIntent().getExtras().getString("Doi_GioiThieu");
+//        tieuChi = getIntent().getExtras().getString("Doi_TieuChi");
+//        slogan = getIntent().getExtras().getString("Doi_Slogan");
     }
+
     private void setEvent() {
 //        takeData();
 //        Picasso.get().load(uriIMG).into(imgThongTinDoi);
@@ -120,6 +119,9 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         tvSloganThongTinDoi = findViewById(R.id.tvSloganThongTinDoi);
         tvEmailThongTinDoi = findViewById(R.id.tvEmailThongTinDoi);
         tvSDTThongTinDoi = findViewById(R.id.tvSDTThongTinDoi);
+
+
+
     }
 
     public void readTeam() {
@@ -131,7 +133,7 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
                     keys.add(dt.getKey());
-                    if(idDoi.equals(dt.getKey())){
+                    if (idDoi.equals(dt.getKey())) {
                         Team team = dt.getValue(Team.class);
                         // listTeam.add(team);
                         Picasso.get().load(team.getHinhAnh()).into(imgThongTinDoi);
@@ -144,8 +146,6 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
                         tvSloganThongTinDoi.setText(team.getsLogan());
                         break;
                     }
-
-
                     // Toast.makeText(DoiActivity.this, listTeam.size() + "", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -157,11 +157,46 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         });
 
     }
+
+
+    public void readUser(String key) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listTeamUsers.clear();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    listTeamUsers.add(dt.getKey());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     //add menu actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_doi_chinhsua,menu);
+        getMenuInflater().inflate(R.menu.menu_doi_chinhsua, menu);
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mnEdit = menu.findItem(R.id.mnEdit);
+
+           // if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(0))){
+                mnEdit.setVisible(true);
+          //  }
+
+        return true;
     }
 
     //click actionbar
@@ -170,22 +205,23 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                finish();
                 return true;
             case R.id.mnEdit:
                 takeData();
-                Intent intent = new Intent(Doi_ThongTinCaNhan.this,Doi_ThongTin_ChinhSua.class);
+                Intent intent = new Intent(Doi_ThongTinCaNhan.this, Doi_ThongTin_ChinhSua.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("ID_DoiChinhSua",idDoi);
-                bundle.putString("IMG_DoiChinhSua",uriIMG);
+                bundle.putString("ID_DoiChinhSua", idDoi);
+                bundle.putString("IMG_DoiChinhSua", uriIMG);
 
-                bundle.putString("Ten_DoiChinhSua",tvTenDoiThongTinDoi.getText().toString());
+                bundle.putString("Ten_DoiChinhSua", tvTenDoiThongTinDoi.getText().toString());
 
-                bundle.putString("KhuVuc_DoiChinhSua",tvKhuThongTinDoi.getText().toString());
-                bundle.putString("Email_DoiChinhSua",tvEmailThongTinDoi.getText().toString());
-                bundle.putString("SDT_DoiChinhSua",tvSDTThongTinDoi.getText().toString());
-                bundle.putString("GioiThieu_DoiChinhSua",tvGioiThieuThongTinDoi.getText().toString());
-                bundle.putString("TieuChi_DoiChinhSua",tvTieuChiThongTinDoi.getText().toString());
-                bundle.putString("Slogan_DoiChinhSua",tvSloganThongTinDoi.getText().toString());
+                bundle.putString("KhuVuc_DoiChinhSua", tvKhuThongTinDoi.getText().toString());
+                bundle.putString("Email_DoiChinhSua", tvEmailThongTinDoi.getText().toString());
+                bundle.putString("SDT_DoiChinhSua", tvSDTThongTinDoi.getText().toString());
+                bundle.putString("GioiThieu_DoiChinhSua", tvGioiThieuThongTinDoi.getText().toString());
+                bundle.putString("TieuChi_DoiChinhSua", tvTieuChiThongTinDoi.getText().toString());
+                bundle.putString("Slogan_DoiChinhSua", tvSloganThongTinDoi.getText().toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;

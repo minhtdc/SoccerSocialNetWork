@@ -23,6 +23,7 @@ import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,15 +64,15 @@ public class DoiActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
         //chuyền dữ liệu vào string --- TEAM
-        tenDoi = getIntent().getExtras().getString("TaoDoi_TenDoi");
-        uriIMG = getIntent().getExtras().getString("TaoDoi_IMGDoi");
-        idDoi = getIntent().getExtras().getString("TaoDoi_IDDoi");
-        khuVuc = getIntent().getExtras().getString("TaoDoi_KhuVuc");
-        email = getIntent().getExtras().getString("TaoDoi_Email");
-        sdt = getIntent().getExtras().getString("TaoDoi_SDT");
-        gioiThieu = getIntent().getExtras().getString("TaoDoi_GioiThieu");
-        tieuChi = getIntent().getExtras().getString("TaoDoi_TieuChi");
-        slogan = getIntent().getExtras().getString("TaoDoi_Slogan");
+//        tenDoi = getIntent().getExtras().getString("TaoDoi_TenDoi");
+//        uriIMG = getIntent().getExtras().getString("TaoDoi_IMGDoi");
+
+//        khuVuc = getIntent().getExtras().getString("TaoDoi_KhuVuc");
+//        email = getIntent().getExtras().getString("TaoDoi_Email");
+//        sdt = getIntent().getExtras().getString("TaoDoi_SDT");
+//        gioiThieu = getIntent().getExtras().getString("TaoDoi_GioiThieu");
+//        tieuChi = getIntent().getExtras().getString("TaoDoi_TieuChi");
+//        slogan = getIntent().getExtras().getString("TaoDoi_Slogan");
 
 //        //chuyển đổi ảnh bằng uri
 //        Picasso.get().load(uriIMG).fit().into(imgDoi);
@@ -183,14 +184,22 @@ public class DoiActivity extends AppCompatActivity {
     }
 
     private void setupViewPager() {
+        idDoi = getIntent().getExtras().getString("TaoDoi_IDDoi");
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+        Fragment_Doi fragment_doi = new Fragment_Doi();
+        Bundle bundle_Doi = new Bundle();
+        bundle_Doi.putString("Doi_ID",idDoi);
+        fragment_doi.setArguments(bundle_Doi);
+        adapter.addFragment(fragment_doi, "");
 
-        adapter.addFragment(new Fragment_Doi(), "");
+
+
         adapter.addFragment(new Fragment_Doi_2(), "");
 
         //chuyền dữ liệu qua fragment
-        Fragment_Doi_Menu fragment_doi = new Fragment_Doi_Menu();
+        Fragment_Doi_Menu fragment_doi_menu = new Fragment_Doi_Menu();
 
 
         Bundle bundle_menu = new Bundle();
@@ -204,18 +213,19 @@ public class DoiActivity extends AppCompatActivity {
         bundle_menu.putString("Doi_TieuChi",tieuChi);
         bundle_menu.putString("Doi_Slogan",slogan);
 
-        fragment_doi.setArguments(bundle_menu);
-
-        adapter.addFragment(fragment_doi, "");
+        fragment_doi_menu.setArguments(bundle_menu);
+//
+        adapter.addFragment(fragment_doi_menu, "");
 
         viewPager.setAdapter(adapter);
+
 
     }
 
     private void setIcon() {
-        tabLayout.getTabAt(0).setIcon(R.drawable.icon_home);
-        tabLayout.getTabAt(1).setIcon(R.drawable.icon_delicious);
-        tabLayout.getTabAt(2).setIcon(R.drawable.icon_bars);
+        tabLayout.getTabAt(0).setText("Trang chủ");
+        tabLayout.getTabAt(1).setText("Trận đấu");
+        tabLayout.getTabAt(2).setText("Menu");
 
     }
 
@@ -235,8 +245,9 @@ public class DoiActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
+                team_flagment.kiemTraLayout = false;
                 onBackPressed();
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -46,6 +46,12 @@
     <string name="Doi_Slogan">Slogan</string>
     <string name="Doi_Email">Email</string>
     <string name="Doi_SDT">SĐT</string>
+    <array name="listHanGio">
+        <item>12 giờ</item>
+        <item>24 giờ</item>
+        <item>48 giờ</item>
+        <item>72 giờ</item>
+    </array>
     <array name="listKhuVuc">
         <item>Đà Nẳng</item>
         <item>Hà Nội</item>
