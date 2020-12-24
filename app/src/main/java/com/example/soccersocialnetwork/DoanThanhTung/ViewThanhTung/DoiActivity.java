@@ -245,7 +245,9 @@ public class DoiActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                team_flagment.kiemTraLayout = false;
+                team_flagment.kiemTraLayoutDoi = false;
+                team_flagment.kiemTraLayoutChuaDoi = true;
+
                 onBackPressed();
                 finish();
                 return true;

@@ -117,7 +117,9 @@ public class team_flagment extends Fragment {
 
     }
 
-    public static boolean kiemTraLayout = false;
+    public static boolean kiemTraLayoutDoi = false;
+    public static boolean kiemTraLayoutChuaDoi = false;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -139,13 +141,12 @@ public class team_flagment extends Fragment {
 //        listView = (ListView) getView().findViewById(R.id.lstTeam);
 //        listView.setAdapter(information_listTeams_adapter);
         readDoiFirebase();
-        final Intent intent = new Intent(getContext(), DoiActivity.class);
-        final Bundle bundle = new Bundle();
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-              final String key = listTeams.get(position).getIdDoi() + "";
-                Toast.makeText(getContext(), listTeams.get(position).getIdDoi() + "", Toast.LENGTH_SHORT).show();
+                final String key = listTeams.get(position).getIdDoi() + "";
+
 
                 mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
                 mDatabase.addValueEventListener(new ValueEventListener() {
@@ -158,15 +159,24 @@ public class team_flagment extends Fragment {
                         }
                         for (int i = 0; i < listTeamUsers.size(); i++) {
                             if (LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))) {
-                                if(kiemTraLayout == false){
+                                if (kiemTraLayoutDoi == false) {
+                                     Intent intent = new Intent(getContext(), DoiActivity.class);
+                                     Bundle bundle = new Bundle();
                                     bundle.putString("TaoDoi_IDDoi", key);
                                     intent.putExtras(bundle);
-                                    kiemTraLayout = true;
+                                    kiemTraLayoutDoi = true;
                                     startActivity(intent);
                                 }
-                                return;
+                                break;
                             }
                         }
+//                        if(kiemTraLayoutChuaDoi==false && kiemTraLayoutDoi==false){
+//                            Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("Doi_ID",key+"");
+//                        intent.putExtras(bundle);
+//                        startActivity(intent);
+//                        }
                     }
 
                     @Override
