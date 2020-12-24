@@ -89,7 +89,9 @@ public class home_layout extends AppCompatActivity {
         link.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                LoginActivity.USER_IMG_CURRENT = snapshot.getValue().toString();
+                if(!snapshot.getValue().toString().equals("")) {
+                    LoginActivity.USER_IMG_CURRENT = snapshot.getValue().toString();
+                }
             }
 
             @Override
