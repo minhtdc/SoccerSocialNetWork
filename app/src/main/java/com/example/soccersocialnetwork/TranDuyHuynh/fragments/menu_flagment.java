@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,10 +98,13 @@ public class menu_flagment extends Fragment {
 
         //set ảnh đại diện
         //imageView_user.setImageResource(R.drawable.img_team5)
+        Picasso.get().load(LoginActivity.USER_IMG_CURRENT).into(imageView_user);
+
 
 
         //set tên người dùng
         name_user_menu.setText(LoginActivity.USER_NAME_CURRENT);
+
 
 
         // click vào img down của button  trợ giúp sẽ hiện thị các item chức năng trợ giúp
