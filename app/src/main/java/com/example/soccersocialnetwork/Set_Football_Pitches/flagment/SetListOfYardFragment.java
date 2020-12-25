@@ -1,4 +1,4 @@
-package com.example.soccersocialnetwork.football_field_owner.flagment;
+package com.example.soccersocialnetwork.Set_Football_Pitches.flagment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.example.soccersocialnetwork.Football_Pitches.activity.FootballPitchesActivity;
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
-import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetZoneActivity;
+import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
 import com.example.soccersocialnetwork.football_field_owner.adapter.CustomAdapterFootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.google.firebase.database.ChildEventListener;
@@ -28,22 +29,24 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class ListOfYardFragment extends Fragment {
+public class SetListOfYardFragment extends Fragment {
     ListView lvFootballPitches;
+    TextView txt;
     ArrayList<FootballPitches> data_FootballPitches;
     ArrayAdapter adapter_FootballPitches;
     DatabaseReference mFirebaseDatabase;
-    String idKhu ;
+    SetZoneActivity mActivity;
+    String idKhu = stadium_flagment.idKhu;
     public static String idSan;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_of_yard, container, false);
         lvFootballPitches = view.findViewById(R.id.lvFootballPitches);
+        txt = view.findViewById(R.id.txtxxx);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        idKhu = ListZone.idKhu;
+        mActivity = (SetZoneActivity) getActivity();
         setEvent();
         return view;
     }
@@ -56,8 +59,8 @@ public class ListOfYardFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 FootballPitches footballPitches = data_FootballPitches.get(i);
+                Intent intent = new Intent(getContext(), SetFootballPitchesActivity.class);
                 idSan = footballPitches.getId();
-                Intent intent = new Intent(getContext(), FootballPitchesActivity.class);
 
                 startActivity(intent);
             }
@@ -65,6 +68,7 @@ public class ListOfYardFragment extends Fragment {
     }
 
     private void loadData() {
+        txt.setText(idKhu);
         data_FootballPitches = new ArrayList<>();
         mFirebaseDatabase.child("San").addChildEventListener(new ChildEventListener() {
             @Override
@@ -74,9 +78,9 @@ public class ListOfYardFragment extends Fragment {
                 if (footballPitches.getIdKhu().equals(idKhu)) {
                     data_FootballPitches.add(new FootballPitches(footballPitches.getTenSan(),
                             footballPitches.getLoaiHinhSan(), footballPitches.getLoaiSan(),
-                            footballPitches.getGiaBT(), footballPitches.getGiaCD(), footballPitches.getId(), "aaa"));
-                    adapter_FootballPitches.notifyDataSetChanged();
+                            footballPitches.getGiaBT(), footballPitches.getGiaCD(), footballPitches.getId(), footballPitches.getIdKhu()));
                 }
+                adapter_FootballPitches.notifyDataSetChanged();
             }
 
             @Override

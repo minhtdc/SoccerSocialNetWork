@@ -1,18 +1,16 @@
-package com.example.soccersocialnetwork.football_field_owner.model;
+package com.example.soccersocialnetwork.Set_Football_Pitches.model;
 
-public class RushHour {
+public class FreeTime {
     int gioBD, phutBD, gioKT, phutKT;
-    String id;
 
-    public RushHour() {
+    public FreeTime() {
     }
 
-    public RushHour(int gioBD, int phutBD, int gioKT, int phutKT, String id) {
+    public FreeTime(int gioBD, int phutBD, int gioKT, int phutKT) {
         this.gioBD = gioBD;
         this.phutBD = phutBD;
         this.gioKT = gioKT;
         this.phutKT = phutKT;
-        this.id = id;
     }
 
     public int getGioBD() {
@@ -47,17 +45,11 @@ public class RushHour {
         this.phutKT = phutKT;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return gioBD + ":" + phutBD + " - " +
                 gioKT + ":" + phutKT;
     }
+
+
 }

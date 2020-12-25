@@ -1,17 +1,12 @@
-package com.example.soccersocialnetwork.football_field_owner.flagment;
+package com.example.soccersocialnetwork.Football_Pitches.flagment;
 
-import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -27,63 +22,114 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-
+import com.example.soccersocialnetwork.Football_Pitches.activity.FootballPitchesActivity;
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
-import com.example.soccersocialnetwork.football_field_owner.activity.AddZoneActivity;
-import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
-import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.RushHour;
-
-import com.example.soccersocialnetwork.football_field_owner.model.Zone;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.ArrayList;
 
-public class AddFootballPitchesFragment extends Fragment {
+public class EditFootballPitchesFragment extends Fragment {
     View view;
     EditText txtTenSan, txtGiaGioCD, txtGiaGioBT;
     Spinner spLoaiSan, spLoaiHinhSan;
     TextView tvGioBD, tvGioKT;
-    Spinner spnGioBD, spnPhutBD, spnGioKT, spnPhutKT;
     ListView lvDSGioCD;
-    Button btnGioCD, btnThemSan;
+    Button btnGioCD, btnSuaSan;
     DatabaseReference mFirebase;
+    DatabaseReference mDataGioCD;
     DatabaseReference mFirebaseHour;
     String idHour = "";
     int gioBD, phutBD, gioKT, phutKT;
 
-    String idKhu = ListZone.idKhu;
-    private ZoneInfoActivity mActivity;
-
-    ArrayList<RushHour> data_rh = new ArrayList<>();
-    ArrayList<String> data_ls;
-    ArrayList<String> data_lhs;
-    ArrayList<String> data_gio = new ArrayList<>();
-    ArrayList<String> data_phut = new ArrayList<>();
-    ArrayAdapter adapter_gioCD;
-    ArrayAdapter adapter_phutCD;
+    ArrayList<RushHour> data_rh;
+    ArrayList<String> data_ls = new ArrayList<>();
+    ArrayList<String> data_lhs = new ArrayList<>();
     ArrayAdapter adapter_lvCD;
     ArrayAdapter adapter;
 
+
+    String key = "";
+    private FootballPitchesActivity mPitchesActivity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_add_football_pitches, container, false);
-        mFirebase = FirebaseDatabase.getInstance().getReference();
-        mFirebaseHour = FirebaseDatabase.getInstance().getReference().child("GioCaoDiem");
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_edit_football_pitches, container, false);
+        mPitchesActivity = (FootballPitchesActivity) getActivity();
+        key = mPitchesActivity.getKey();
         setControl();
         setEvent();
         return view;
     }
 
     private void setEvent() {
+        data_rh = new ArrayList<>();
+        mFirebase = FirebaseDatabase.getInstance().getReference().child("San").child(key);
+        mFirebaseHour = FirebaseDatabase.getInstance().getReference().child("GioCaoDiem").child(key);
+
+        mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                FootballPitches footballPitches = snapshot.getValue(FootballPitches.class);
+                txtTenSan.setText(footballPitches.getTenSan());
+                spLoaiHinhSan.setSelection(data_lhs.indexOf(footballPitches.getLoaiHinhSan()));
+                spLoaiSan.setSelection(data_ls.indexOf(footballPitches.getLoaiSan()));
+                txtGiaGioCD.setText(footballPitches.getGiaCD());
+                txtGiaGioBT.setText(footballPitches.getGiaBT());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mDataGioCD = FirebaseDatabase.getInstance().getReference().child("GioCaoDiem").child(key);
+        mDataGioCD.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                RushHour rushHour = snapshot.getValue(RushHour.class);
+                data_rh.add(new RushHour(rushHour.getGioBD(), rushHour.getPhutBD(),
+                        rushHour.getGioKT(), rushHour.getPhutKT(), rushHour.getId()));
+                if (adapter_lvCD == null) {
+                    adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1,data_rh);
+                    lvDSGioCD.setAdapter(adapter_lvCD);
+                } else {
+                    adapter_lvCD.notifyDataSetChanged();
+                    lvDSGioCD.setSelection(adapter_lvCD.getCount() - 1);
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         KhoiTao();
 
         setAdapterSpinner(data_ls, adapter, spLoaiSan);
@@ -105,26 +151,17 @@ public class AddFootballPitchesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dialogGioCaoDiem();
-
             }
         });
 
-        btnThemSan.setOnClickListener(new View.OnClickListener() {
+        btnSuaSan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String key = mFirebase.child("San").push().getKey();
                 FootballPitches footballPitches = getFootballPitches(key);
-                mFirebase.child("San").child(key).setValue(footballPitches);
-                getZone();
-                mFirebaseHour.child(footballPitches.getId()).setValue(data_rh);
-
-                txtTenSan.setText("");
-                spLoaiSan.setSelection(0);
-                spLoaiHinhSan.setSelection(0);
-                txtGiaGioBT.setText("");
-                txtGiaGioCD.setText("");
-                data_rh.clear();
-                adapter_lvCD.notifyDataSetChanged();
+                mFirebase.setValue(footballPitches);
+                mFirebaseHour.setValue(data_rh);
+                mPitchesActivity.finish();
+                startActivity(mPitchesActivity.getIntent());
             }
         });
     }
@@ -138,19 +175,6 @@ public class AddFootballPitchesFragment extends Fragment {
         tvGioKT = alertLayout.findViewById(R.id.tvGioKT);
         //khởi tạo dữ liệu
         KhoiTao();
-        spnGioBD = alertLayout.findViewById(R.id.spnGioBD);
-        spnPhutBD = alertLayout.findViewById(R.id.spnPhutBD);
-        spnGioKT = alertLayout.findViewById(R.id.spnGioKT);
-        spnPhutKT = alertLayout.findViewById(R.id.spnPhutKT);
-        //khởi tạo dữ liệu
-        KhoiTao();
-        //set adapter
-        adapter_gioCD = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data_gio);
-        spnGioBD.setAdapter(adapter_gioCD);
-        spnGioKT.setAdapter(adapter_gioCD);
-        adapter_phutCD = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data_phut);
-        spnPhutBD.setAdapter(adapter_phutCD);
-        spnPhutKT.setAdapter(adapter_phutCD);
         //set title dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle("Giờ Cao Điểm");
@@ -172,7 +196,7 @@ public class AddFootballPitchesFragment extends Fragment {
                                 try {
                                     SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
                                     Date date = f24hours.parse(time);
-                                    Toast.makeText(getContext(), time + "", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), time+"", Toast.LENGTH_SHORT).show();
                                     tvGioBD.setText(time);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -181,7 +205,7 @@ public class AddFootballPitchesFragment extends Fragment {
                         }, 12, 00, true);
                 timePickerDialog.setTitle("Thời gian");
                 timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
-                timePickerDialog.updateTime(gioBD, phutBD);
+                timePickerDialog.updateTime(gioBD,phutBD);
                 timePickerDialog.show();
             }
         });
@@ -200,7 +224,7 @@ public class AddFootballPitchesFragment extends Fragment {
                                 SimpleDateFormat f24hours = new SimpleDateFormat("hh:mm");
                                 try {
                                     Date date = f24hours.parse(time);
-                                    Toast.makeText(getContext(), time + "", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), time+"", Toast.LENGTH_SHORT).show();
                                     tvGioKT.setText(time);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -209,7 +233,7 @@ public class AddFootballPitchesFragment extends Fragment {
                         }, 12, 00, true);
                 timePickerDialog.setTitle("Thời gian");
                 timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
-                timePickerDialog.updateTime(gioKT, phutKT);
+                timePickerDialog.updateTime(gioKT,phutKT);
                 timePickerDialog.show();
             }
         });
@@ -229,11 +253,8 @@ public class AddFootballPitchesFragment extends Fragment {
                 RushHour rushHour = getRushHour(idHour);
                 data_rh.add(rushHour);
                 if (adapter_lvCD == null) {
-                    adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, data_rh);
-                    lvDSGioCD.setAdapter(adapter_lvCD);
                     adapter_lvCD = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1,data_rh);
                     lvDSGioCD.setAdapter(adapter_lvCD);
-                    adapter_gioCD.notifyDataSetChanged();
                 } else {
                     adapter_lvCD.notifyDataSetChanged();
                     lvDSGioCD.setSelection(adapter_lvCD.getCount() - 1);
@@ -253,24 +274,7 @@ public class AddFootballPitchesFragment extends Fragment {
         rushHour.setId(idHour);
         return rushHour;
     }
-    private void getZone(){
 
-
-        Zone zone = new Zone();
-        if (spLoaiSan.getSelectedItem().toString().equals("Cỏ Tự Nhiên")){
-            zone.setCoTuNhien(true);
-            mFirebase.child("Khu").child(idKhu).child("coNhanTao").setValue(true);
-        }else {
-            mFirebase.child("Khu").child(idKhu).child("coTuNhien").setValue(true);
-        }
-        if (spLoaiHinhSan.getSelectedItem().toString().equals("5 người")){
-            mFirebase.child("Khu").child(idKhu).child("namNguoi").setValue(true);
-        }else if (spLoaiHinhSan.getSelectedItem().toString().equals("7 người")){
-            mFirebase.child("Khu").child(idKhu).child("bayNguoi").setValue(true);
-        }else{
-            mFirebase.child("Khu").child(idKhu).child("chinNguoi").setValue(true);
-        }
-    }
     private FootballPitches getFootballPitches(String id) {
         FootballPitches footballPitches = new FootballPitches();
         footballPitches.setTenSan(txtTenSan.getText().toString());
@@ -279,7 +283,6 @@ public class AddFootballPitchesFragment extends Fragment {
         footballPitches.setGiaBT(txtGiaGioBT.getText().toString());
         footballPitches.setGiaCD(txtGiaGioCD.getText().toString());
         footballPitches.setId(id);
-        footballPitches.setIdKhu(idKhu);
         return footballPitches;
     }
 
@@ -294,8 +297,6 @@ public class AddFootballPitchesFragment extends Fragment {
     }
 
     private void KhoiTao() {
-        data_lhs = new ArrayList<>();
-        data_ls = new ArrayList<>();
         data_ls.add("Cỏ Tự Nhiên");
         data_ls.add("Cỏ Nhân Tạo");
         data_lhs.add("5 người");
@@ -311,7 +312,6 @@ public class AddFootballPitchesFragment extends Fragment {
         spLoaiHinhSan = view.findViewById(R.id.spLoaiHinhSan);
         lvDSGioCD = view.findViewById(R.id.lvDanhSach);
         btnGioCD = view.findViewById(R.id.btnThemGioCD);
-        btnThemSan = view.findViewById(R.id.btnThemSan);
+        btnSuaSan = view.findViewById(R.id.btnSuaSan);
     }
-
 }

@@ -1,5 +1,12 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +21,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.example.soccersocialnetwork.R;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +45,10 @@ import com.squareup.picasso.Picasso;
  * create an instance of this fragment.
  */
 public class menu_flagment extends Fragment {
-    Dialog dialog;
+     Dialog dialog ;
     LinearLayout lnUser;
     ImageView imageView_icHelps, imageView_Setting, imageView_user;
-    LinearLayout ln_choose_Helps, ln_choose_Settings, lnDangXuat;
+    LinearLayout ln_choose_Helps, ln_choose_Settings,lnDangXuat;
     TextView name_user_menu;
     ImageButton btnTimKiem;
     // TODO: Rename parameter arguments, choose names that match
@@ -155,7 +166,7 @@ public class menu_flagment extends Fragment {
         lnUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), edit_profile_user.class);
+                Intent intent = new Intent(getContext(),edit_profile_user.class);
                 startActivity(intent);
             }
         });

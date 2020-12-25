@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.InputType;
+import android.util.Log;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -44,6 +47,15 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
     private support_func support_func;
     Animation topAnimation, bottomAnimation;
@@ -53,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtLoginEmail, edtLoginPassword;
     public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
     Users user = new Users();
+    public static FirebaseAuth fAuth;
     public static String USER_ID_CURRENT;
     public static String USER_NAME_CURRENT;
     public static String USER_IMG_CURRENT;

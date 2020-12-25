@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <LinearLayout tools:context=".football_field_owner.flagment.ListOfYardFragment" android:padding="20dp" android:background="@drawable/customborder" android:orientation="vertical" android:layout_height="match_parent" android:layout_width="match_parent" xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/customborder"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".football_field_owner.flagment.ListOfYardFragment">
 
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginBottom="20dp" android:textStyle="bold" android:layout_gravity="center" android:textSize="20dp" android:text="Danh Sách Sân"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:text="Danh Sách Sân"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tess"
+        android:id="@+id/txtxxx"/>
 
-
-    <ListView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/lvFootballPitches"> </ListView>
+    <ListView
+        android:id="@+id/lvFootballPitches"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 
 </LinearLayout>
