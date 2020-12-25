@@ -255,5 +255,9 @@ public class DoiActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        team_flagment.kiemTraLayoutDoi = false;
+        super.onBackPressed();
+    }
 }

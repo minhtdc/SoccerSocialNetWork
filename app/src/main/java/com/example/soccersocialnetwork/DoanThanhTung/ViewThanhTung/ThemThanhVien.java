@@ -2,14 +2,20 @@ package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien_2;
 import com.example.soccersocialnetwork.R;
@@ -19,16 +25,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class ThemThanhVien extends AppCompatActivity {
-    SearchView svThemThanhVien;
-    Button btnEXIT;
-    ListView lvThemThanhVien;
-    ListView lvDanhSachDaThem;
-    Button btnThemThanhVien;
+
+    ImageView imgKichKhoiDoi;
     DatabaseReference mDatabase;
+    ListView lvAllThanhVien;
     public static ArrayList<Users> strings = new ArrayList<>();
     public static ArrayList<Users> listUser = new ArrayList<>();
     ArrayList<String> keyUser = new ArrayList<>();
@@ -36,84 +41,100 @@ public class ThemThanhVien extends AppCompatActivity {
 
     String idDoi;
 
-     Adapter_ThemThanhVien_2 adapterThem;
-     Adapter_ThemThanhVien adapterDanhSach;
+    Adapter_ThemThanhVien_2 adapterThem;
+    Adapter_ThanhVien adapter_thanhVien;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_them_thanh_vien);
         setControl();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Danh sách thành viên");
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         idDoi = getIntent().getExtras().getString("Doi_ID");
+
+         // Toast.makeText(this, idDoi+"", Toast.LENGTH_SHORT).show();
         getUser();
         setEvent();
     }
 
     private void setEvent() {
-        adapterThem = new Adapter_ThemThanhVien_2(this, R.layout.dialog_them_thanhvien_2, strings);
-        lvThemThanhVien.setAdapter(adapterThem);
-        adapterDanhSach = new Adapter_ThemThanhVien(this, R.layout.dialog_them_thanhvien_1, listUser);
-        lvDanhSachDaThem.setAdapter(adapterDanhSach);
-        svThemThanhVien.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    lvAllThanhVien.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+          //  Toast.makeText(ThemThanhVien.this, listUser.get(position).getUserEmail()+"", Toast.LENGTH_SHORT).show();
+            getUserChuanBiKich(listUser.get(position).getUserEmail());
+
+        }
+    });
+//        lvAllThanhVien.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                getUserChuanBiKich(listUser.get(position).getUserEmail());
+//                return false;
+//            }
+//        });
+    }
+
+    String keyUserChuanBiKich;
+    private void getUserChuanBiKich(final String key){
+
+     //   Toast.makeText(ThemThanhVien.this, users.getUserEmail()+"", Toast.LENGTH_SHORT).show();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapterDanhSach.getFilter().filter(query);
-                return false;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dt:
+                snapshot.getChildren()){
+
+                    Users users = dt.getValue(Users.class);
+
+                    if(key.equals(users.getUserEmail())){
+                       // Toast.makeText(ThemThanhVien.this, key+"", Toast.LENGTH_SHORT).show();
+                        for (DataSnapshot dtt:
+                        dt.child("listDoi").getChildren()){
+                            if(idDoi.equals(dtt.getKey())){
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                                databaseReference.child(dt.getKey()).child("listDoi").child(idDoi).setValue(null);
+                         //   Toast.makeText(ThemThanhVien.this, dtt.getValue()+"", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
-
-                adapterDanhSach.getFilter().filter(newText);
-
-
-                return false;
-            }
-        });
-
-        btnThemThanhVien.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("listThanhVien").push();
-                mDatabase.setValue("sdfsdf");
-            }
-        });
-
-        btnEXIT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             finish();
             }
         });
     }
-    private void insertThanhVien() {
-
-    }
-
     private void getUser() {
-        listUser.clear();
-        keyUser.clear();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").addChildEventListener(new ChildEventListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                keyUser.add(snapshot.getKey());
-                Users users = snapshot.getValue(Users.class);
-                listUser.add(users);
-            }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listUser.clear();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    Users users = dt.getValue(Users.class);
+                    for (DataSnapshot dtt :
+                            dt.child("listDoi").getChildren()) {
+                        if (dtt.getKey().equals(idDoi) ) {
+                            listUser.add(users);
+                            adapter_thanhVien = new Adapter_ThanhVien(getBaseContext(),R.layout.adapter_thanhviendoi,listUser);
+                            lvAllThanhVien.setAdapter(adapter_thanhVien);
+                            adapter_thanhVien.notifyDataSetChanged();
+                         //   Toast.makeText(ThemThanhVien.this, listUser.size() + "", Toast.LENGTH_SHORT).show();
+                        }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    }
 
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                }
 
             }
 
@@ -123,11 +144,23 @@ public class ThemThanhVien extends AppCompatActivity {
             }
         });
     }
+
     private void setControl() {
-         svThemThanhVien = findViewById(R.id.svThemThanhVien);
-         btnEXIT = findViewById(R.id.btnEXIT);
-         lvThemThanhVien = findViewById(R.id.lvThemThanhVien);
-         lvDanhSachDaThem = findViewById(R.id.lvDanhSachDaThem);
-         btnThemThanhVien = findViewById(R.id.btnThemThanhVien);
+
+        lvAllThanhVien = findViewById(R.id.lvAllThanhVien);
+        imgKichKhoiDoi = findViewById(R.id.imgKichKhoiDoi);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                onBackPressed();
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

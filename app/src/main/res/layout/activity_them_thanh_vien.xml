@@ -6,78 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".DoanThanhTung.ViewThanhTung.ThemThanhVien"
     android:orientation="vertical">
-    <LinearLayout
+
+    <ListView
+        android:id="@+id/lvAllThanhVien"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:text="Thêm thành viên"
-            android:textSize="25dp"
-            android:textStyle="bold"></TextView>
+    </ListView>
 
-        <Button
-            android:id="@+id/btnEXIT"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:layout_weight="1"
-            android:background="@color/colorRed"
-            android:text="X"
-            android:textSize="20dp"></Button>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Danh sách bạn đã thêm"
-            android:layout_gravity="center"></TextView>
-        <ListView
-            android:id="@+id/lvThemThanhVien"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-
-            ></ListView>
-
-        <SearchView
-            android:id="@+id/svThemThanhVien"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:queryHint="nhập tên"></SearchView>
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Những người khu vực gần bạn"
-            android:layout_gravity="center"></TextView>
-        <ListView
-            android:id="@+id/lvDanhSachDaThem"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5"
-            ></ListView>
-
-
-        <Button
-            android:id="@+id/btnThemThanhVien"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/btn_shape_login"
-            android:text="Thêm"></Button>
-    </LinearLayout>
 
 </LinearLayout>
