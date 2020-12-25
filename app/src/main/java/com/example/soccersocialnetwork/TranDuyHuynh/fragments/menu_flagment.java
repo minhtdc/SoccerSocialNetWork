@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.LoginActivity;
+import com.example.soccersocialnetwork.TranDuyHuynh.TimKiemUserActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
 import com.example.soccersocialnetwork.R;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +39,7 @@ public class menu_flagment extends Fragment {
     ImageView imageView_icHelps, imageView_Setting, imageView_user;
     LinearLayout ln_choose_Helps, ln_choose_Settings, lnDangXuat;
     TextView name_user_menu;
+    ImageButton btnTimKiem;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -80,7 +84,7 @@ public class menu_flagment extends Fragment {
     int viewCount = 0;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.menu_flagment, container, false);
@@ -93,13 +97,17 @@ public class menu_flagment extends Fragment {
         lnUser = rootView.findViewById(R.id.ln_user);
         lnDangXuat = rootView.findViewById(R.id.lnDangXuat);
         name_user_menu = rootView.findViewById(R.id.name_user_menu);
+        btnTimKiem = rootView.findViewById(R.id.btnTimKiem);
 
         //set ảnh đại diện
         //imageView_user.setImageResource(R.drawable.img_team5)
+        Picasso.get().load(LoginActivity.USER_IMG_CURRENT).into(imageView_user);
+
 
 
         //set tên người dùng
         name_user_menu.setText(LoginActivity.USER_NAME_CURRENT);
+
 
 
         // click vào img down của button  trợ giúp sẽ hiện thị các item chức năng trợ giúp
@@ -157,6 +165,15 @@ public class menu_flagment extends Fragment {
             @Override
             public void onClick(View view) {
                 showDialog_DangXuat();
+            }
+        });
+
+        //btn Tim kiem
+        btnTimKiem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), TimKiemUserActivity.class);
+                startActivity(intent);
             }
         });
 

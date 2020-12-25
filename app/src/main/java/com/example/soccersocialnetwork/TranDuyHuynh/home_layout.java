@@ -5,6 +5,7 @@ package com.example.soccersocialnetwork.TranDuyHuynh;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -49,7 +50,9 @@ public class home_layout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_layout);
 
-        toolbar = findViewById(R.id.toolbar);
+        //toolbar = findViewById(R.id.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 //        setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.viewPager);
@@ -80,6 +83,24 @@ public class home_layout extends AppCompatActivity {
 
             }
         });
+
+        //lấy ảnh người dùng
+        DatabaseReference link = FirebaseDatabase.getInstance().getReference(String.format("/users/%s/userImage", LoginActivity.USER_ID_CURRENT));
+        link.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.getValue().toString().equals("")) {
+                    LoginActivity.USER_IMG_CURRENT = snapshot.getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     private void getViewPagerAdapter(){

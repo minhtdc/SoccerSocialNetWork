@@ -9,6 +9,8 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -46,6 +48,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class LoginActivity extends AppCompatActivity {
     private support_func support_func;
     Animation topAnimation, bottomAnimation;
@@ -57,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     Users user = new Users();
     public static String USER_ID_CURRENT;
     public static String USER_NAME_CURRENT;
+    public static String USER_IMG_CURRENT;
     public static boolean IS_LOGIN;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
@@ -79,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("IS_LOGIN", IS_LOGIN) == true) {
             USER_ID_CURRENT = sharedPreferences.getString("USER_ID_CURRENT", USER_ID_CURRENT);
             USER_NAME_CURRENT = sharedPreferences.getString("USER_NAME_CURRENT", USER_NAME_CURRENT);
-            Toast.makeText(LoginActivity.this, "Wellcome back " + USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, home_layout.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
@@ -104,38 +108,40 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = edtLoginEmail.getText().toString();
-                String userPass = edtLoginPassword.getText().toString();
-                if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
-                    fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull final Task<AuthResult> task) {
+                if (isOnline()) {
+                    String userName = edtLoginEmail.getText().toString();
+                    String userPass = edtLoginPassword.getText().toString();
+                    if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
+                        fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull final Task<AuthResult> task) {
 
-                            if (task.isSuccessful()) {
-                                //lấy thông tin người dùng
-                                USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
-                                IS_LOGIN = true;
-                                editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
-                                editor.putBoolean("IS_LOGIN", IS_LOGIN);
+                                if (task.isSuccessful()) {
+                                    //lấy thông tin người dùng
+                                    USER_ID_CURRENT = fAuth.getCurrentUser().getUid();
+                                    IS_LOGIN = true;
+                                    editor.putString("USER_ID_CURRENT", USER_ID_CURRENT);
+                                    editor.putBoolean("IS_LOGIN", IS_LOGIN);
 //                              editor.putString("USER_NAME_CURRENT", USER_NAME_CURRENT);
-                                editor.commit();
-                                // Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, home_layout.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                startActivity(intent);
-                                finish();
+                                    editor.commit();
+                                    // Toast.makeText(LoginActivity.this, USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, home_layout.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                    startActivity(intent);
+                                    finish();
 
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Lỗi! Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
 
+                                }
                             }
+                        });
 
-
-                        }
-                    });
-
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Vui lòng nhập đủ dữ liệu!", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Vui lòng nhập đủ dữ liệu!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Không có kết nối internet", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -143,7 +149,12 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dislayDialogLogin1();
+                if (isOnline()) {
+                    dislayDialogLogin1();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Không có kết nối internet", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
@@ -382,6 +393,7 @@ public class LoginActivity extends AppCompatActivity {
         json.put("userName", user.getUserName());
         json.put("userBirth", user.getUserBirth());
         json.put("userAria", user.getUserAria());
+        json.put("userImage", user.getUserImage());
         return json;
     }
 
@@ -397,5 +409,15 @@ public class LoginActivity extends AppCompatActivity {
     public void initPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         editor = sharedPreferences.edit();
+    }
+
+    //check internet
+    public Boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni != null && ni.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }
