@@ -102,7 +102,7 @@ public class ZoneInfoFragment extends Fragment {
                 txtDiachi.setText(zone.getDiaChi());
                 txtLoaisan.setText(loaiSan);
                 txtLoaihinhsan.setText(loaiHinhSan);
-                txtGio.setText(zone.getGioMo() +":"+ zone.getGioDong() + " ~ " + zone.getGioDong() +":"+ zone.getPhutDong());
+                txtGio.setText(zone.getGioMo() +":"+ zone.getPhutMo() + " ~ " + zone.getGioDong() +":"+ zone.getPhutDong());
             }
 
             @Override
