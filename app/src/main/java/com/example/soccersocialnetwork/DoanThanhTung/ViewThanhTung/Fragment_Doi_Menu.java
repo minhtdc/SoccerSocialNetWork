@@ -36,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Fragment_Doi_Menu extends Fragment {
 
@@ -58,7 +59,7 @@ public class Fragment_Doi_Menu extends Fragment {
         llThemThanhVien = rootView.findViewById(R.id.llThemThanhVien);
         llThanhVien = rootView.findViewById(R.id.llThanhVien);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         //lay id bên trang chủ của đội
         idDoi = getArguments().getString("Doi_ID");
         uriIMG = getArguments().getString("Doi_uriIMG");
@@ -71,7 +72,7 @@ public class Fragment_Doi_Menu extends Fragment {
         slogan = getArguments().getString("Doi_Slogan");
 
         getUserDaCo();
-        getUser();
+        //   getUser();
 
         setEvent();
 
@@ -106,6 +107,7 @@ public class Fragment_Doi_Menu extends Fragment {
         llThemThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getUserDaCo();
                 dialogThemThanh();
 
             }
@@ -114,8 +116,12 @@ public class Fragment_Doi_Menu extends Fragment {
         llThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), listUser.get(0).getUserID() + "", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), keyUserDaCo.get(0) + "", Toast.LENGTH_SHORT).show();
+                //    getUserDaCo();
+                Intent intent = new Intent(getContext(), ThemThanhVien.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("Doi_ID", idDoi);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -192,8 +198,12 @@ public class Fragment_Doi_Menu extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        getUser(user.getUserEmail());
-                        insertThanhVien();
+                        insertUserinUser();
+//
+//                        insertThanhVien();
+                        //    getUserDaCo();
                         dialog.cancel();
+                        strings.clear();
                         dialogThemThanhVien.cancel();
                     }
                 });
@@ -211,6 +221,7 @@ public class Fragment_Doi_Menu extends Fragment {
         btnEXIT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                strings.clear();
                 dialogThemThanhVien.cancel();
             }
         });
@@ -219,10 +230,20 @@ public class Fragment_Doi_Menu extends Fragment {
     }
 
     private void insertThanhVien() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         for (int i = 0; i < strings.size(); i++) {
             mDatabase.child("Team").child(idDoi).child("listThanhVien").child(strings.get(i).getUserID()).setValue("User");
         }
+    }
 
+    private void insertUserinUser() {
+        for (int i = 0; i < strings.size(); i++) {
+            mDatabase = FirebaseDatabase.getInstance().getReference("users").child(strings.get(i).getUserID()).child("listDoi");
+
+            mDatabase.child(idDoi).setValue("User");
+//            mDatabase.child("users").child("Ki9ylJVuCWR4oBJhuvqqFJ5yYC42").child("listDoi");
+//            mDatabase.setValue("User");
+        }
     }
 
     private Dialog dialogSearchThanhVien() {
@@ -241,53 +262,77 @@ public class Fragment_Doi_Menu extends Fragment {
         return dialogSearchThanhVien;
     }
 
+    List<String> allListDoiUser = new ArrayList<>();
 
+    //------------------------------Fixx danh sach có thành viên
     private void getUserDaCo() {
-        keyUserDaCo.clear();
-        mDatabase.child("Team").child(idDoi).child("listThanhVien").addChildEventListener(new ChildEventListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                keyUserDaCo.add(snapshot.getKey());
-            }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listUser.clear();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    boolean kiemTra = true;
+                    for (DataSnapshot dtt :
+                            dt.child("listDoi").getChildren()) {
+                        String key = dtt.getKey();
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                 //       Toast.makeText(getContext(), dtt.getKey()+"", Toast.LENGTH_SHORT).show();
+                        if (key.equals(idDoi)) {
 
-            }
+                             kiemTra = false;
+                            //  Toast.makeText(getContext(), key+"", Toast.LENGTH_SHORT).show();
+                            //  Toast.makeText(getContext(), idDoi+"", Toast.LENGTH_SHORT).show();
+                        } else {
+//                            Users users = dt.getValue(Users.class);
+//                            listUser.add(users);
+                            kiemTra = false;
+                        }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-            }
+                    }
+                    if (kiemTra == true){
+                        Users users = dt.getValue(Users.class);
+                        listUser.add(users);
+                    }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
+
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-                ;
             }
         });
+
+
     }
 
+
     private void getUser() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         listUser.clear();
         keyUser.clear();
         mDatabase.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // Toast.makeText(getContext(), snapshot.getKey()+"", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
-                    if(LoginActivity.USER_ID_CURRENT != dt.getKey()){
-                        keyUser.add(dt.getKey());
+//                    if(LoginActivity.USER_ID_CURRENT != keyUserDaCo.get(i)){
+                    //     Toast.makeText(getContext(), dt.getKey()+"", Toast.LENGTH_SHORT).show();
+                    keyUser.add(dt.getKey());
 
-                        Users users = dt.getValue(Users.class);
-                        listUser.add(users);
-                    }
-
+                    Users users = dt.getValue(Users.class);
+                    listUser.add(users);
+//                    }
+//                for(int i = 0; i<snapshot.getKey().length();i++){
+//
+//                }
 
 
                 }

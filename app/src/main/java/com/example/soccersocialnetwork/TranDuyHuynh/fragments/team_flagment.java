@@ -17,11 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -62,6 +64,7 @@ public class team_flagment extends Fragment {
     // Khai báo spinner
     private Spinner spinner;
     private ImageView imgTaoDoi;
+    private Button btn_list_your_team,btn_list_team;
     private CategoryAdapter_KhuVuc categoryAdapter_khuVuc;
 
     DatabaseReference mDatabase;
@@ -74,6 +77,16 @@ public class team_flagment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    ArrayList<Team> listTeams = new ArrayList<>();
+    ArrayAdapter adapterDoi;
+
+    ArrayList<String> listTeams2 = new ArrayList<>();
+    //  ArrayList<Team> listTeamDoiCuaBan = new ArrayList<>();
+    ArrayAdapter adapterDoi2;
+
+    //-------------new
+    List<String> keyDoi = new ArrayList<>();
+    ArrayList<Team> listTeamDoiCuaBan = new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -126,6 +139,8 @@ public class team_flagment extends Fragment {
         spinner = getView().findViewById(R.id.spnKhuVuc_lstDoi);
         imgTaoDoi = getView().findViewById(R.id.imgTaoDoi);
         listView = (ListView) getView().findViewById(R.id.lstTeam);
+        btn_list_your_team = getView().findViewById(R.id.btn_list_your_team);
+        btn_list_team = getView().findViewById(R.id.btn_list_team);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //   setEvent();
@@ -141,49 +156,71 @@ public class team_flagment extends Fragment {
 //        listView = (ListView) getView().findViewById(R.id.lstTeam);
 //        listView.setAdapter(information_listTeams_adapter);
         readDoiFirebase();
+        readUser();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final String key = listTeams.get(position).getIdDoi() + "";
 
-
-                mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
-                mDatabase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        listTeamUsers.clear();
-                        for (DataSnapshot dt :
-                                snapshot.getChildren()) {
-                            listTeamUsers.add(dt.getKey());
-                        }
-                        for (int i = 0; i < listTeamUsers.size(); i++) {
-                            if (LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))) {
-                                if (kiemTraLayoutDoi == false) {
-                                     Intent intent = new Intent(getContext(), DoiActivity.class);
-                                     Bundle bundle = new Bundle();
-                                    bundle.putString("TaoDoi_IDDoi", key);
-                                    intent.putExtras(bundle);
-                                    kiemTraLayoutDoi = true;
-                                    startActivity(intent);
-                                }
-                                break;
-                            }
-                        }
-//                        if(kiemTraLayoutChuaDoi==false && kiemTraLayoutDoi==false){
-//                            Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
+                for (int i = 0; i < keyDoi.size(); i++) {
+                    if (keyDoi.get(i).equals(key)) {
+                        Intent intent = new Intent(getContext(), DoiActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("TaoDoi_IDDoi", key);
+                        intent.putExtras(bundle);
+                        //kiemTraLayoutDoi = true;
+                        startActivity(intent);
+                        break;
+                    }
+//                    if(keyDoi.get(i) != key){
+//                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
 //                        Bundle bundle = new Bundle();
-//                        bundle.putString("Doi_ID",key+"");
+//                        bundle.putString("Doi_ID", key + "");
 //                        intent.putExtras(bundle);
 //                        startActivity(intent);
+//                        break;
+//                    }
+                }
+
+                // mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
+              //  Toast.makeText(getContext(), key + "", Toast.LENGTH_SHORT).show();
+//                mDatabase.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        listTeamUsers.clear();
+//                        for (DataSnapshot dt :
+//                                snapshot.getChildren()) {
+//                            listTeamUsers.add(dt.getKey());
 //                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+//                        for (int i = 0; i < listTeamUsers.size(); i++) {
+//                            if (LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))) {
+//                                if (kiemTraLayoutDoi == false) {
+//                                    Intent intent = new Intent(getContext(), DoiActivity.class);
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putString("TaoDoi_IDDoi", key);
+//                                    intent.putExtras(bundle);
+//                                    kiemTraLayoutDoi = true;
+//                                    startActivity(intent);
+//                                }
+//                                break;
+//                            }
+//                        }
+//
+////                        if(kiemTraLayoutChuaDoi==false && kiemTraLayoutDoi==false){
+////                            Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
+////                        Bundle bundle = new Bundle();
+////                        bundle.putString("Doi_ID",key+"");
+////                        intent.putExtras(bundle);
+////                        startActivity(intent);
+////                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
 
             }
         });
@@ -193,6 +230,20 @@ public class team_flagment extends Fragment {
                 startActivity(new Intent(getContext(), TaoDonActivity.class));
             }
         });
+        btn_list_team.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readDoiFirebase();
+            }
+        });
+        btn_list_your_team.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readDoiFirebaseCuaBan();
+                //  insertUser();
+            }
+        });
+
     }
 
 
@@ -207,8 +258,146 @@ public class team_flagment extends Fragment {
         return list;
     }
 
-    ArrayList<Team> listTeams = new ArrayList<>();
-    ArrayAdapter adapterDoi;
+
+//    private void insertUser() {
+//        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi");
+//        List<String> listUser = new ArrayList<>();
+//        listUser.add("123");
+//        listUser.add("321");
+//        listUser.add("456");
+//        listUser.add("654");
+//
+//        mDatabase.setValue(listUser);
+//    }
+//
+//    private void readDoiCuaBan() {
+//        for (int i = 0; i < listTeams2.size(); i++) {
+//            mDatabase = FirebaseDatabase.getInstance().getReference().child("Team").child(listTeams2.get(i) + "");
+//            mDatabase.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    for (DataSnapshot dt :
+//                            snapshot.getChildren()) {
+//                        String dttkey = dt.getKey().toString();
+//                        Team team = dt.getValue(Team.class);
+//                        listTeamDoiCuaBan.add(team);
+//
+//                    }
+//
+//
+////                            listTeams2.add(getIDDOi + "");
+////                       // Toast.makeText(getContext(), LoginActivity.USER_ID_CURRENT + "", Toast.LENGTH_SHORT).show();
+////                        Toast.makeText(getContext(), dt.getKey() + "", Toast.LENGTH_SHORT).show();
+//                }
+//
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+//        }
+//
+//    }
+//
+//    private void readDoiFirebase2() {
+//        readDoiFirebase();
+////        listTeams2.clear();
+//        for (int i = 0; i < listTeams.size(); i++) {
+//            final int getIDDOi = listTeams.get(i).getIdDoi();
+//            mDatabase = FirebaseDatabase.getInstance().getReference().child("Team").child(listTeams.get(i).getIdDoi() + "").child("listThanhVien");
+//            String dttkey = "";
+//            mDatabase.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    for (DataSnapshot dt :
+//                            snapshot.getChildren()) {
+//                        String dttkey = dt.getKey().toString();
+////                        if (LoginActivity.USER_ID_CURRENT.equals(dttkey)) {
+////                            listTeams2.add(getIDDOi + "");
+//////                            Toast.makeText(getContext(), listTeams2.size() + "", Toast.LENGTH_SHORT).show();
+//////                              Toast.makeText(getContext(), dt.getKey() + "", Toast.LENGTH_SHORT).show();
+////                            break;
+////                        }
+//
+//                        // adapterDoi2 = new Adapter_TestCLickTeam(getContext(), R.layout.list_doi, listTeams2);
+////                            listTeams2.add(getIDDOi + "");
+////                        Toast.makeText(getContext(), LoginActivity.USER_ID_CURRENT + "", Toast.LENGTH_SHORT).show();
+////                        Toast.makeText(getContext(), dt.getKey() + "", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+//            listTeams2.add("123123");
+//        }
+//        //listTeams2.add("123123");
+//        Toast.makeText(getContext(), listTeams2.size() + "", Toast.LENGTH_SHORT).show();
+//    }
+
+    private void readUser() {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                keyDoi.clear();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    keyDoi.add(dt.getKey());
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void readDoiFirebaseCuaBan() {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Team");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listTeams.clear();
+                for (int i = 0; i < keyDoi.size(); i++) {
+                    for (DataSnapshot dt : snapshot.getChildren()) {
+
+                        if (keyDoi.get(i).equals(dt.getKey())) {
+                            Team team = dt.getValue(Team.class);
+                          //  Toast.makeText(getContext(), team.getGioiThieu() + "", Toast.LENGTH_SHORT).show();
+                            listTeams.add(team);
+                        }
+                    }
+//                        Team team = new Team();
+//                        Map<String, Object> data = (Map<String, Object>) snapshot.getValue();
+//                        team.setKhuVuc(data.get("khuVuc") + "");
+//                        team.setHinhAnh(data.get("hinhAnh") + "");
+
+
+                    // Toast.makeText(getContext(),listTeams.get(0).getIdDoi()+ "", Toast.LENGTH_SHORT).show();
+
+                }
+                    adapterDoi = new Adapter_TestCLickTeam(getContext(), R.layout.list_doi, listTeams);
+                    listView.setAdapter(adapterDoi);
+                    adapterDoi.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
 
     private void readDoiFirebase() {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Team");
@@ -218,12 +407,16 @@ public class team_flagment extends Fragment {
                 listTeams.clear();
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
+
                     Team team = dt.getValue(Team.class);
                     listTeams.add(team);
+
                 }
+                // Toast.makeText(getContext(),listTeams.get(0).getIdDoi()+ "", Toast.LENGTH_SHORT).show();
                 adapterDoi = new Adapter_TestCLickTeam(getContext(), R.layout.list_doi, listTeams);
                 listView.setAdapter(adapterDoi);
                 adapterDoi.notifyDataSetChanged();
+
             }
 
             @Override
@@ -235,26 +428,6 @@ public class team_flagment extends Fragment {
 
     ArrayList<String> listTeamUsers = new ArrayList<>();
 
-    public void readUser(final String key) {
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listTeamUsers.clear();
-                for (DataSnapshot dt :
-                        snapshot.getChildren()) {
-                    listTeamUsers.add(dt.getKey());
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     //    private void loadData(){
 //
@@ -295,4 +468,5 @@ public class team_flagment extends Fragment {
         list.add(new information_listTeams(R.drawable.img_team4, "doi 4", "Nghệ An", "18", "CLB đến từ Nghệ An"));
         list.add(new information_listTeams(R.drawable.img_team5, "doi 5", "Vũng Tàu", "19", "CLB đến từ Vũng Tàu"));
     }
+
 }

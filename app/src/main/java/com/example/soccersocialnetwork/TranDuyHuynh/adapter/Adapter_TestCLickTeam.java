@@ -95,7 +95,7 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
         final Team team = data.get(position);
 
 
-        readuser(team.getIdDoi() + "");
+     //   readuser(team.getIdDoi() + "");
         Picasso.get().load(team.getHinhAnh()).into(holder.imageView);
         holder.txtTenDoi.setText(team.getTenDoi());
         holder.txtKhuVuc.setText(team.getKhuVuc());
@@ -138,19 +138,19 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
 
     ArrayList<String> listTeamUsers = new ArrayList<>();
 
-    public void readuser(final String key) {
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listTeamUsers.clear();
-
-                for (DataSnapshot dt :
-                        snapshot.getChildren()) {
-                    listTeamUsers.add(dt.getKey());
-
-                }
+//    public void readuser(final String key) {
+//
+//        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
+//        mDatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                listTeamUsers.clear();
+//
+//                for (DataSnapshot dt :
+//                        snapshot.getChildren()) {
+//                    listTeamUsers.add(dt.getKey());
+//
+//                }
 
 //                for (int i = 0; i < listTeamUsers.size(); i++) {
 //                    if (LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))) {
@@ -174,14 +174,14 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
 
              //   }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//
+//    }
 }
