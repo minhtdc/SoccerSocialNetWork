@@ -7,7 +7,7 @@
     tools:context=".TranDuyHuynh.TimKiemUserActivity">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/edtSearchUser"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
@@ -22,8 +22,10 @@
         android:paddingLeft="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/imgBtnSearch"
         app:layout_constraintEnd_toStartOf="@+id/imgBtnSearch"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/imgBtnSearch"
@@ -37,11 +39,12 @@
         app:srcCompat="@android:drawable/ic_menu_search" />
 
     <ListView
+        android:id="@+id/listViewSearch"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/edtSearchUser" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
