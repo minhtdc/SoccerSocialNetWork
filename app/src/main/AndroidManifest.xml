@@ -3,10 +3,11 @@
     package="com.example.soccersocialnetwork">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    //vao thu vien anh
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    //check network
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

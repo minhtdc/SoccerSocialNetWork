@@ -2,115 +2,107 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="9">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
+        android:padding="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Thông tin khu"
+            android:layout_marginBottom="20dp"
+            android:textSize="30dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="0.5">
-
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:text="Tên khu :"
+                android:textSize="20dp"
                 android:textStyle="bold"></TextView>
 
-                <TextView
-                    android:id="@+id/tv_Tenkhu"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Sân bóng TĐ"></TextView>
+            <TextView
+                android:id="@+id/txtTenKhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                ></TextView>
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="140dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Địa chỉ:"
+                android:textSize="20dp"
                 android:textStyle="bold"></TextView>
-
             <TextView
-                android:id="@+id/tv_Diachi"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="1 Võ Văn Ngân, Linh Chiểu, Thủ Đức, TP.HCM"></TextView>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
-
+                android:id="@+id/txtDiaChi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                ></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="140dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Loại hình sân̉:"
+                android:textSize="20dp"
                 android:textStyle="bold"></TextView>
-
             <TextView
-                android:id="@+id/tv_Loaihinhsan"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="5 người , 11 người"></TextView>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
-
+                android:id="@+id/txtLoaiHinhSan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                ></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="140dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Loại sân:"
+                android:textSize="20dp"
                 android:textStyle="bold"></TextView>
-
             <TextView
-                android:id="@+id/tv_Loaisan"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Cỏ nhân tạo, cỏ tự nhiên"></TextView>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
-
+                android:id="@+id/txtLoaiSan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                ></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="140dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Giờ:"
+                android:textSize="20dp"
                 android:textStyle="bold"></TextView>
 
             <TextView
-                android:id="@+id/tv_Gio"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="6h - 21h"></TextView>
-    </LinearLayout>
-
+                android:id="@+id/txtGio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                ></TextView>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

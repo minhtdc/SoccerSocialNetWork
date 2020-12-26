@@ -1,5 +1,13 @@
 package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,12 +26,24 @@ import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.ViewPagerAdapter;
+import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
+import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
