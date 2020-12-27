@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,6 +47,7 @@ public class Adapter_ThanhVien extends ArrayAdapter {
     static class Holder {
 
         TextView tvTenThanhVienTrongDoi, tvEmailThanhVienTrongDoi;
+        ImageView imgAvatar;
 
 //
 ////        TextView tv_DangBai;
@@ -63,6 +65,7 @@ public class Adapter_ThanhVien extends ArrayAdapter {
 
             holder.tvTenThanhVienTrongDoi = view.findViewById(R.id.tvTenThanhVienTrongDoi);
             holder.tvEmailThanhVienTrongDoi = view.findViewById(R.id.tvEmailThanhVienTrongDoi);
+            holder.imgAvatar = view.findViewById(R.id.imgAvatar);
 
             // holder.txtNgay = view.findViewById(R.id.tv_Gio);
 
@@ -72,7 +75,12 @@ public class Adapter_ThanhVien extends ArrayAdapter {
 
         final Users team = data.get(position);
 
+        if(team.getUserImage().equals("")){
 
+        }else{
+            Picasso.get().load(team.getUserImage()).into(holder.imgAvatar);
+        }
+//
 
         holder.tvTenThanhVienTrongDoi.setText(team.getUserName());
         holder.tvEmailThanhVienTrongDoi.setText(team.getUserEmail());

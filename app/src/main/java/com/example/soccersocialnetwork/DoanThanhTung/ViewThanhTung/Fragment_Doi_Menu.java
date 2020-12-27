@@ -138,15 +138,15 @@ public class Fragment_Doi_Menu extends Fragment {
     public static ArrayList<Users> strings = new ArrayList<>();
 
     private void dialogThemThanh() {
-
+        mDatabase.getDatabase().goOnline();
         final Adapter_ThemThanhVien_2 adapterThem;
         final Adapter_ThemThanhVien adapterDanhSach;
 
 
-        final Dialog dialogThemThanhVien = new Dialog(getContext());
-        dialogThemThanhVien.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        final Dialog dialogThemThanhVien = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialogThemThanhVien.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
         dialogThemThanhVien.setContentView(R.layout.dialog_them_thanhvien);
-        dialogThemThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //dialogThemThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //ánh xạ
         SearchView svThemThanhVien = dialogThemThanhVien.findViewById(R.id.svThemThanhVien);
         Button btnEXIT = dialogThemThanhVien.findViewById(R.id.btnEXIT);
@@ -237,6 +237,7 @@ public class Fragment_Doi_Menu extends Fragment {
     }
 
     private void insertUserinUser() {
+
         for (int i = 0; i < strings.size(); i++) {
             mDatabase = FirebaseDatabase.getInstance().getReference("users").child(strings.get(i).getUserID()).child("listDoi");
 
@@ -266,39 +267,39 @@ public class Fragment_Doi_Menu extends Fragment {
 
     //------------------------------Fixx danh sach có thành viên
     private void getUserDaCo() {
+        final ArrayList<String> strings = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listUser.clear();
+
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
                     boolean kiemTra = true;
+
+                    strings.add(dt.getKey());
                     for (DataSnapshot dtt :
                             dt.child("listDoi").getChildren()) {
                         String key = dtt.getKey();
 
-                 //       Toast.makeText(getContext(), dtt.getKey()+"", Toast.LENGTH_SHORT).show();
+                        //       Toast.makeText(getContext(), dtt.getKey()+"", Toast.LENGTH_SHORT).show();
                         if (key.equals(idDoi)) {
 
-                             kiemTra = false;
+                            kiemTra = false;
+
                             //  Toast.makeText(getContext(), key+"", Toast.LENGTH_SHORT).show();
                             //  Toast.makeText(getContext(), idDoi+"", Toast.LENGTH_SHORT).show();
                         } else {
-//                            Users users = dt.getValue(Users.class);
-//                            listUser.add(users);
-                            kiemTra = false;
+                            kiemTra = true;
                         }
 
-
                     }
-                    if (kiemTra == true){
+                    // Toast.makeText(getContext(), strings.size()+"", Toast.LENGTH_SHORT).show();
+                    if (kiemTra == true && strings.size() != 1) {
                         Users users = dt.getValue(Users.class);
                         listUser.add(users);
                     }
-
-
-
                 }
             }
 
