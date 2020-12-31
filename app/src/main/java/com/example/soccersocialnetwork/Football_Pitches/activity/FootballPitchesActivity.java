@@ -14,7 +14,7 @@ import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.football_field_owner.adapter.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
-public class FootballPitchesActivity extends AppCompatActivity {
+public class  FootballPitchesActivity extends AppCompatActivity {
 
 
     private TabLayout tabLayout;

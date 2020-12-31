@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.soccersocialnetwork.Football_Pitches.activity.FootballPitchesActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.flagment.ListOfYardFragment;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.RushHour;
 import com.google.firebase.database.ChildEventListener;
@@ -66,7 +67,7 @@ public class EditFootballPitchesFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_edit_football_pitches, container, false);
         mPitchesActivity = (FootballPitchesActivity) getActivity();
-        key = mPitchesActivity.getKey();
+        key = ListOfYardFragment.idSan;
         setControl();
         setEvent();
         return view;

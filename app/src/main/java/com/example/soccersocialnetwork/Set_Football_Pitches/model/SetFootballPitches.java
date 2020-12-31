@@ -1,19 +1,31 @@
 package com.example.soccersocialnetwork.Set_Football_Pitches.model;
 
 public class SetFootballPitches {
-    String idDoiDat, idNguoiDat, idSanDat, gioBatDau, gioKetThuc;
-    int tongTien;
+    String idDoiDat, idNguoiDat, idSanDat;
+    int gioBatDau, gioKetThuc, phutBatDau, phutKetThuc;
+    String tongTien, ngayDat;
 
     public SetFootballPitches() {
     }
 
-    public SetFootballPitches(String idDoiDat, String idNguoiDat, String idSanDat, String gioBatDau, String gioKetThuc, int tongTien) {
+    public SetFootballPitches(String idDoiDat, String idNguoiDat, String idSanDat, int gioBatDau, int gioKetThuc, int phutBatDau, int phutKetThuc, String tongTien, String ngayDat) {
         this.idDoiDat = idDoiDat;
         this.idNguoiDat = idNguoiDat;
         this.idSanDat = idSanDat;
         this.gioBatDau = gioBatDau;
         this.gioKetThuc = gioKetThuc;
+        this.phutBatDau = phutBatDau;
+        this.phutKetThuc = phutKetThuc;
         this.tongTien = tongTien;
+        this.ngayDat = ngayDat;
+    }
+
+    public String getNgayDat() {
+        return ngayDat;
+    }
+
+    public void setNgayDat(String ngayDat) {
+        this.ngayDat = ngayDat;
     }
 
     public String getIdDoiDat() {
@@ -40,27 +52,43 @@ public class SetFootballPitches {
         this.idSanDat = idSanDat;
     }
 
-    public String getGioBatDau() {
+    public int getGioBatDau() {
         return gioBatDau;
     }
 
-    public void setGioBatDau(String gioBatDau) {
+    public void setGioBatDau(int gioBatDau) {
         this.gioBatDau = gioBatDau;
     }
 
-    public String getGioKetThuc() {
+    public int getGioKetThuc() {
         return gioKetThuc;
     }
 
-    public void setGioKetThuc(String gioKetThuc) {
+    public void setGioKetThuc(int gioKetThuc) {
         this.gioKetThuc = gioKetThuc;
     }
 
-    public int getTongTien() {
+    public int getPhutBatDau() {
+        return phutBatDau;
+    }
+
+    public void setPhutBatDau(int phutBatDau) {
+        this.phutBatDau = phutBatDau;
+    }
+
+    public int getPhutKetThuc() {
+        return phutKetThuc;
+    }
+
+    public void setPhutKetThuc(int phutKetThuc) {
+        this.phutKetThuc = phutKetThuc;
+    }
+
+    public String getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(int tongTien) {
+    public void setTongTien(String tongTien) {
         this.tongTien = tongTien;
     }
 
@@ -70,9 +98,12 @@ public class SetFootballPitches {
                 "idDoiDat='" + idDoiDat + '\'' +
                 ", idNguoiDat='" + idNguoiDat + '\'' +
                 ", idSanDat='" + idSanDat + '\'' +
-                ", gioBatDau='" + gioBatDau + '\'' +
-                ", gioKetThuc='" + gioKetThuc + '\'' +
-                ", tongTien=" + tongTien +
+                ", gioBatDau=" + gioBatDau +
+                ", gioKetThuc=" + gioKetThuc +
+                ", phutBatDau=" + phutBatDau +
+                ", phutKetThuc=" + phutKetThuc +
+                ", tongTien='" + tongTien + '\'' +
+                ", ngayDat='" + ngayDat + '\'' +
                 '}';
     }
 }
