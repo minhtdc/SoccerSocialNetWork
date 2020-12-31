@@ -65,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtLoginEmail, edtLoginPassword;
     public static FirebaseAuth fAuth = FirebaseAuth.getInstance();
     Users user = new Users();
-    public static FirebaseAuth fAuth;
     public static String USER_ID_CURRENT;
     public static String USER_NAME_CURRENT;
     public static String USER_IMG_CURRENT;

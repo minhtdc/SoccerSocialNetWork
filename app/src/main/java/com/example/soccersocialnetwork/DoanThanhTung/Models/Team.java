@@ -1,12 +1,13 @@
 package com.example.soccersocialnetwork.DoanThanhTung.Models;
 
 import com.google.firebase.database.Exclude;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Team extends ListTeamUser {
+public class Team {
     public int idDoi;
     public String tenDoi;
     public String email;
@@ -17,9 +18,6 @@ public class Team extends ListTeamUser {
     public String hinhAnh;
     public String khuVuc;
     public String idDoiTruong;
-
-
-}
     public String getIdDoiTruong() {
         return idDoiTruong;
     }
