@@ -221,6 +221,12 @@ public class TaoDonActivity extends AppCompatActivity {
     }
 
     ArrayList<String> listTeamUsers = new ArrayList<>();
+    private void insertUserDoiTruong(){
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi");
+
+        mDatabase.child(IDLatter()+"").setValue("Admin");
+
+    }
     public void insertFirebaseUserDoiTruong() {
 //        final ProgressDialog progreDiaglogLoadding = new ProgressDialog(this);
 //        progreDiaglogLoadding.setTitle("Tải dữ liệu lên trang chủ");
@@ -319,6 +325,7 @@ public class TaoDonActivity extends AppCompatActivity {
                         String uriIMG = downloadPhotoUrl.toString();
                         team.setHinhAnh(uriIMG);
                         insertTeam(team, progreDiaglog);
+                        insertUserDoiTruong();
                         insertFirebaseUserDoiTruong();
                         //progreDiaglog.dismiss();
 

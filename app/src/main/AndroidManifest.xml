@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TranDuyHuynh.edit_profile_user"></activity>
         <activity android:name=".TranDuyHuynh.all_stadiums"></activity>
+        <activity android:name=".DoanThanhTung.ViewThanhTung.ThemThanhVien"></activity>
         <activity android:name=".TranDuyHuynh.TimKiemUserActivity"></activity>
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.ThemThanhVien"></activity>

@@ -20,14 +20,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
-import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Fragment_Doi_Menu;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.ThemThanhVien;
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.TranDuyHuynh.adapter.Adapter_TestCLickTeam;
 import com.example.soccersocialnetwork.data_models.Users;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,12 +32,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
-public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
-
+public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
     Context context;
     ArrayList<Users> data;
     ArrayList<Users> datafull;
@@ -50,7 +44,7 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
     DatabaseReference mDatabase;
     private ValueEventListener mListener;
 
-    public Adapter_ThemThanhVien(@NonNull Context context, int resource, ArrayList<Users> data) {
+    public Adapter_ThanhVien(@NonNull Context context, int resource, ArrayList<Users> data) {
 
         this.context = context;
         this.data = data;
@@ -77,9 +71,10 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
 
     static class Holder {
 
-        TextView tvTenThanhVien, tvEmailThanhVien;
-        ImageView imgUserDoi;
-        LinearLayout llThemThanhVienVaoDoi;
+        TextView tvTenThanhVienTrongDoi, tvEmailThanhVienTrongDoi;
+        ImageView imgAvatar;
+        LinearLayout llThanhVienDoi;
+
 //
 //
 ////        TextView tv_DangBai;
@@ -90,43 +85,45 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
-        Adapter_ThemThanhVien.Holder holder = new Adapter_ThemThanhVien.Holder();
+        Adapter_ThanhVien.Holder holder = new Adapter_ThanhVien.Holder();
         if (view == null) {
-            holder = new Adapter_ThemThanhVien.Holder();
+            holder = new Adapter_ThanhVien.Holder();
             view = LayoutInflater.from(context).inflate(resource, null);
 
-            holder.tvTenThanhVien = view.findViewById(R.id.tvTenThanhVien);
-            holder.tvEmailThanhVien = view.findViewById(R.id.tvEmailThanhVien);
-            holder.imgUserDoi = view.findViewById(R.id.imgUserDoi);
-            holder.llThemThanhVienVaoDoi = view.findViewById(R.id.llThemThanhVienVaoDoi);
+            holder.tvTenThanhVienTrongDoi = view.findViewById(R.id.tvTenThanhVienTrongDoi);
+            holder.tvEmailThanhVienTrongDoi = view.findViewById(R.id.tvEmailThanhVienTrongDoi);
+            holder.imgAvatar = view.findViewById(R.id.imgAvatar);
+            holder.llThanhVienDoi = view.findViewById(R.id.llThanhVienDoi);
+
 
             // holder.txtNgay = view.findViewById(R.id.tv_Gio);
 
             view.setTag(holder);
         } else
-            holder = (Adapter_ThemThanhVien.Holder) view.getTag();
+            holder = (Adapter_ThanhVien.Holder) view.getTag();
 
         final Users user = data.get(position);
 
         if (user.getUserImage().equals("")) {
 
         } else {
-            Picasso.get().load(user.getUserImage()).into(holder.imgUserDoi);
+            Picasso.get().load(user.getUserImage()).into(holder.imgAvatar);
         }
         // getUser(user.getUserEmail());
 
-        holder.tvTenThanhVien.setText(user.getUserName());
+        holder.tvTenThanhVienTrongDoi.setText(user.getUserName());
 
-        holder.tvEmailThanhVien.setText(user.getUserEmail());
-        holder.llThemThanhVienVaoDoi.setOnClickListener(new View.OnClickListener() {
+        holder.tvEmailThanhVienTrongDoi.setText(user.getUserEmail());
+        holder.llThanhVienDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogThemTinThanhVien(user);
+                dialogThongTinThanhVien(user);
             }
         });
 
 
         return view;
+
     }
 
     @NonNull
@@ -139,6 +136,33 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
         return valueFilter;
     }
 
+//    Filter filterrrr = new Filter() {
+//        @Override
+//        protected FilterResults performFiltering(CharSequence constraint) {
+//            ArrayList<Users> strings = new ArrayList<>();
+//            if (constraint.toString().isEmpty()) {
+//                strings.addAll(datafull);
+//            } else {
+//                for (Users movie : datafull) {
+//                    if (movie.getUserName().toLowerCase().contains(constraint.toString().toLowerCase().trim())) {
+//                        strings.add(movie);
+//                    }
+//                }
+//            }
+//
+//            FilterResults filterResults = new FilterResults();
+//            filterResults.values = strings;
+//
+//            return filterResults;
+//        }
+//
+//        @Override
+//        protected void publishResults(CharSequence constraint, FilterResults results) {
+//            data.clear();
+//            data.add((Users) results.values);
+//            notifyDataSetChanged();
+//        }
+//    };
 
     //---------search
     private class ValueFilter extends Filter {
@@ -164,70 +188,31 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-
             data = (ArrayList<Users>) results.values;
             notifyDataSetChanged();
         }
     }
 
-
-    private void insertUser(final String key) {
-
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mListener = mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                for (DataSnapshot dt :
-                        snapshot.getChildren()) {
-                    //    boolean kiemTra = true;
-                    Users allUsers = dt.getValue(Users.class);
-                    if (key.equals(allUsers.getUserEmail())) {
-                        databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue("User").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                mDatabase.removeEventListener(mListener);
-                                notifyDataSetChanged();
-                            }
-                        });
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
-
-    private Dialog dialogThemTinThanhVien(final Users users) {
+    private Dialog dialogThongTinThanhVien(final Users users) {
         //  mDatabase.getDatabase().goOnline();
 
-        final Dialog dialogThemTinThanhVien = new Dialog(context);
-        dialogThemTinThanhVien.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
-        dialogThemTinThanhVien.setContentView(R.layout.dialog_thongtinthanhvien);
-        dialogThemTinThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final Dialog dialogThongTinThanhVien = new Dialog(context);
+        dialogThongTinThanhVien.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+        dialogThongTinThanhVien.setContentView(R.layout.dialog_thongtinthanhvien);
+        dialogThongTinThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //ánh xạ
-        Button btnKichThanhVien = dialogThemTinThanhVien.findViewById(R.id.btnKichThanhVien);
-        btnKichThanhVien.setText("Thêm");
-        final Button btnEXIT = dialogThemTinThanhVien.findViewById(R.id.btnEXIT);
-
-        ImageView imgAvatar = dialogThemTinThanhVien.findViewById(R.id.imgAvatar);
-        TextView tvTenUser = dialogThemTinThanhVien.findViewById(R.id.tvTenUser);
-        TextView tvViTri = dialogThemTinThanhVien.findViewById(R.id.tvViTri);
-        TextView tvChieuCao = dialogThemTinThanhVien.findViewById(R.id.tvChieuCao);
-        TextView tvCanNang = dialogThemTinThanhVien.findViewById(R.id.tvChieuCao);
-        TextView tvSlogan = dialogThemTinThanhVien.findViewById(R.id.tvSlogan);
-        TextView tvSinhNhat = dialogThemTinThanhVien.findViewById(R.id.tvSinhNhat);
-        TextView tvEmail = dialogThemTinThanhVien.findViewById(R.id.tvEmail);
-        TextView tvKhuVuc = dialogThemTinThanhVien.findViewById(R.id.tvKhuVuc);
-        TextView tvQueQuan = dialogThemTinThanhVien.findViewById(R.id.tvQueQuan);
+        Button btnKichThanhVien = dialogThongTinThanhVien.findViewById(R.id.btnKichThanhVien);
+        final Button btnEXIT = dialogThongTinThanhVien.findViewById(R.id.btnEXIT);
+        ImageView imgAvatar = dialogThongTinThanhVien.findViewById(R.id.imgAvatar);
+        TextView tvTenUser = dialogThongTinThanhVien.findViewById(R.id.tvTenUser);
+        TextView tvViTri = dialogThongTinThanhVien.findViewById(R.id.tvViTri);
+        TextView tvChieuCao = dialogThongTinThanhVien.findViewById(R.id.tvChieuCao);
+        TextView tvCanNang = dialogThongTinThanhVien.findViewById(R.id.tvChieuCao);
+        TextView tvSlogan = dialogThongTinThanhVien.findViewById(R.id.tvSlogan);
+        TextView tvSinhNhat = dialogThongTinThanhVien.findViewById(R.id.tvSinhNhat);
+        TextView tvEmail = dialogThongTinThanhVien.findViewById(R.id.tvEmail);
+        TextView tvKhuVuc = dialogThongTinThanhVien.findViewById(R.id.tvKhuVuc);
+        TextView tvQueQuan = dialogThongTinThanhVien.findViewById(R.id.tvQueQuan);
 
         //setevent
         if (users.getUserImage().equals("")) {
@@ -289,7 +274,7 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
         btnEXIT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogThemTinThanhVien.dismiss();
+                dialogThongTinThanhVien.dismiss();
             }
         });
         btnKichThanhVien.setOnClickListener(new View.OnClickListener() {
@@ -297,13 +282,12 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Loại bỏ thành viên");
-                builder.setMessage("Bạn có chắc không? \n ->>" + users.getUserName() + "<<-  ?");
+                builder.setMessage("Bạn có chách muốn kích  ->>" + users.getUserName() + "<<-  ?");
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // kichThanhVien(users.getUserEmail());
-                        insertUser(users.getUserEmail());
-                        dialogThemTinThanhVien.dismiss();
+                        kichThanhVien(users.getUserEmail());
+                        dialogThongTinThanhVien.dismiss();
                         notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -318,8 +302,52 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
             }
         });
 
-        dialogThemTinThanhVien.show();
-        return dialogThemTinThanhVien;
+        dialogThongTinThanhVien.show();
+        return dialogThongTinThanhVien;
+
+
+    }
+
+    private void kichThanhVien(final String key){
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        //   Toast.makeText(ThemThanhVien.this, users.getUserEmail()+"", Toast.LENGTH_SHORT).show();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mListener = mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+
+                    Users users = dt.getValue(Users.class);
+
+                    if (key.equals(users.getUserEmail())) {
+                        // Toast.makeText(ThemThanhVien.this, key+"", Toast.LENGTH_SHORT).show();
+                        for (DataSnapshot dtt :
+                                dt.child("listDoi").getChildren()) {
+                            if (DoiActivity.idDoi.equals(dtt.getKey())) {
+                                // dtt.child(idDoi).getValue();
+                                if(dtt.getValue().equals("Admin")){
+                                    Toast.makeText(context, "Bạn không thể kích chính mình", Toast.LENGTH_SHORT).show();
+                                    mDatabase.removeEventListener(mListener);
+                                }else{
+                                    databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            mDatabase.removeEventListener(mListener);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }

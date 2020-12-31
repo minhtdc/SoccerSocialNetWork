@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -71,7 +73,7 @@ public class Adapter_ThemThanhVien_2 extends BaseAdapter {
 //
 //
 ////        TextView tv_DangBai;
-////        ImageView img_DangBai;
+        ImageView imgUserDoiDaThem;
     }
 
     @NonNull
@@ -87,8 +89,8 @@ public class Adapter_ThemThanhVien_2 extends BaseAdapter {
             holder.tvTenThanhVien = view.findViewById(R.id.tvTenThanhVien);
             holder.tvEmailThanhVien = view.findViewById(R.id.tvEmailThanhVien);
             holder.llThemThanhVienVaoDoi = view.findViewById(R.id.llThemThanhVienVaoDoi);
+            holder.imgUserDoiDaThem = view.findViewById(R.id.imgUserDoiDaThem);
 
-            // holder.txtNgay = view.findViewById(R.id.tv_Gio);
 
             view.setTag(holder);
         } else
@@ -96,7 +98,11 @@ public class Adapter_ThemThanhVien_2 extends BaseAdapter {
 
         final Users user = data.get(position);
 
+        if(user.getUserImage().equals("")){
 
+        }else{
+            Picasso.get().load(user.getUserImage()).into(holder.imgUserDoiDaThem);
+        }
 
         holder.tvTenThanhVien.setText(user.getUserName());
 
