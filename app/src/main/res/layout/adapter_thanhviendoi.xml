@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_weight="3"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:id="@+id/llThanhVienDoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvTenThanhVienTrongDoi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="tenThanh viên"></TextView>
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:src="@drawable/icon_user"></ImageView>
 
-        <TextView
-            android:id="@+id/tvEmailThanhVienTrongDoi"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="tenThanh viên"
-            android:textSize="12dp"></TextView>
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTenThanhVienTrongDoi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tenThanh viên"></TextView>
+
+            <TextView
+                android:id="@+id/tvEmailThanhVienTrongDoi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="tenThanh viên"
+                android:textSize="12dp"></TextView>
+        </LinearLayout>
+
+
     </LinearLayout>
-    <ImageView
-        android:id="@+id/imgKichKhoiDoi"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:src="@drawable/icon_sad"></ImageView>
 </LinearLayout>

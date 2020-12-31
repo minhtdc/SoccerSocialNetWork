@@ -1,8 +1,10 @@
 package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,12 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,18 +40,22 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Doi_ThongTinCaNhan extends AppCompatActivity {
 
     ImageView imgThongTinDoi;
     MenuItem mnEdit;
+    Button btnThamGiaDoi;
     TextView tvTenDoiThongTinDoi, tvGioiThieuThongTinDoi, tvTieuChiThongTinDoi, tvSloganThongTinDoi, tvEmailThongTinDoi, tvSDTThongTinDoi, tvKhuThongTinDoi;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
 
     ArrayList<String> listTeamUsers = new ArrayList<>();
 
+    String adminOrUser = "";
     private DatabaseReference mDatabase;
+    private ValueEventListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +65,19 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         actionBar.setTitle("Thông tin đội");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+
         setControl();
         // spKhuThongTinDoi.setEnabled(false);
         //Toast.makeText(this, fireBaseTeam.getListTeam().size() +"", Toast.LENGTH_SHORT).show();
         //  setEvent();
         takeData();
         readTeam();
-        readUser(idDoi);
+        readUser();
+
+        readTeamChoDuyet();
+        readUserTeam();
+
+        setEvent();
 
         imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,27 +107,23 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         slogan = getIntent().getExtras().getString("Doi_Slogan");
     }
     private void setEvent() {
-//        takeData();
-//        Picasso.get().load(uriIMG).into(imgThongTinDoi);
-//
-//       String[] arrayKhuVucSpinner = getResources().getStringArray(R.array.listKhuVuc);
-//
-//
-////        for (int i = 0; i < arrayKhuVucSpinner.length; i++) {
-////            if (arrayKhuVucSpinner[i].equals(khuVuc) ) {
-////                spKhuThongTinDoi.setSelection(i);
-////                break;
-////            }
-////       }
-//
-//        tvKhuThongTinDoi.setText(khuVuc);
-//        tvTenDoiThongTinDoi.setText(tenDoi);
-//        tvGioiThieuThongTinDoi.setText(gioiThieu);
-//        tvTieuChiThongTinDoi.setText(tieuChi);
-//        tvSloganThongTinDoi.setText(slogan);
-//        tvEmailThongTinDoi.setText(email);
-//        tvSDTThongTinDoi.setText(sdt);
+        imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(Doi_ThongTinCaNhan.this, adminOrUser + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        btnThamGiaDoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choDuyet();
+            }
+        });
     }
+
 
     private void setControl() {
         imgThongTinDoi = findViewById(R.id.imgThongTinDoi);
@@ -124,10 +135,52 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
         tvEmailThongTinDoi = findViewById(R.id.tvEmailThongTinDoi);
         tvSDTThongTinDoi = findViewById(R.id.tvSDTThongTinDoi);
 
-
-
+        btnThamGiaDoi = findViewById(R.id.btnThamGiaDoi);
     }
 
+
+    private void choDuyet(){
+        final Calendar calendar = Calendar.getInstance();
+        int idate = calendar.get(Calendar.DATE);
+        int imonth = calendar.get(Calendar.MONTH);
+        int iyear = calendar.get(Calendar.YEAR);
+        int ihours = calendar.get(Calendar.HOUR);
+        int iminute = calendar.get(Calendar.MINUTE);
+        int isecond = calendar.get(Calendar.SECOND);
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("ChoDuyet");
+        mDatabase.child(LoginActivity.USER_ID_CURRENT).setValue(idate + "/" + imonth +"/" + iyear + " Time-> " +ihours +":" + iminute +":" +isecond).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                btnThamGiaDoi.setEnabled(false);
+                btnThamGiaDoi.setBackgroundColor(Color.GREEN);
+                btnThamGiaDoi.setText("Chờ duyệt");
+            }
+        });
+    }
+
+    private void readTeamChoDuyet(){
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("ChoDuyet");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dt:
+                snapshot.getChildren()){
+                    if(dt.getKey().equals(LoginActivity.USER_ID_CURRENT)){
+                        btnThamGiaDoi.setEnabled(false);
+                        btnThamGiaDoi.setBackgroundColor(Color.GREEN);
+                        btnThamGiaDoi.setText("Chờ duyệt");
+                    }
+                    //Toast.makeText(Doi_ThongTinCaNhan.this,dt.getKey()+ "", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     public void readTeam() {
         mDatabase = FirebaseDatabase.getInstance().getReference("Team");
         final List<String> keys = new ArrayList<>();
@@ -162,19 +215,42 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
 
     }
 
-
-    public void readUser(String key) {
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
-        mDatabase.addValueEventListener(new ValueEventListener() {
+    public void readUserTeam() {
+        btnThamGiaDoi.setVisibility(View.VISIBLE);
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi");
+        mListener = mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listTeamUsers.clear();
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
-                    listTeamUsers.add(dt.getKey());
-                }
+                    if (dt.getKey().equals(idDoi)) {
+                        btnThamGiaDoi.setVisibility(View.GONE);
+                        mDatabase.removeEventListener(mListener);
+                        break;
+                    } else {
+                        btnThamGiaDoi.setVisibility(View.VISIBLE);
 
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    public void readUser() {
+        adminOrUser = "khongnull";
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi").child(idDoi);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                adminOrUser = snapshot.getValue(String.class);
+
+                // Toast.makeText(Doi_ThongTinCaNhan.this,snapshot.getValue()+ "", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -188,17 +264,20 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_doi_chinhsua, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         mnEdit = menu.findItem(R.id.mnEdit);
+        mnEdit.setVisible(false);
+        if (adminOrUser == null) {
+            adminOrUser = "null";
+        }
+        if (adminOrUser.equals("Admin")) {
+            mnEdit.setVisible(true);
 
-           // if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(0))){
-                mnEdit.setVisible(true);
-          //  }
+        }
 
         return true;
     }
@@ -206,6 +285,7 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
     //click actionbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

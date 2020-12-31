@@ -1,11 +1,15 @@
 package com.example.soccersocialnetwork.DoanThanhTung.Adapter;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -17,15 +21,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Fragment_Doi_Menu;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.Adapter_TestCLickTeam;
 import com.example.soccersocialnetwork.data_models.Users;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
@@ -41,7 +48,7 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
     private LayoutInflater inflater;
     int resource;
     DatabaseReference mDatabase;
-
+    private ValueEventListener mListener;
 
     public Adapter_ThemThanhVien(@NonNull Context context, int resource, ArrayList<Users> data) {
 
@@ -71,6 +78,7 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
     static class Holder {
 
         TextView tvTenThanhVien, tvEmailThanhVien;
+        ImageView imgUserDoi;
         LinearLayout llThemThanhVienVaoDoi;
 //
 //
@@ -89,6 +97,7 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
 
             holder.tvTenThanhVien = view.findViewById(R.id.tvTenThanhVien);
             holder.tvEmailThanhVien = view.findViewById(R.id.tvEmailThanhVien);
+            holder.imgUserDoi = view.findViewById(R.id.imgUserDoi);
             holder.llThemThanhVienVaoDoi = view.findViewById(R.id.llThemThanhVienVaoDoi);
 
             // holder.txtNgay = view.findViewById(R.id.tv_Gio);
@@ -97,45 +106,22 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
         } else
             holder = (Adapter_ThemThanhVien.Holder) view.getTag();
 
-        final  Users user = data.get(position);
+        final Users user = data.get(position);
 
-     //   getUser(user.getUserEmail());
+        if (user.getUserImage().equals("")) {
+
+        } else {
+            Picasso.get().load(user.getUserImage()).into(holder.imgUserDoi);
+        }
+        // getUser(user.getUserEmail());
 
         holder.tvTenThanhVien.setText(user.getUserName());
+
         holder.tvEmailThanhVien.setText(user.getUserEmail());
         holder.llThemThanhVienVaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase = FirebaseDatabase.getInstance().getReference("users");
-                mDatabase.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        Users users =snapshot.getValue(Users.class);
-                        if(users.getUserEmail().equals(user.getUserEmail())){
-                            //keyUser.add(snapshot.getKey());
-                            user.setUserID(snapshot.getKey());
-                            Fragment_Doi_Menu.strings.add(user);
-                            Fragment_Doi_Menu.listUser.remove(position);
-                            notifyDataSetChanged();
-                            keyy = snapshot.getKey();
-//                    Toast.makeText(context, keyy+"", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) { }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) { }
-                });
-
+                dialogThemTinThanhVien(user);
             }
         });
 
@@ -153,44 +139,17 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
         return valueFilter;
     }
 
-//    Filter filterrrr = new Filter() {
-//        @Override
-//        protected FilterResults performFiltering(CharSequence constraint) {
-//            ArrayList<Users> strings = new ArrayList<>();
-//            if (constraint.toString().isEmpty()) {
-//                strings.addAll(datafull);
-//            } else {
-//                for (Users movie : datafull) {
-//                    if (movie.getUserName().toLowerCase().contains(constraint.toString().toLowerCase().trim())) {
-//                        strings.add(movie);
-//                    }
-//                }
-//            }
-//
-//            FilterResults filterResults = new FilterResults();
-//            filterResults.values = strings;
-//
-//            return filterResults;
-//        }
-//
-//        @Override
-//        protected void publishResults(CharSequence constraint, FilterResults results) {
-//            data.clear();
-//            data.add((Users) results.values);
-//            notifyDataSetChanged();
-//        }
-//    };
 
     //---------search
     private class ValueFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<Users> strings = new ArrayList<>();
-            if(constraint.toString().isEmpty()){
+            if (constraint.toString().isEmpty()) {
                 strings.addAll(datafull);
-            }else{
-                for(Users movie: datafull){
-                    if(movie.getUserName().toLowerCase().contains(constraint.toString().toLowerCase().trim())){
+            } else {
+                for (Users movie : datafull) {
+                    if (movie.getUserName().toLowerCase().contains(constraint.toString().toLowerCase().trim())) {
                         strings.add(movie);
                     }
                 }
@@ -211,41 +170,31 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
         }
     }
 
-    //getUser
-    ArrayList<Users> listUser2 = new ArrayList<>();
-    ArrayList<String> keyUser = new ArrayList<>();
 
-    String keyy;
-    private void getUser(final String email){
+    private void insertUser(final String key) {
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase.addChildEventListener(new ChildEventListener() {
+        mListener = mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Users users =snapshot.getValue(Users.class);
-                if(users.getUserEmail().equals(email)){
-                    //keyUser.add(snapshot.getKey());
-                    keyy = snapshot.getKey();
-                //    Toast.makeText(context, keyy+"", Toast.LENGTH_SHORT).show();
-                    return;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    //    boolean kiemTra = true;
+                    Users allUsers = dt.getValue(Users.class);
+                    if (key.equals(allUsers.getUserEmail())) {
+                        databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue("User").addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                mDatabase.removeEventListener(mListener);
+                                notifyDataSetChanged();
+                            }
+                        });
+
+                    }
                 }
-
-
-                //listUser2.add(users);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
@@ -253,5 +202,125 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
 
             }
         });
+
+
+    }
+
+    private Dialog dialogThemTinThanhVien(final Users users) {
+        //  mDatabase.getDatabase().goOnline();
+
+        final Dialog dialogThemTinThanhVien = new Dialog(context);
+        dialogThemTinThanhVien.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+        dialogThemTinThanhVien.setContentView(R.layout.dialog_thongtinthanhvien);
+        dialogThemTinThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //ánh xạ
+        Button btnKichThanhVien = dialogThemTinThanhVien.findViewById(R.id.btnKichThanhVien);
+        btnKichThanhVien.setText("Thêm");
+        final Button btnEXIT = dialogThemTinThanhVien.findViewById(R.id.btnEXIT);
+
+        ImageView imgAvatar = dialogThemTinThanhVien.findViewById(R.id.imgAvatar);
+        TextView tvTenUser = dialogThemTinThanhVien.findViewById(R.id.tvTenUser);
+        TextView tvViTri = dialogThemTinThanhVien.findViewById(R.id.tvViTri);
+        TextView tvChieuCao = dialogThemTinThanhVien.findViewById(R.id.tvChieuCao);
+        TextView tvCanNang = dialogThemTinThanhVien.findViewById(R.id.tvChieuCao);
+        TextView tvSlogan = dialogThemTinThanhVien.findViewById(R.id.tvSlogan);
+        TextView tvSinhNhat = dialogThemTinThanhVien.findViewById(R.id.tvSinhNhat);
+        TextView tvEmail = dialogThemTinThanhVien.findViewById(R.id.tvEmail);
+        TextView tvKhuVuc = dialogThemTinThanhVien.findViewById(R.id.tvKhuVuc);
+        TextView tvQueQuan = dialogThemTinThanhVien.findViewById(R.id.tvQueQuan);
+
+        //setevent
+        if (users.getUserImage().equals("")) {
+
+        } else {
+            Picasso.get().load(users.getUserImage()).into(imgAvatar);
+        }
+
+        if (users.getUserName().equals("")) {
+
+        } else {
+            tvTenUser.setText(users.getUserName());
+        }
+
+        if (users.getUserCanNang().equals("")) {
+
+        } else {
+            tvCanNang.setText(users.getUserCanNang());
+        }
+        if (users.getUserQueQuan().equals("")) {
+
+        } else {
+            tvQueQuan.setText(users.getUserQueQuan());
+        }
+
+        if (users.getUserAria().equals("")) {
+
+        } else {
+            tvKhuVuc.setText(users.getUserAria());
+        }
+
+        if (users.getUserEmail().equals("")) {
+
+        } else {
+            tvEmail.setText(users.getUserEmail());
+        }
+
+        if (users.getUserBirth().equals("")) {
+
+        } else {
+            tvSinhNhat.setText(users.getUserBirth());
+        }
+
+        if (users.getUserSologan().equals("")) {
+
+        } else {
+            tvSlogan.setText(users.getUserSologan());
+        }
+        if (users.getUserViTri().equals("")) {
+
+        } else {
+            tvViTri.setText(users.getUserViTri());
+        }
+        if (users.getUserChieuCao().equals("")) {
+
+        } else {
+            tvChieuCao.setText(users.getUserChieuCao());
+        }
+        btnEXIT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogThemTinThanhVien.dismiss();
+            }
+        });
+        btnKichThanhVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Loại bỏ thành viên");
+                builder.setMessage("Bạn có chắc không? \n ->>" + users.getUserName() + "<<-  ?");
+                builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // kichThanhVien(users.getUserEmail());
+                        insertUser(users.getUserEmail());
+                        dialogThemTinThanhVien.dismiss();
+                        notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Hủy Bỏ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        dialogThemTinThanhVien.show();
+        return dialogThemTinThanhVien;
+
+
     }
 }

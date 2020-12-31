@@ -11,6 +11,12 @@ public class Users {
                 ", userName='" + userName + '\'' +
                 ", userBirth='" + userBirth + '\'' +
                 ", userAria='" + userAria + '\'' +
+                ", userSologan='" + userSologan + '\'' +
+                ", userQueQuan='" + userQueQuan + '\'' +
+                ", userViTri='" + userViTri + '\'' +
+                ", userCanNang='" + userCanNang + '\'' +
+                ", userChieuCao='" + userChieuCao + '\'' +
+                ", userImage='" + userImage + '\'' +
                 '}';
     }
 

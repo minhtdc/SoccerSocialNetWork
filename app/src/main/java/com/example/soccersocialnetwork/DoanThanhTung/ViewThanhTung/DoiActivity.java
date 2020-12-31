@@ -61,8 +61,8 @@ public class DoiActivity extends AppCompatActivity {
 
     ImageView imgDoi;
     TextView tvTenDoi;
-    String idDoi,uriIMG,tenDoi,khuVuc,email,sdt,gioiThieu,tieuChi,slogan;
-
+    String uriIMG,tenDoi,khuVuc,email,sdt,gioiThieu,tieuChi,slogan;
+    public static String idDoi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

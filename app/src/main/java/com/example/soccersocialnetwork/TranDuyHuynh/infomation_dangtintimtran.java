@@ -15,26 +15,33 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class infomation_dangtintimtran extends AppCompatActivity {
     LinearLayout lnBack;
-    TextView txtDang;
+    TextView txtDang, txtTenDoi;
     Button btnTimSan;
     Spinner spinner;
-    public List<Team> listTeam = new ArrayList<>();
+    CircleImageView imageTeam;
+    public List<String> listTeam = new ArrayList<>();
     ArrayList<String> data = new ArrayList<>();
     ArrayAdapter adapter;
     private DatabaseReference mDatabaseReference;
+    ArrayList<String> idTeam = new ArrayList<>();
+    ArrayList<String> hinhAnh = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,68 +53,10 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         txtDang = (TextView) findViewById(R.id.txtDang);
         btnTimSan = (Button) findViewById(R.id.btnTimSan);
         spinner = (Spinner) findViewById(R.id.spnChonDoi);
+        txtTenDoi = (TextView) findViewById(R.id.txtTenDoi);
+        imageTeam = (CircleImageView) findViewById(R.id.ImageDoi);
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Team");
-        mDatabaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Team team = snapshot.getValue(Team.class);
-                Toast.makeText(infomation_dangtintimtran.this,team.tenDoi,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        //lấy dữ liệu đội về list
-//        DatabaseReference mDatabase;
-//        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot dt :
-//                        snapshot.getChildren()) {
-//
-//                    Team team = dt.getValue(Team.class);
-//
-//                    listTeam.add(team);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.w(null, "loadPost:onCancelled", error.toException());
-//            }
-//        });
-//
-//        for (Team team : listTeam) {
-//            if (team.idDoiTruong.equalsIgnoreCase(LoginActivity.USER_ID_CURRENT)) {
-//                data.add(team.getTenDoi());
-//            }
-//
-//        }
-
-
-        // cấu hình spinner
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
-        spinner.setAdapter(adapter);
+        loadData();
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -149,6 +98,82 @@ public class infomation_dangtintimtran extends AppCompatActivity {
 //            }
 //        });;
 
+    public void loadData() {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi");
+        mDatabaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.getValue().equals("Admin")) {
+                     final String idTea = snapshot.getKey();
+
+                    mDatabaseReference = FirebaseDatabase.getInstance().getReference(String.format("Team/%s/tenDoi", idTea));
+                    mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                            listTeam.add(snapshot.getValue().toString());
+
+                            adapter = new ArrayAdapter<String>(infomation_dangtintimtran.this, android.R.layout.simple_list_item_1, listTeam);
+                            spinner.setAdapter(adapter);
+                            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    txtTenDoi.setText(adapterView.getItemAtPosition(i).toString());
+                                    
+                                    mDatabaseReference = FirebaseDatabase.getInstance().getReference(String.format("Team/%s/hinhAnh",idTea));
+                                    mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            Toast.makeText(infomation_dangtintimtran.this,idTea,Toast.LENGTH_LONG).show();
+                                            Picasso.get().load(snapshot.getValue().toString()).into(imageTeam);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(infomation_dangtintimtran.this,idTea.toString(),Toast.LENGTH_LONG).show();
+
+                                            Picasso.get().load(snapshot.getValue().toString()).into(imageTeam);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                    txtTenDoi.setText(adapterView.getItemAtPosition(0).toString());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }
 

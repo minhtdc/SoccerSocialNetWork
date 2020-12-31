@@ -12,12 +12,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
+        <ImageView
 
+            android:id="@+id/imgUserDoiDaThem"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_user"></ImageView>
     </LinearLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
         <TextView
             android:id="@+id/tvTenThanhVien"
             android:layout_width="match_parent"
