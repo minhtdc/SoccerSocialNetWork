@@ -22,15 +22,17 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11/11/2020" />
+            android:text="11/11/2020"
+            android:id="@+id/tvNgay"/>
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@drawable/calendar" />
+            android:src="@drawable/calendar"
+            android:id="@+id/imgNgay"/>
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout

@@ -152,7 +152,7 @@ public class AddFootballPitchesFragment extends Fragment {
         spnPhutBD.setAdapter(adapter_phutCD);
         spnPhutKT.setAdapter(adapter_phutCD);
         //set title dialog
-        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle("Giờ Cao Điểm");
         alert.setView(alertLayout);
         alert.setCancelable(false);
@@ -218,6 +218,7 @@ public class AddFootballPitchesFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Toast.makeText(getContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+                dialogInterface.dismiss();
             }
         });
 
@@ -238,6 +239,7 @@ public class AddFootballPitchesFragment extends Fragment {
                     adapter_lvCD.notifyDataSetChanged();
                     lvDSGioCD.setSelection(adapter_lvCD.getCount() - 1);
                 }
+                dialog.dismiss();
             }
         });
         AlertDialog dialog = alert.create();

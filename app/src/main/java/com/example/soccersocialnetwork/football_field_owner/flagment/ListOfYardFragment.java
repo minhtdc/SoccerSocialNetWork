@@ -74,7 +74,8 @@ public class ListOfYardFragment extends Fragment {
                 if (footballPitches.getIdKhu().equals(idKhu)) {
                     data_FootballPitches.add(new FootballPitches(footballPitches.getTenSan(),
                             footballPitches.getLoaiHinhSan(), footballPitches.getLoaiSan(),
-                            footballPitches.getGiaBT(), footballPitches.getGiaCD(), footballPitches.getId(), "aaa"));
+                            footballPitches.getGiaBT(), footballPitches.getGiaCD(), footballPitches.getId(),
+                            footballPitches.getIdKhu()));
                     adapter_FootballPitches.notifyDataSetChanged();
                 }
             }
