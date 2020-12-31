@@ -1,6 +1,11 @@
 package com.example.soccersocialnetwork.DoanThanhTung.Models;
 
- public class Team extends ListTeamUser{
+import com.example.soccersocialnetwork.LoginActivity;
+
+import java.util.ArrayList;
+
+public class Team extends ListTeamUser{
+
     public int idDoi;
     public String tenDoi;
     public String email;
@@ -10,7 +15,10 @@ package com.example.soccersocialnetwork.DoanThanhTung.Models;
     public String sLogan;
     public String hinhAnh;
     public String khuVuc;
-    public String idDoiTruong;
+    public ArrayList<ListTeamUser> listTeamUsers;
+
+
+    public String idDoiTruong = LoginActivity.USER_ID_CURRENT;
     public String getIdDoiTruong() {
         return idDoiTruong;
     }
@@ -96,7 +104,8 @@ package com.example.soccersocialnetwork.DoanThanhTung.Models;
         this.hinhAnh = hinhAnh;
     }
 
-    public Team(int idDoi, String tenDoi, String email, String sdt, String gioiThieu, String tieuChi, String sLogan, String hinhAnh, String khuVuc,String idDoiTruong) {
+    public Team(String idDoiTruong, String idThanhVien, int idDoi, String tenDoi, String email, String sdt, String gioiThieu, String tieuChi, String sLogan, String hinhAnh, String khuVuc, ArrayList<ListTeamUser> listTeamUsers, String idDoiTruong1) {
+        super(idDoiTruong, idThanhVien);
         this.idDoi = idDoi;
         this.tenDoi = tenDoi;
         this.email = email;
@@ -106,6 +115,21 @@ package com.example.soccersocialnetwork.DoanThanhTung.Models;
         this.sLogan = sLogan;
         this.hinhAnh = hinhAnh;
         this.khuVuc = khuVuc;
+        this.listTeamUsers = listTeamUsers;
+        this.idDoiTruong = idDoiTruong1;
+    }
+
+    public Team(int idDoi, String tenDoi, String email, String sdt, String gioiThieu, String tieuChi, String sLogan, String hinhAnh, String khuVuc, ArrayList<ListTeamUser> listTeamUsers, String idDoiTruong) {
+        this.idDoi = idDoi;
+        this.tenDoi = tenDoi;
+        this.email = email;
+        this.sdt = sdt;
+        this.gioiThieu = gioiThieu;
+        this.tieuChi = tieuChi;
+        this.sLogan = sLogan;
+        this.hinhAnh = hinhAnh;
+        this.khuVuc = khuVuc;
+        this.listTeamUsers = listTeamUsers;
         this.idDoiTruong = idDoiTruong;
     }
 

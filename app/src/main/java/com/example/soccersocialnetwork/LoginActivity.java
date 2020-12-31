@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("IS_LOGIN", IS_LOGIN) == true) {
             USER_ID_CURRENT = sharedPreferences.getString("USER_ID_CURRENT", USER_ID_CURRENT);
             USER_NAME_CURRENT = sharedPreferences.getString("USER_NAME_CURRENT", USER_NAME_CURRENT);
-            Toast.makeText(LoginActivity.this, "Wellcome back " + USER_NAME_CURRENT, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, home_layout.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
