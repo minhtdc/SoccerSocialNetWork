@@ -387,6 +387,7 @@ public class LoginActivity extends AppCompatActivity {
         json.put("userName", user.getUserName());
         json.put("userBirth", user.getUserBirth());
         json.put("userAria", user.getUserAria());
+        json.put("userImage", user.getUserImage());
         return json;
     }
 
