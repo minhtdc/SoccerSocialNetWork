@@ -20,8 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien_2;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
@@ -42,15 +44,17 @@ public class Fragment_Doi_Menu extends Fragment {
 
 
     public static ArrayList<Users> listUser = new ArrayList<>();
-    ArrayList<Users> listUserDaCo = new ArrayList<>();
+
 
     ArrayList<String> keyUser = new ArrayList<>();
-    ArrayList<String> keyUserDaCo = new ArrayList<>();
+
 
     ArrayList<Team> listTeam = new ArrayList<>();
     DatabaseReference mDatabase;
-
-    LinearLayout llThongTinDoi, llThemThanhVien, llThanhVien;
+    private ValueEventListener mListener;
+    List<String> keyUserChoDuyet = new ArrayList<>();
+    ArrayList<Users> listChoDuyet = new ArrayList<>();
+    LinearLayout llThongTinDoi, llThemThanhVien, llThanhVien, llChoDuyet;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class Fragment_Doi_Menu extends Fragment {
         llThongTinDoi = rootView.findViewById(R.id.llThongTinDoi);
         llThemThanhVien = rootView.findViewById(R.id.llThemThanhVien);
         llThanhVien = rootView.findViewById(R.id.llThanhVien);
+        llChoDuyet = rootView.findViewById(R.id.llChoDuyet);
 
 
         //lay id bên trang chủ của đội
@@ -74,6 +79,8 @@ public class Fragment_Doi_Menu extends Fragment {
         getUserDaCo();
         //   getUser();
 
+        readChoDuyet();
+        readUserChoDuyet();
         setEvent();
 
 
@@ -107,7 +114,8 @@ public class Fragment_Doi_Menu extends Fragment {
         llThemThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getUserDaCo();
+                // getUserDaCo();
+                //  Toast.makeText(getContext(), listUser.size() + "", Toast.LENGTH_SHORT).show();
                 dialogThemThanh();
 
             }
@@ -122,6 +130,12 @@ public class Fragment_Doi_Menu extends Fragment {
                 bundle.putString("Doi_ID", idDoi);
                 intent.putExtras(bundle);
                 startActivity(intent);
+            }
+        });
+        llChoDuyet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogChoDuyet();
             }
         });
 
@@ -150,22 +164,17 @@ public class Fragment_Doi_Menu extends Fragment {
         //ánh xạ
         SearchView svThemThanhVien = dialogThemThanhVien.findViewById(R.id.svThemThanhVien);
         Button btnEXIT = dialogThemThanhVien.findViewById(R.id.btnEXIT);
-        ListView lvThemThanhVien = dialogThemThanhVien.findViewById(R.id.lvThemThanhVien);
+
+//        ListView lvThemThanhVien = dialogThemThanhVien.findViewById(R.id.lvThemThanhVien);
         ListView lvDanhSachDaThem = dialogThemThanhVien.findViewById(R.id.lvDanhSachDaThem);
-        Button btnThemThanhVien = dialogThemThanhVien.findViewById(R.id.btnThemThanhVien);
 
 
-        adapterThem = new Adapter_ThemThanhVien_2(getContext(), R.layout.dialog_them_thanhvien_2, strings);
-        lvThemThanhVien.setAdapter(adapterThem);
+        strings.add(new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2FQY2wgkB3OtNCmcSb2gfDpc8S9Kj2%2Fa8fe8517-fbc4-47d4-ba6f-1fe00586ff81?alt=media&token=e8c0696c-2196-41be-a047-b3153c9efdb8"));
+
+//        adapterThem = new Adapter_ThemThanhVien_2(getContext(), R.layout.dialog_them_thanhvien_2, strings);
+//        lvThemThanhVien.setAdapter(adapterThem);
+
         adapterDanhSach = new Adapter_ThemThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listUser);
-//
-//        for(int i = 0; i<keyUserDaCo.size();i++){
-//            for(int j = 0; j<listUser.size();j++){
-//                if(keyUserDaCo.get(i).equals(keyUser.get(j))){
-//                    listUser.remove(j);
-//                }
-//            }
-//        }
         lvDanhSachDaThem.setAdapter(adapterDanhSach);
 
 
@@ -187,36 +196,6 @@ public class Fragment_Doi_Menu extends Fragment {
             }
         });
 
-        btnThemThanhVien.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Xác thực");
-                builder.setMessage("Bạn có thực sự muốn thêm một/các thành viên này?");
-                builder.setNegativeButton("Xác nhận", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        getUser(user.getUserEmail());
-                        insertUserinUser();
-//
-//                        insertThanhVien();
-                        //    getUserDaCo();
-                        dialog.cancel();
-                        strings.clear();
-                        dialogThemThanhVien.cancel();
-                    }
-                });
-                builder.setPositiveButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-                // Toast.makeText(getContext(), strings.get(1).getUserID()+"", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         btnEXIT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +205,94 @@ public class Fragment_Doi_Menu extends Fragment {
             }
         });
         //them adapter hinh anh
+
+//        lvDanhSachDaThem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getContext(),listUser.get(position).getUserName()+ "", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         dialogThemThanhVien.show();
+    }
+
+
+    private void dialogChoDuyet() {
+        Adapter_ThemThanhVien adapterDanhSach;
+
+        final Dialog dialogChoDuyet = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialogChoDuyet.setTitle("!@#");
+        dialogChoDuyet.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+        dialogChoDuyet.setContentView(R.layout.dialog_choduyet);
+//        dialogChoDuyet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //  ánh xạ
+        Button btnEXIT = dialogChoDuyet.findViewById(R.id.btnEXIT);
+
+        final ListView lvDanhSachChoDuyet = dialogChoDuyet.findViewById(R.id.lvChoDuyet);
+
+
+        strings.add(new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2FQY2wgkB3OtNCmcSb2gfDpc8S9Kj2%2Fa8fe8517-fbc4-47d4-ba6f-1fe00586ff81?alt=media&token=e8c0696c-2196-41be-a047-b3153c9efdb8"));
+
+//        adapterThem = new Adapter_ThemThanhVien_2(getContext(), R.layout.dialog_them_thanhvien_2, strings);
+//        lvThemThanhVien.setAdapter(adapterThem);
+        adapterDanhSach = new Adapter_ThemThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listChoDuyet);
+        lvDanhSachChoDuyet.setAdapter(adapterDanhSach);
+
+        btnEXIT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                strings.clear();
+                dialogChoDuyet.cancel();
+                mDatabase.removeEventListener(mListener);
+            }
+        });
+
+        dialogChoDuyet.show();
+
+    }
+
+    private void readChoDuyet() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("ChoDuyet");
+        mListener = mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    keyUserChoDuyet.add(dt.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void readUserChoDuyet() {
+        listChoDuyet.clear();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (int i = 0; i < keyUserChoDuyet.size(); i++) {
+                    for (DataSnapshot dt :
+                            snapshot.getChildren()) {
+                        Users users = dt.getValue(Users.class);
+
+                        if (dt.getKey().equals(keyUserChoDuyet.get(i))) {
+                            listChoDuyet.add(users);
+                            // Toast.makeText(getContext(), keyUserChoDuyet.get(i)+"", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void insertThanhVien() {
@@ -276,30 +342,28 @@ public class Fragment_Doi_Menu extends Fragment {
 
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
-                    boolean kiemTra = true;
+                    //    boolean kiemTra = true;
+                    Users allUsers = dt.getValue(Users.class);
+                    Users usersDaCo = new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0");
 
                     strings.add(dt.getKey());
                     for (DataSnapshot dtt :
                             dt.child("listDoi").getChildren()) {
                         String key = dtt.getKey();
-
-                        //       Toast.makeText(getContext(), dtt.getKey()+"", Toast.LENGTH_SHORT).show();
                         if (key.equals(idDoi)) {
-
-                            kiemTra = false;
-
-                            //  Toast.makeText(getContext(), key+"", Toast.LENGTH_SHORT).show();
-                            //  Toast.makeText(getContext(), idDoi+"", Toast.LENGTH_SHORT).show();
-                        } else {
-                            kiemTra = true;
+//                            Toast.makeText(getContext(), dt.getKey()+"", Toast.LENGTH_SHORT).show();
+                            usersDaCo = dt.getValue(Users.class);
                         }
-
+                    }
+                    if (allUsers.getUserEmail().equals(usersDaCo.getUserEmail())) {
+                    } else {
+                        listUser.add(allUsers);
                     }
                     // Toast.makeText(getContext(), strings.size()+"", Toast.LENGTH_SHORT).show();
-                    if (kiemTra == true && strings.size() != 1) {
-                        Users users = dt.getValue(Users.class);
-                        listUser.add(users);
-                    }
+//                    if (kiemTra != false) {
+//
+//                        listUser.add(allUsers);
+//                    }
                 }
             }
 

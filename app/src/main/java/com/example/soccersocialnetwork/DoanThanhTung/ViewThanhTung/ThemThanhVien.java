@@ -5,10 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -63,20 +65,22 @@ public class ThemThanhVien extends AppCompatActivity {
 
         // Toast.makeText(this, idDoi+"", Toast.LENGTH_SHORT).show();
         getUser();
+
         setEvent();
     }
 
     private void setEvent() {
-        lvAllThanhVien.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //  Toast.makeText(ThemThanhVien.this, listUser.get(position).getUserEmail()+"", Toast.LENGTH_SHORT).show();
-
-                    getUserChuanBiKich(listUser.get(position).getUserEmail());
-
-
-            }
-        });
+//        lvAllThanhVien.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //  Toast.makeText(ThemThanhVien.this, listUser.get(position).getUserEmail()+"", Toast.LENGTH_SHORT).show();
+//
+//
+//                  //  getUserChuanBiKich(listUser.get(position).getUserEmail());
+//
+//
+//            }
+//        });
 //        lvAllThanhVien.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,6 +88,7 @@ public class ThemThanhVien extends AppCompatActivity {
 //                return false;
 //            }
 //        });
+
     }
 
     String keyUserChuanBiKich;
@@ -163,7 +168,7 @@ public class ThemThanhVien extends AppCompatActivity {
                             dt.child("listDoi").getChildren()) {
                         if (dtt.getKey().equals(idDoi)) {
                             listUser.add(users);
-                            adapter_thanhVien = new Adapter_ThanhVien(getBaseContext(), R.layout.adapter_thanhviendoi, listUser);
+                            adapter_thanhVien = new Adapter_ThanhVien(ThemThanhVien.this, R.layout.adapter_thanhviendoi, listUser);
                             lvAllThanhVien.setAdapter(adapter_thanhVien);
                             adapter_thanhVien.notifyDataSetChanged();
                             //   Toast.makeText(ThemThanhVien.this, listUser.size() + "", Toast.LENGTH_SHORT).show();
@@ -185,7 +190,7 @@ public class ThemThanhVien extends AppCompatActivity {
     private void setControl() {
 
         lvAllThanhVien = findViewById(R.id.lvAllThanhVien);
-        imgKichKhoiDoi = findViewById(R.id.imgKichKhoiDoi);
+//        imgKichKhoiDoi = findViewById(R.id.imgKichKhoiDoi);
 
     }
 
