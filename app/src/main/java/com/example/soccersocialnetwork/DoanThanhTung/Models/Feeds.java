@@ -64,6 +64,18 @@ public class Feeds {
         this.gio = gio;
         this.thongBao = thongBao;
     }
+    public Feeds() { }
+    @Override
+    public String toString() {
+        return "Feeds{" +
+                "hanGio=" + hanGio +
+                ", thanhPho='" + thanhPho + '\'' +
+                ", quan='" + quan + '\'' +
+                ", ngay='" + ngay + '\'' +
+                ", gio='" + gio + '\'' +
+                ", thongBao='" + thongBao + '\'' +
+                '}';
+    }
 }
 
 

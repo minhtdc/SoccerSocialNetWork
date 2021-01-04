@@ -14,12 +14,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/imgThongTinDoi"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/log"></ImageView>
 
-            <ImageView
-                android:id="@+id/imgThongTinDoi"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/log"></ImageView>
+
 
             <TextView
                 android:id="@+id/tvTenDoiThongTinDoi"
@@ -32,6 +34,19 @@
                 android:textSize="30dp"
                 android:textStyle="bold"></TextView>
 
+            <Button
+                android:id="@+id/btnThamGiaDoi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_shape_login"
+                android:saveEnabled="false"
+                android:text="Tham gia"
+                android:visibility="gone"
+                >
+
+            </Button>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

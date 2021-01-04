@@ -5,12 +5,14 @@
     android:background="@drawable/bg_listview_doi_tim_tran"
     android:gravity="center"
     android:padding="10dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/llDanhSachDoi">
     <ImageView
         android:id="@+id/imgLogo_Teams_list_teams"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_weight="1"></ImageView>
+
 
     <LinearLayout
 
@@ -47,7 +49,7 @@
             <TextView
                 android:id="@+id/txtThongTinKhuVuc_lstTeams"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:textColor="@color/colorBlack">
 

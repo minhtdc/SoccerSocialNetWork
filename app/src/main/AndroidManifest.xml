@@ -3,10 +3,11 @@
     package="com.example.soccersocialnetwork">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    //vao thu vien anh
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    //check network
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,14 +15,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua"></activity>
+        <activity android:name=".TranDuyHuynh.edit_profile_user"></activity>
+        <activity android:name=".TranDuyHuynh.all_stadiums"></activity>
         <activity android:name=".TranDuyHuynh.TimKiemUserActivity"></activity>
-        <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua" />
-        <activity android:name=".TranDuyHuynh.edit_profile_user" />
-        <activity android:name=".TranDuyHuynh.all_stadiums" />
+        <activity android:name=".DoanThanhTung.ViewThanhTung.ThemThanhVien"></activity>
         <activity android:name=".TranDuyHuynh.infomation_dangtintimtran" />
-        <activity android:name=".football_field_owner.activity.AddZoneActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.DoiActivity" />
+        <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity"/>
+        <activity android:name=".Football_Pitches.activity.FootballPitchesActivity"/>
+        <activity android:name=".Set_Football_Pitches.activity.SetFootballPitchesActivity"/>
+        <activity android:name=".Set_Football_Pitches.activity.SetZoneActivity"/>
+        <activity android:name=".football_field_owner.activity.ListZone"/>
+        <activity android:name=".football_field_owner.activity.ZoneInfoActivity"/>
+        <activity android:name=".football_field_owner.activity.AddZoneActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,9 +38,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTinCaNhan" />
-        <activity android:name=".TranDuyHuynh.home_layout"></activity>
-        <activity android:name=".DoanThanhTung.ViewThanhTung.TaoDonActivity" />
-        <activity android:name=".Set_Foothball_Pitches.activity.SetFoothballPitchesActivity"></activity>
+        <activity android:name=".TranDuyHuynh.home_layout" >
+
+        </activity>
     </application>
 
 </manifest>

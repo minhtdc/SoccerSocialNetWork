@@ -1,46 +1,69 @@
 package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.DialogTitle;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi;
-import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThanhVien;
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien;
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien_2;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.data_models.Users;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Fragment_Doi_Menu extends Fragment {
 
 
+    public static ArrayList<Users> listUser = new ArrayList<>();
+
+
+    ArrayList<String> keyUser = new ArrayList<>();
+
+
     ArrayList<Team> listTeam = new ArrayList<>();
-
-
-    LinearLayout llThongTinDoi, llThemThanhVien;
+    DatabaseReference mDatabase;
+    private ValueEventListener mListener;
+    List<String> keyUserChoDuyet = new ArrayList<>();
+    ArrayList<Users> listChoDuyet = new ArrayList<>();
+    LinearLayout llThongTinDoi, llThemThanhVien, llThanhVien, llChoDuyet;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = (ViewGroup) inflater.inflate((R.layout.doi_menu_1), container, false);
         llThongTinDoi = rootView.findViewById(R.id.llThongTinDoi);
         llThemThanhVien = rootView.findViewById(R.id.llThemThanhVien);
+        llThanhVien = rootView.findViewById(R.id.llThanhVien);
+        llChoDuyet = rootView.findViewById(R.id.llChoDuyet);
+
 
         //lay id bên trang chủ của đội
         idDoi = getArguments().getString("Doi_ID");
@@ -53,7 +76,13 @@ public class Fragment_Doi_Menu extends Fragment {
         tieuChi = getArguments().getString("Doi_TieuChi");
         slogan = getArguments().getString("Doi_Slogan");
 
+        getUserDaCo();
+        //   getUser();
+
+        readChoDuyet();
+        readUserChoDuyet();
         setEvent();
+
 
         return rootView;
     }
@@ -85,7 +114,262 @@ public class Fragment_Doi_Menu extends Fragment {
         llThemThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // getUserDaCo();
+                //  Toast.makeText(getContext(), listUser.size() + "", Toast.LENGTH_SHORT).show();
                 dialogThemThanh();
+
+            }
+        });
+
+        llThanhVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //    getUserDaCo();
+                Intent intent = new Intent(getContext(), ThemThanhVien.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("Doi_ID", idDoi);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        llChoDuyet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogChoDuyet();
+            }
+        });
+
+    }
+
+    private void dialogFullScreenThanhVien() {
+        final Dialog dialogFullScreen = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialogFullScreen.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+
+
+        dialogFullScreen.show();
+    }
+
+    public static ArrayList<Users> strings = new ArrayList<>();
+
+    private void dialogThemThanh() {
+        mDatabase.getDatabase().goOnline();
+        final Adapter_ThemThanhVien_2 adapterThem;
+        final Adapter_ThemThanhVien adapterDanhSach;
+
+
+        final Dialog dialogThemThanhVien = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialogThemThanhVien.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+        dialogThemThanhVien.setContentView(R.layout.dialog_them_thanhvien);
+        //dialogThemThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //ánh xạ
+        SearchView svThemThanhVien = dialogThemThanhVien.findViewById(R.id.svThemThanhVien);
+        Button btnEXIT = dialogThemThanhVien.findViewById(R.id.btnEXIT);
+
+//        ListView lvThemThanhVien = dialogThemThanhVien.findViewById(R.id.lvThemThanhVien);
+        ListView lvDanhSachDaThem = dialogThemThanhVien.findViewById(R.id.lvDanhSachDaThem);
+
+
+        strings.add(new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2FQY2wgkB3OtNCmcSb2gfDpc8S9Kj2%2Fa8fe8517-fbc4-47d4-ba6f-1fe00586ff81?alt=media&token=e8c0696c-2196-41be-a047-b3153c9efdb8"));
+
+//        adapterThem = new Adapter_ThemThanhVien_2(getContext(), R.layout.dialog_them_thanhvien_2, strings);
+//        lvThemThanhVien.setAdapter(adapterThem);
+
+        adapterDanhSach = new Adapter_ThemThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listUser);
+        lvDanhSachDaThem.setAdapter(adapterDanhSach);
+
+
+        svThemThanhVien.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapterDanhSach.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+
+                adapterDanhSach.getFilter().filter(newText);
+
+
+                return false;
+            }
+        });
+
+
+        btnEXIT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                strings.clear();
+                dialogThemThanhVien.cancel();
+            }
+        });
+        //them adapter hinh anh
+
+//        lvDanhSachDaThem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getContext(),listUser.get(position).getUserName()+ "", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+        dialogThemThanhVien.show();
+    }
+
+
+    private void dialogChoDuyet() {
+        Adapter_ThemThanhVien adapterDanhSach;
+
+        final Dialog dialogChoDuyet = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialogChoDuyet.setTitle("!@#");
+        dialogChoDuyet.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+        dialogChoDuyet.setContentView(R.layout.dialog_choduyet);
+//        dialogChoDuyet.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //  ánh xạ
+        Button btnEXIT = dialogChoDuyet.findViewById(R.id.btnEXIT);
+
+        final ListView lvDanhSachChoDuyet = dialogChoDuyet.findViewById(R.id.lvChoDuyet);
+
+
+        strings.add(new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2FQY2wgkB3OtNCmcSb2gfDpc8S9Kj2%2Fa8fe8517-fbc4-47d4-ba6f-1fe00586ff81?alt=media&token=e8c0696c-2196-41be-a047-b3153c9efdb8"));
+
+//        adapterThem = new Adapter_ThemThanhVien_2(getContext(), R.layout.dialog_them_thanhvien_2, strings);
+//        lvThemThanhVien.setAdapter(adapterThem);
+        adapterDanhSach = new Adapter_ThemThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listChoDuyet);
+        lvDanhSachChoDuyet.setAdapter(adapterDanhSach);
+
+        btnEXIT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                strings.clear();
+                dialogChoDuyet.cancel();
+                mDatabase.removeEventListener(mListener);
+            }
+        });
+
+        dialogChoDuyet.show();
+
+    }
+
+    private void readChoDuyet() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("ChoDuyet");
+        mListener = mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    keyUserChoDuyet.add(dt.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void readUserChoDuyet() {
+        listChoDuyet.clear();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (int i = 0; i < keyUserChoDuyet.size(); i++) {
+                    for (DataSnapshot dt :
+                            snapshot.getChildren()) {
+                        Users users = dt.getValue(Users.class);
+
+                        if (dt.getKey().equals(keyUserChoDuyet.get(i))) {
+                            listChoDuyet.add(users);
+                            // Toast.makeText(getContext(), keyUserChoDuyet.get(i)+"", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void insertThanhVien() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        for (int i = 0; i < strings.size(); i++) {
+            mDatabase.child("Team").child(idDoi).child("listThanhVien").child(strings.get(i).getUserID()).setValue("User");
+        }
+    }
+
+    private void insertUserinUser() {
+
+        for (int i = 0; i < strings.size(); i++) {
+            mDatabase = FirebaseDatabase.getInstance().getReference("users").child(strings.get(i).getUserID()).child("listDoi");
+
+            mDatabase.child(idDoi).setValue("User");
+//            mDatabase.child("users").child("Ki9ylJVuCWR4oBJhuvqqFJ5yYC42").child("listDoi");
+//            mDatabase.setValue("User");
+        }
+    }
+
+    private Dialog dialogSearchThanhVien() {
+
+        final ArrayAdapter adapter;
+        ArrayList<String> strings = new ArrayList<>();
+
+        Dialog dialogSearchThanhVien = new Dialog(getContext());
+        dialogSearchThanhVien = new Dialog(getContext());
+
+        dialogSearchThanhVien.setContentView(R.layout.dialog_them_thanhvien_1);
+        dialogSearchThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //anhxa
+
+
+        return dialogSearchThanhVien;
+    }
+
+    List<String> allListDoiUser = new ArrayList<>();
+
+    //------------------------------Fixx danh sach có thành viên
+    private void getUserDaCo() {
+        final ArrayList<String> strings = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listUser.clear();
+
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    //    boolean kiemTra = true;
+                    Users allUsers = dt.getValue(Users.class);
+                    Users usersDaCo = new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0");
+
+                    strings.add(dt.getKey());
+                    for (DataSnapshot dtt :
+                            dt.child("listDoi").getChildren()) {
+                        String key = dtt.getKey();
+                        if (key.equals(idDoi)) {
+//                            Toast.makeText(getContext(), dt.getKey()+"", Toast.LENGTH_SHORT).show();
+                            usersDaCo = dt.getValue(Users.class);
+                        }
+                    }
+                    if (allUsers.getUserEmail().equals(usersDaCo.getUserEmail())) {
+                    } else {
+                        listUser.add(allUsers);
+                    }
+                    // Toast.makeText(getContext(), strings.size()+"", Toast.LENGTH_SHORT).show();
+//                    if (kiemTra != false) {
+//
+//                        listUser.add(allUsers);
+//                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -93,16 +377,37 @@ public class Fragment_Doi_Menu extends Fragment {
     }
 
 
-    private void dialogThemThanh() {
-        final Dialog dialog = new Dialog(getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_them_thanhvien);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        //ánh xạ
+    private void getUser() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        listUser.clear();
+        keyUser.clear();
+        mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // Toast.makeText(getContext(), snapshot.getKey()+"", Toast.LENGTH_SHORT).show();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+//                    if(LoginActivity.USER_ID_CURRENT != keyUserDaCo.get(i)){
+                    //     Toast.makeText(getContext(), dt.getKey()+"", Toast.LENGTH_SHORT).show();
+                    keyUser.add(dt.getKey());
+
+                    Users users = dt.getValue(Users.class);
+                    listUser.add(users);
+//                    }
+//                for(int i = 0; i<snapshot.getKey().length();i++){
+//
+//                }
 
 
-        //them adapter hinh anh
-        dialog.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
