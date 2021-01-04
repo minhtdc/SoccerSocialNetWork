@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.ThemThanhVien;
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.data_models.Users;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +40,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
     ArrayList<Users> data;
     ArrayList<Users> datafull;
     ValueFilter valueFilter;
+    String adminOrUser;
     private LayoutInflater inflater;
     int resource;
     DatabaseReference mDatabase;
@@ -51,7 +53,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
         this.resource = resource;
 
         this.datafull = data;
-
+        readUserOrAdmin();
     }
 
     @Override
@@ -277,6 +279,11 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
                 dialogThongTinThanhVien.dismiss();
             }
         });
+        if (adminOrUser.equals("Admin")) {
+            btnKichThanhVien.setVisibility(View.VISIBLE);
+        }else{
+            btnKichThanhVien.setVisibility(View.GONE);
+        }
         btnKichThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -348,7 +355,23 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
 
             }
         });
+    }
 
+    public void readUserOrAdmin() {
+        adminOrUser = "khongnull";
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi").child(DoiActivity.idDoi);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                adminOrUser = snapshot.getValue(String.class);
 
+                // Toast.makeText(Doi_ThongTinCaNhan.this,snapshot.getValue()+ "", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

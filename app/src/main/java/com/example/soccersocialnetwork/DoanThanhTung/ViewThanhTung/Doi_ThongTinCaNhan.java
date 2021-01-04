@@ -79,33 +79,22 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
 
         setEvent();
 
-        imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(Doi_ThongTinCaNhan.this, imageViewToByte(imgThongTinDoi) +"", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
-    private byte[] imageViewToByte(ImageView imageView) {
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bytes = stream.toByteArray();
-        OutputStream outputStream = new ByteArrayOutputStream();
-        return bytes;
 
-    }
-    private void takeData(){
-        tenDoi = getIntent().getExtras().getString("Doi_TenDoi");
-        uriIMG = getIntent().getExtras().getString("Doi_uriIMG");
+
+    private void takeData() {
+
         idDoi = getIntent().getExtras().getString("Doi_ID");
-        khuVuc = getIntent().getExtras().getString("Doi_KhuVuc");
-        email = getIntent().getExtras().getString("Doi_Email");
-        sdt = getIntent().getExtras().getString("Doi_SDT");
-        gioiThieu = getIntent().getExtras().getString("Doi_GioiThieu");
-        tieuChi = getIntent().getExtras().getString("Doi_TieuChi");
-        slogan = getIntent().getExtras().getString("Doi_Slogan");
+//        tenDoi = getIntent().getExtras().getString("Doi_TenDoi");
+//        uriIMG = getIntent().getExtras().getString("Doi_uriIMG");
+//        khuVuc = getIntent().getExtras().getString("Doi_KhuVuc");
+//        email = getIntent().getExtras().getString("Doi_Email");
+//        sdt = getIntent().getExtras().getString("Doi_SDT");
+//        gioiThieu = getIntent().getExtras().getString("Doi_GioiThieu");
+//        tieuChi = getIntent().getExtras().getString("Doi_TieuChi");
+//        slogan = getIntent().getExtras().getString("Doi_Slogan");
     }
+
     private void setEvent() {
         imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
             @Override
