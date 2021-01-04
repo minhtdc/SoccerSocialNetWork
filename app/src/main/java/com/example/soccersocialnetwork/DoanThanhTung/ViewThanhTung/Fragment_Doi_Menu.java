@@ -21,10 +21,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ChoDuyetThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien_2;
@@ -32,7 +30,6 @@ import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.data_models.Users;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,7 +44,7 @@ public class Fragment_Doi_Menu extends Fragment {
 
 
     public static ArrayList<Users> listUser = new ArrayList<>();
-    String adminOrUser;
+
 
     ArrayList<String> keyUser = new ArrayList<>();
 
@@ -57,8 +54,7 @@ public class Fragment_Doi_Menu extends Fragment {
     private ValueEventListener mListener;
     List<String> keyUserChoDuyet = new ArrayList<>();
     ArrayList<Users> listChoDuyet = new ArrayList<>();
-    LinearLayout llThongTinDoi, llThemThanhVien, llThanhVien, llChoDuyet, llRoiDoi;
-    TextView tvThongBao123;
+    LinearLayout llThongTinDoi, llThemThanhVien, llThanhVien, llChoDuyet;
     String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,8 +63,6 @@ public class Fragment_Doi_Menu extends Fragment {
         llThemThanhVien = rootView.findViewById(R.id.llThemThanhVien);
         llThanhVien = rootView.findViewById(R.id.llThanhVien);
         llChoDuyet = rootView.findViewById(R.id.llChoDuyet);
-        tvThongBao123 = rootView.findViewById(R.id.tvThongBao123);
-        llRoiDoi = rootView.findViewById(R.id.llRoiDoi);
 
 
         //lay id bên trang chủ của đội
@@ -82,12 +76,11 @@ public class Fragment_Doi_Menu extends Fragment {
         tieuChi = getArguments().getString("Doi_TieuChi");
         slogan = getArguments().getString("Doi_Slogan");
 
-        readUserOrAdmin();
         getUserDaCo();
+        //   getUser();
 
         readChoDuyet();
-
-
+        readUserChoDuyet();
         setEvent();
 
 
@@ -118,12 +111,11 @@ public class Fragment_Doi_Menu extends Fragment {
             }
         });
 
-
         llThemThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // getUserDaCo();
-//                Toast.makeText(getContext(), adminOrUser + "", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getContext(), listUser.size() + "", Toast.LENGTH_SHORT).show();
                 dialogThemThanh();
 
             }
@@ -147,35 +139,6 @@ public class Fragment_Doi_Menu extends Fragment {
             }
         });
 
-        llRoiDoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Rời đội");
-                builder.setMessage("Bạn có muốn rời đội này?");
-                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (adminOrUser.equals("Admin")) {
-                            Toast.makeText(getContext(), "Bạn không thể rồi team của mình", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        } else {
-                            dialog.dismiss();
-                            roiTeam();
-                            getActivity().finish();
-                        }
-                    }
-                });
-                builder.show();
-            }
-        });
-
     }
 
     private void dialogFullScreenThanhVien() {
@@ -190,7 +153,7 @@ public class Fragment_Doi_Menu extends Fragment {
 
     private void dialogThemThanh() {
         mDatabase.getDatabase().goOnline();
-
+        final Adapter_ThemThanhVien_2 adapterThem;
         final Adapter_ThemThanhVien adapterDanhSach;
 
 
@@ -254,9 +217,8 @@ public class Fragment_Doi_Menu extends Fragment {
 
 
     private void dialogChoDuyet() {
+        Adapter_ThemThanhVien adapterDanhSach;
 
-
-        Adapter_ChoDuyetThanhVien adapterDanhSachChoDuyet;
         final Dialog dialogChoDuyet = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialogChoDuyet.setTitle("!@#");
         dialogChoDuyet.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
@@ -268,21 +230,19 @@ public class Fragment_Doi_Menu extends Fragment {
         final ListView lvDanhSachChoDuyet = dialogChoDuyet.findViewById(R.id.lvChoDuyet);
 
 
-        //  strings.add(new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2FQY2wgkB3OtNCmcSb2gfDpc8S9Kj2%2Fa8fe8517-fbc4-47d4-ba6f-1fe00586ff81?alt=media&token=e8c0696c-2196-41be-a047-b3153c9efdb8"));
+        strings.add(new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2FQY2wgkB3OtNCmcSb2gfDpc8S9Kj2%2Fa8fe8517-fbc4-47d4-ba6f-1fe00586ff81?alt=media&token=e8c0696c-2196-41be-a047-b3153c9efdb8"));
 
 //        adapterThem = new Adapter_ThemThanhVien_2(getContext(), R.layout.dialog_them_thanhvien_2, strings);
 //        lvThemThanhVien.setAdapter(adapterThem);
-        adapterDanhSachChoDuyet = new Adapter_ChoDuyetThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listChoDuyet);
-        lvDanhSachChoDuyet.setAdapter(adapterDanhSachChoDuyet);
-
-        adapterDanhSachChoDuyet.notifyDataSetChanged();
+        adapterDanhSach = new Adapter_ThemThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listChoDuyet);
+        lvDanhSachChoDuyet.setAdapter(adapterDanhSach);
 
         btnEXIT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                strings.clear();
                 dialogChoDuyet.cancel();
-
+                mDatabase.removeEventListener(mListener);
             }
         });
 
@@ -291,38 +251,13 @@ public class Fragment_Doi_Menu extends Fragment {
     }
 
     private void readChoDuyet() {
-        final DatabaseReference mDataUser = FirebaseDatabase.getInstance().getReference("users");
         mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(idDoi).child("ChoDuyet");
         mListener = mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                keyUserChoDuyet.clear();
-                listChoDuyet.clear();
-                for (final DataSnapshot dt :
+                for (DataSnapshot dt :
                         snapshot.getChildren()) {
                     keyUserChoDuyet.add(dt.getKey());
-                    mDataUser.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot dtt:
-                            snapshot.getChildren()){
-                                Users users = dtt.getValue(Users.class);
-                                if(dtt.getKey().equals(dt.getKey())){
-                                    listChoDuyet.add(users);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-                if (keyUserChoDuyet.size() == 0 || keyUserChoDuyet == null) {
-                    tvThongBao123.setVisibility(View.GONE);
-                } else {
-                    tvThongBao123.setText(keyUserChoDuyet.size() + "");
                 }
             }
 
@@ -332,6 +267,69 @@ public class Fragment_Doi_Menu extends Fragment {
             }
         });
     }
+
+    private void readUserChoDuyet() {
+        listChoDuyet.clear();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (int i = 0; i < keyUserChoDuyet.size(); i++) {
+                    for (DataSnapshot dt :
+                            snapshot.getChildren()) {
+                        Users users = dt.getValue(Users.class);
+
+                        if (dt.getKey().equals(keyUserChoDuyet.get(i))) {
+                            listChoDuyet.add(users);
+                            // Toast.makeText(getContext(), keyUserChoDuyet.get(i)+"", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void insertThanhVien() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        for (int i = 0; i < strings.size(); i++) {
+            mDatabase.child("Team").child(idDoi).child("listThanhVien").child(strings.get(i).getUserID()).setValue("User");
+        }
+    }
+
+    private void insertUserinUser() {
+
+        for (int i = 0; i < strings.size(); i++) {
+            mDatabase = FirebaseDatabase.getInstance().getReference("users").child(strings.get(i).getUserID()).child("listDoi");
+
+            mDatabase.child(idDoi).setValue("User");
+//            mDatabase.child("users").child("Ki9ylJVuCWR4oBJhuvqqFJ5yYC42").child("listDoi");
+//            mDatabase.setValue("User");
+        }
+    }
+
+    private Dialog dialogSearchThanhVien() {
+
+        final ArrayAdapter adapter;
+        ArrayList<String> strings = new ArrayList<>();
+
+        Dialog dialogSearchThanhVien = new Dialog(getContext());
+        dialogSearchThanhVien = new Dialog(getContext());
+
+        dialogSearchThanhVien.setContentView(R.layout.dialog_them_thanhvien_1);
+        dialogSearchThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //anhxa
+
+
+        return dialogSearchThanhVien;
+    }
+
+    List<String> allListDoiUser = new ArrayList<>();
 
     //------------------------------Fixx danh sach có thành viên
     private void getUserDaCo() {
@@ -378,31 +376,31 @@ public class Fragment_Doi_Menu extends Fragment {
 
     }
 
-    public void roiTeam(){
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase.child(LoginActivity.USER_ID_CURRENT).child("listDoi").child(idDoi).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getContext(), "Bạn đã rời đội thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    public void readUserOrAdmin() {
-        adminOrUser = "khongnull";
-        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi").child(idDoi);
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
+    private void getUser() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        listUser.clear();
+        keyUser.clear();
+        mDatabase.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                adminOrUser = snapshot.getValue(String.class);
 
-                if (adminOrUser.equals("Admin")) {
-                    llThemThanhVien.setVisibility(View.VISIBLE);
-                    llChoDuyet.setVisibility(View.VISIBLE);
-                } else {
-                    llThemThanhVien.setVisibility(View.GONE);
-                    llChoDuyet.setVisibility(View.GONE);
+                // Toast.makeText(getContext(), snapshot.getKey()+"", Toast.LENGTH_SHORT).show();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+//                    if(LoginActivity.USER_ID_CURRENT != keyUserDaCo.get(i)){
+                    //     Toast.makeText(getContext(), dt.getKey()+"", Toast.LENGTH_SHORT).show();
+                    keyUser.add(dt.getKey());
+
+                    Users users = dt.getValue(Users.class);
+                    listUser.add(users);
+//                    }
+//                for(int i = 0; i<snapshot.getKey().length();i++){
+//
+//                }
+
+
                 }
-                // Toast.makeText(Doi_ThongTinCaNhan.this,snapshot.getValue()+ "", Toast.LENGTH_SHORT).show();
             }
 
             @Override

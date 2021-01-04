@@ -13,6 +13,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.soccersocialnetwork.DoanThanhTung.Adapter.ViewPagerAdapter;
+import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +36,6 @@ import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.FireBaseTeam;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -194,14 +206,10 @@ public class DoiActivity extends AppCompatActivity {
         fragment_doi.setArguments(bundle_Doi);
         adapter.addFragment(fragment_doi, "");
 
-
-
         adapter.addFragment(new Fragment_Doi_2(), "");
 
         //chuyền dữ liệu qua fragment
         Fragment_Doi_Menu fragment_doi_menu = new Fragment_Doi_Menu();
-
-
         Bundle bundle_menu = new Bundle();
         bundle_menu.putString("Doi_ID",idDoi);
         bundle_menu.putString("Doi_uriIMG",uriIMG);

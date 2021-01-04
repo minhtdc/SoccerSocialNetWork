@@ -1,16 +1,13 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
 public class RushHour {
-    String gioBD;
-    String phutBD;
-    String gioKT;
-    String phutKT;
+    int gioBD, phutBD, gioKT, phutKT;
     String id;
 
     public RushHour() {
     }
 
-    public RushHour(String gioBD, String phutBD, String gioKT, String phutKT, String id) {
+    public RushHour(int gioBD, int phutBD, int gioKT, int phutKT, String id) {
         this.gioBD = gioBD;
         this.phutBD = phutBD;
         this.gioKT = gioKT;
@@ -18,35 +15,35 @@ public class RushHour {
         this.id = id;
     }
 
-    public String getGioBD() {
+    public int getGioBD() {
         return gioBD;
     }
 
-    public void setGioBD(String gioBD) {
+    public void setGioBD(int gioBD) {
         this.gioBD = gioBD;
     }
 
-    public String getPhutBD() {
+    public int getPhutBD() {
         return phutBD;
     }
 
-    public void setPhutBD(String phutBD) {
+    public void setPhutBD(int phutBD) {
         this.phutBD = phutBD;
     }
 
-    public String getGioKT() {
+    public int getGioKT() {
         return gioKT;
     }
 
-    public void setGioKT(String gioKT) {
+    public void setGioKT(int gioKT) {
         this.gioKT = gioKT;
     }
 
-    public String getPhutKT() {
+    public int getPhutKT() {
         return phutKT;
     }
 
-    public void setPhutKT(String phutKT) {
+    public void setPhutKT(int phutKT) {
         this.phutKT = phutKT;
     }
 
@@ -60,7 +57,7 @@ public class RushHour {
 
     @Override
     public String toString() {
-        return gioBD + ':' + phutBD + " - " +
-                gioKT + ':' + phutKT;
+        return gioBD + ":" + phutBD + " - " +
+                gioKT + ":" + phutKT;
     }
 }

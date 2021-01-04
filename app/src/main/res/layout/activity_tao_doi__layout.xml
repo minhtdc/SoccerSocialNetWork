@@ -149,27 +149,16 @@
                     android:gravity="center"
                     android:text="@string/Doi_GioiThieu"
                     ></TextView>
+
                 <EditText
                     android:id="@+id/txtGioiThieu"
                     android:layout_width="0dp"
-                    android:layout_weight="3"
                     android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="left|top"
+                    android:layout_weight="3"
+                    android:inputType="text"
+                    android:maxLength="100"
 
-                    android:inputType="textMultiLine"
-                    android:textSize="15sp">
-                    <requestFocus />
-                </EditText>
-<!--                <EditText-->
-<!--                    android:id="@+id/txtGioiThieu"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="3"-->
-<!--                    android:inputType="text"-->
-<!--                    android:maxLength="100"-->
-
-<!--                    android:maxLines="5"></EditText>-->
+                    android:maxLines="5"></EditText>
 
             </LinearLayout>
 

@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,8 +22,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
 import com.example.soccersocialnetwork.football_field_owner.model.City;
@@ -40,26 +45,33 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddZoneActivity extends AppCompatActivity {
     private static final String TAG = AddZoneActivity.class.getSimpleName();
     EditText txtTenKhu, txtDiaChi;
-    Spinner spnTP, spnQuan, spnGioMo, spnPhutMo, spnGioDong, spnPhutDong;
+    Spinner spnTP, spnQuan;
+    TextView tvGioMo, tvGioDong;
     ImageView imgAnh;
     Button btnThem;
     ArrayList<City> data_tp = new ArrayList<>();
     ArrayList<String> data_quan = new ArrayList<>();
+    ArrayAdapter adapter_tp, adapter_quan;
+    int gioMo, phutMo, gioDong, phutDong;
     ArrayList<String> data_gio = new ArrayList<>();
     ArrayList<String> data_phut = new ArrayList<>();
-    ArrayAdapter adapter_tp, adapter_quan, adapter_gio, adapter_phut;
     //    FirebaseDatabase database = FirebaseDatabase.getInstance();
     final int REQUEST_CODE_IMAGE = 999;
     DatabaseReference mFirebaseDatabase;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseDatabase mFirebaseInstance;
-    String userId;
+    String userId = LoginActivity.USER_ID_CURRENT;
     StorageReference storageRef = storage.getReference().child("anhKhu");
 
     @Override
@@ -78,10 +90,6 @@ public class AddZoneActivity extends AppCompatActivity {
         KhoiTao();
         data_tp = dataBaseHelper.getAllCity();
         setAdapterSpinner(data_tp, adapter_tp, spnTP);
-        setAdapterSpinner(data_gio, adapter_gio, spnGioMo);
-        setAdapterSpinner(data_gio, adapter_phut, spnGioDong);
-        setAdapterSpinner(data_phut, adapter_gio, spnPhutMo);
-        setAdapterSpinner(data_phut, adapter_phut, spnPhutDong);
         spnTP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -101,6 +109,64 @@ public class AddZoneActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ActivityCompat.requestPermissions(AddZoneActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_IMAGE);
 
+            }
+        });
+
+        tvGioMo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        AddZoneActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                gioMo = hourOfDay;
+                                phutMo = minute;
+                                String time = gioMo + ":" + phutMo;
+
+                                try {
+                                    SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
+                                    Date date = f24hours.parse(time);
+                                    Toast.makeText(AddZoneActivity.this, time+"", Toast.LENGTH_SHORT).show();
+                                    tvGioMo.setText(time);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 12, 00, true);
+                timePickerDialog.setTitle("Thời gian");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
+                timePickerDialog.updateTime(gioMo,phutMo);
+                timePickerDialog.show();
+            }
+        });
+        tvGioDong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        AddZoneActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                gioDong = hourOfDay;
+                                phutDong = minute;
+                                String time = gioDong + ":" + phutDong;
+                                SimpleDateFormat f24hours = new SimpleDateFormat("hh:mm");
+                                try {
+                                    Date date = f24hours.parse(time);
+                                    Toast.makeText(AddZoneActivity.this, time+"", Toast.LENGTH_SHORT).show();
+                                    tvGioDong.setText(time);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 12, 00, true);
+                timePickerDialog.setTitle("Thời gian");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
+                timePickerDialog.updateTime(gioDong,phutDong);
+                timePickerDialog.show();
             }
         });
         btnThem.setOnClickListener(new View.OnClickListener() {
@@ -194,12 +260,13 @@ public class AddZoneActivity extends AppCompatActivity {
         zone.setThanhPho(spnTP.getSelectedItem().toString());
         zone.setQuan(spnQuan.getSelectedItem().toString());
         zone.setDiaChi(txtDiaChi.getText().toString());
-        zone.setGioMo(spnGioMo.getSelectedItem().toString());
-        zone.setGioDong(spnPhutMo.getSelectedItem().toString());
-        zone.setPhutMo(spnGioDong.getSelectedItem().toString());
-        zone.setPhutDong(spnPhutDong.getSelectedItem().toString());
+        zone.setGioMo(gioMo);
+        zone.setGioDong(phutMo);
+        zone.setPhutMo(gioDong);
+        zone.setPhutDong(phutDong);
         zone.setAnh(url);
         zone.setPushId(id);
+        zone.setIdUser(userId);
         return zone;
     }
 
@@ -219,27 +286,13 @@ public class AddZoneActivity extends AppCompatActivity {
         txtDiaChi = findViewById(R.id.txtDiaChi);
         spnTP = findViewById(R.id.spnTP);
         spnQuan = findViewById(R.id.spnQuan);
-        spnGioMo = findViewById(R.id.spnGioMo);
-        spnPhutMo = findViewById(R.id.spnPhutMo);
-        spnGioDong = findViewById(R.id.spnGioDong);
-        spnPhutDong = findViewById(R.id.spnPhutDong);
+        tvGioMo = findViewById(R.id.tvGioMo);
+        tvGioDong = findViewById(R.id.tvGioDong);
         imgAnh = findViewById(R.id.imgAnhKhu);
         btnThem = findViewById(R.id.btnThem);
 
     }
 
     void KhoiTao() {
-        String a,b;
-        for (int i = 1; i < 25; i++) {
-            if(i<10){
-                a = String.valueOf(i);
-                b = "0" + a;
-            }else {
-                b = String.valueOf(i);
-            }
-            data_gio.add(b);
-        }
-        data_phut.add("00");
-        data_phut.add("30");
     }
 }

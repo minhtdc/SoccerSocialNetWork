@@ -6,18 +6,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -31,26 +26,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi2;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
-import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.data_models.Users;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.slider.Slider;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Map;
 
 public class Fragment_Doi extends Fragment {
@@ -72,7 +58,6 @@ public class Fragment_Doi extends Fragment {
     ArrayList<Feeds> listFeedTest = new ArrayList<>();
     Adapter_FeedsDoi2 adapter2;
 
-    String userIMG,userName;
     String idDoi;
     int iHourStart, iMinuteStart;
     int iHourEnd, iMinuteEnd;
@@ -93,7 +78,7 @@ public class Fragment_Doi extends Fragment {
         // tvTrangThai.setVisibility(View.GONE);
         idDoi = getArguments().getString("Doi_ID");
 
-        getUser();
+
         readFirebaseDangBai();
 
         setEvent();
@@ -104,156 +89,156 @@ public class Fragment_Doi extends Fragment {
     TimePickerDialog timePickerDialogGioStart;
     TimePickerDialog timePickerDialogGioEnd;
 
-//    private void fullscreenDialog() {
-//        iHourStart = 0;
-//        iMinuteStart = 0;
-//        iHourEnd = 0;
-//        iMinuteEnd = 0;
-//        final Dialog dialogFullScreen = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-//        dialogFullScreen.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
-////        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-////
-//        dialogFullScreen.setContentView(R.layout.dialog_doi_dangbai);
-////
-//        //ánh xạ
-//        tvGioStart = dialogFullScreen.findViewById(R.id.tvGioStart);
-//        tvGioEnd = dialogFullScreen.findViewById(R.id.tvGioEnd);
-//        tvNgay = dialogFullScreen.findViewById(R.id.tvNgay);
-//        txtThongBao = dialogFullScreen.findViewById(R.id.txtThongBao);
-//        btnDangBai = dialogFullScreen.findViewById(R.id.btnDangBai);
-//        spHanGio = dialogFullScreen.findViewById(R.id.spHanGio);
-//        spThanhPho = dialogFullScreen.findViewById(R.id.spThanhPho);
-//        spQuan = dialogFullScreen.findViewById(R.id.spQuan);
-//        btnBackTeam = dialogFullScreen.findViewById(R.id.btnBackTeam);
+    private void fullscreenDialog() {
+        iHourStart = 0;
+        iMinuteStart = 0;
+        iHourEnd = 0;
+        iMinuteEnd = 0;
+        final Dialog dialogFullScreen = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialogFullScreen.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+//        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //
-//        // btnDangBai.setVisibility(View.INVISIBLE);
-//        final Calendar calendar = Calendar.getInstance();
-//        final int ihours = calendar.get(Calendar.HOUR);
-//        final int iminute = calendar.get(Calendar.MINUTE);
-//        tvGioStart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                timePickerDialogGioStart = new TimePickerDialog(
-//                        getActivity(), new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        dialogFullScreen.setContentView(R.layout.dialog_doi_dangbai);
 //
-//                        iHourStart = hourOfDay;
-//                        iMinuteStart = minute;
-//                        Calendar calendar = Calendar.getInstance();
-//                        //
-//                        calendar.set(0, 0, 0, iHourStart, iMinuteStart);
-//
-//                        //set selected
-//                        tvGioStart.setText(iHourStart + ":" + iMinuteStart);
-//                    }
-//                }, ihours, iminute, true
-//                );
-//                timePickerDialogGioStart.updateTime(iHourStart, iMinuteStart);
-//                timePickerDialogGioStart.show();
-//
-//            }
-//        });
-//
-//
-//        tvGioEnd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//                if (iHourStart == 0) {
-//                    builder.setTitle("Thời gian");
-//                    builder.setMessage("Hãy chọn thời gian bắt đầu");
-//                    builder.setNegativeButton("Xác nhận", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.cancel();
-//                        }
-//                    });
-//                    builder.show();
-//                } else {
-//                    timePickerDialogGioEnd = new TimePickerDialog(
-//                            getActivity(), new TimePickerDialog.OnTimeSetListener() {
-//                        @Override
-//                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//
-//                            iHourEnd = hourOfDay;
-//                            iMinuteEnd = minute;
-//                            Calendar calendar = Calendar.getInstance();
-//                            //
-//                            calendar.set(0, 0, 0, iHourEnd, iMinuteEnd);
-//
-//                            //set selected
-//                            tvGioEnd.setText(iHourEnd + ":" + iMinuteEnd);
-//                        }
-//                    }, iHourStart, iMinuteStart, true
-//                    );
-//                    timePickerDialogGioEnd.updateTime(iHourEnd, iHourEnd);
-//                    timePickerDialogGioEnd.show();
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//        tvNgay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final Calendar calendar = Calendar.getInstance();
-//                int idate = calendar.get(Calendar.DATE);
-//                int imonth = calendar.get(Calendar.MONTH);
-//                int iyear = calendar.get(Calendar.YEAR);
-//
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//                        date = dayOfMonth;
-//                        thang = month;
-//                        nam = year;
-//                        String day = date + "/" + thang + "/" + nam;
-//                        tvNgay.setText(day);
-//                    }
-//                }, iyear, imonth, idate);
-//                datePickerDialog.show();
-//            }
-//        });
-//
-//        btnDangBai.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//                builder.setTitle("Xác nhận đăng bài");
-//                builder.setMessage("Bạn có muốn đăng bài này lên ?");
-//
-//                builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        insertFirebaseDangBai(getFeeds());
-//                        dialogFullScreen.dismiss();
-//                    }
-//                });
-//                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//                builder.show();
-//            }
-//        });
-//
-//        btnBackTeam.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                dialogFullScreen.dismiss();
-//            }
-//        });
-//        //them adapter hinh anh
-//
-//        dialogFullScreen.show();
-  //  }
+        //ánh xạ
+        tvGioStart = dialogFullScreen.findViewById(R.id.tvGioStart);
+        tvGioEnd = dialogFullScreen.findViewById(R.id.tvGioEnd);
+        tvNgay = dialogFullScreen.findViewById(R.id.tvNgay);
+        txtThongBao = dialogFullScreen.findViewById(R.id.txtThongBao);
+        btnDangBai = dialogFullScreen.findViewById(R.id.btnDangBai);
+        spHanGio = dialogFullScreen.findViewById(R.id.spHanGio);
+        spThanhPho = dialogFullScreen.findViewById(R.id.spThanhPho);
+        spQuan = dialogFullScreen.findViewById(R.id.spQuan);
+        btnBackTeam = dialogFullScreen.findViewById(R.id.btnBackTeam);
+
+        // btnDangBai.setVisibility(View.INVISIBLE);
+        final Calendar calendar = Calendar.getInstance();
+        final int ihours = calendar.get(Calendar.HOUR);
+        final int iminute = calendar.get(Calendar.MINUTE);
+        tvGioStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePickerDialogGioStart = new TimePickerDialog(
+                        getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                        iHourStart = hourOfDay;
+                        iMinuteStart = minute;
+                        Calendar calendar = Calendar.getInstance();
+                        //
+                        calendar.set(0, 0, 0, iHourStart, iMinuteStart);
+
+                        //set selected
+                        tvGioStart.setText(iHourStart + ":" + iMinuteStart);
+                    }
+                }, ihours, iminute, true
+                );
+                timePickerDialogGioStart.updateTime(iHourStart, iMinuteStart);
+                timePickerDialogGioStart.show();
+
+            }
+        });
+
+
+        tvGioEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                if (iHourStart == 0) {
+                    builder.setTitle("Thời gian");
+                    builder.setMessage("Hãy chọn thời gian bắt đầu");
+                    builder.setNegativeButton("Xác nhận", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    timePickerDialogGioEnd = new TimePickerDialog(
+                            getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                            iHourEnd = hourOfDay;
+                            iMinuteEnd = minute;
+                            Calendar calendar = Calendar.getInstance();
+                            //
+                            calendar.set(0, 0, 0, iHourEnd, iMinuteEnd);
+
+                            //set selected
+                            tvGioEnd.setText(iHourEnd + ":" + iMinuteEnd);
+                        }
+                    }, iHourStart, iMinuteStart, true
+                    );
+                    timePickerDialogGioEnd.updateTime(iHourEnd, iHourEnd);
+                    timePickerDialogGioEnd.show();
+
+                }
+
+
+            }
+        });
+
+        tvNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int idate = calendar.get(Calendar.DATE);
+                int imonth = calendar.get(Calendar.MONTH);
+                int iyear = calendar.get(Calendar.YEAR);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        date = dayOfMonth;
+                        thang = month;
+                        nam = year;
+                        String day = date + "/" + thang + "/" + nam;
+                        tvNgay.setText(day);
+                    }
+                }, iyear, imonth, idate);
+                datePickerDialog.show();
+            }
+        });
+
+        btnDangBai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Xác nhận đăng bài");
+                builder.setMessage("Bạn có muốn đăng bài này lên ?");
+
+                builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        insertFirebaseDangBai(getFeeds());
+                        dialogFullScreen.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        btnBackTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialogFullScreen.dismiss();
+            }
+        });
+        //them adapter hinh anh
+
+        dialogFullScreen.show();
+    }
 
     public void insertFirebaseDangBai(Feeds feeds) {
         final ProgressDialog progreDiaglogLoadding = new ProgressDialog(getContext());
@@ -347,8 +332,8 @@ public class Fragment_Doi extends Fragment {
         imgDangBai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fullscreenDangBai();
-               // fullscreenDialog();
+
+                fullscreenDialog();
             }
         });
         tvTrangThai.setOnClickListener(new View.OnClickListener() {
@@ -357,30 +342,6 @@ public class Fragment_Doi extends Fragment {
                 Toast.makeText(getContext(), LoginActivity.USER_ID_CURRENT+"", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void fullscreenDangBai(){
-        final Dialog dialogFullScreen = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-        dialogFullScreen.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
-        dialogFullScreen.setContentView(R.layout.dialog_doi_dangbaiviet);
-//        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Button btnBackDangBai = dialogFullScreen.findViewById(R.id.btnBackDangBai);
-        ImageView imgAvatar = dialogFullScreen.findViewById(R.id.imgAvatar);
-
-        if(userIMG.equals("")||userIMG == null){
-
-        }else{
-            Picasso.get().load(userIMG).into(imgAvatar);
-        }
-
-
-        btnBackDangBai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogFullScreen.dismiss();
-            }
-        });
-        dialogFullScreen.show();
     }
 
     private ProgressDialog progressDialogLoading(){
@@ -392,23 +353,7 @@ public class Fragment_Doi extends Fragment {
 
     }
 
-    private void getUser(){
-        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT);
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Users users = snapshot.getValue(Users.class);
-                userIMG = users.getUserImage();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
     private void setControl() {
-
 
     }
 

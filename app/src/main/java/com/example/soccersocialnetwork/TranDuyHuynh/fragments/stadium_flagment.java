@@ -1,5 +1,6 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,14 +10,29 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetZoneActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_listStadiums_Adapter;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_listStadium;
+import com.example.soccersocialnetwork.football_field_owner.activity.AddZoneActivity;
+import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
+import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
+import com.example.soccersocialnetwork.football_field_owner.model.Zone;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +44,20 @@ import java.util.List;
  */
 public class stadium_flagment extends Fragment {
     // Khai bao spinner
-   private Spinner spinner;
-   private CategoryAdapter_KhuVuc categoryAdapter_khuVuc;
+    private Spinner spinner;
+    private CategoryAdapter_KhuVuc categoryAdapter_khuVuc;
+    private Button btnSanCuaBan;
+    public static String idKhu;
 
-   // Khai bao list view
+    ImageButton btnAdd;
+    // Khai bao list view
     private ListView listView;
     ArrayList<information_listStadium> listStadiums;
-
+    ArrayList<FootballPitches> data_listStadiums = new ArrayList<>();
+    DatabaseReference mFirebaseDatabase;
+    ArrayAdapter information_listStadiums_adapter;
+    String loaiSan, loaiHinhSan = "";
+    TextView t;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -85,20 +108,125 @@ public class stadium_flagment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        t = view.findViewById(R.id.test);
         spinner = view.findViewById(R.id.spnKhuVuc_lstSan);
-       createDataForSpn_KhuVuc();
-        categoryAdapter_khuVuc = new CategoryAdapter_KhuVuc(getContext(),R.layout.item_selected,createDataForSpn_KhuVuc());
-        spinner.setAdapter(categoryAdapter_khuVuc);
-
-        createDataForListStadiums();
-        information_listStadiums_Adapter information_listStadiums_adapter = new information_listStadiums_Adapter(getContext(),R.layout.list_stadiums,listStadiums);
         listView = view.findViewById(R.id.lstStadiums);
-        listView.setAdapter(information_listStadiums_adapter);
+        btnSanCuaBan = view.findViewById(R.id.btn_list_your_stadiums);
+        btnAdd = view.findViewById(R.id.btnAdd);
+        createDataForSpn_KhuVuc();
+        categoryAdapter_khuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, createDataForSpn_KhuVuc());
+        spinner.setAdapter(categoryAdapter_khuVuc);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddZoneActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnSanCuaBan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ListZone.class);
+                startActivity(intent);
+            }
+        });
 
+        listStadiums = new ArrayList<>();
+
+
+        information_listStadiums_adapter = new information_listStadiums_Adapter(getContext(), R.layout.list_stadiums, listStadiums);
+        listView.setAdapter(information_listStadiums_adapter);
+        loadData();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(), SetZoneActivity.class);
+                idKhu = listStadiums.get(i).getIdKhu();
+
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void loadData() {
+        mFirebaseDatabase.child("Khu").addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                final Zone zone = snapshot.getValue(Zone.class);
+                if (zone.isCoTuNhien() == true) {
+                    if (zone.isCoNhanTao() == true) {
+                        loaiSan = "Cỏ Tự Nhiên, Cỏ Nhân Tạo";
+                    } else {
+                        loaiSan = "Cỏ Tự Nhiên";
+                    }
+                } else {
+                    if (zone.isCoNhanTao() == true) {
+                        loaiSan = "Cỏ Nhân Tạo";
+                    } else {
+                        loaiSan = "";
+                    }
+                }
+                if (zone.isNamNguoi() == true) {
+                    if (zone.isBayNguoi() == true) {
+                        if (zone.isChinNguoi() == true) {
+                            loaiHinhSan = "5 Người, 7 Người, 9 Người";
+                        } else {
+                            loaiHinhSan = "5 Người, 7 Người";
+                        }
+                    } else {
+                        if (zone.isChinNguoi() == true) {
+                            loaiHinhSan = "5 Người, 9 Người";
+                        } else {
+                            loaiHinhSan = "5 Người";
+                        }
+                    }
+                } else {
+                    if (zone.isBayNguoi() == true) {
+                        if (zone.isChinNguoi() == true) {
+                            loaiHinhSan = "7 Người, 9 Người";
+                        } else {
+                            loaiHinhSan = "7 Người";
+                        }
+                    } else {
+                        if (zone.isChinNguoi() == true) {
+                            loaiHinhSan = "9 Người";
+                        } else {
+                            loaiHinhSan = "";
+                        }
+                    }
+                }
+                if (!loaiSan.equals("") && !loaiHinhSan.equals("")) {
+                    listStadiums.add(new information_listStadium(zone.getAnh(), zone.getPushId(), zone.getTenKhu(), loaiHinhSan, loaiSan, zone.getDiaChi() + zone.getQuan() + zone.getThanhPho()));
+                    information_listStadiums_adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     // tạo dữ liệu giả cho spinner khu vực
-    private List<Category_KhuVuc> createDataForSpn_KhuVuc(){
+    private List<Category_KhuVuc> createDataForSpn_KhuVuc() {
         List<Category_KhuVuc> list = new ArrayList<Category_KhuVuc>();
         list.add(new Category_KhuVuc("Khu vực"));
         list.add(new Category_KhuVuc("TP.HCM"));
@@ -106,16 +234,5 @@ public class stadium_flagment extends Fragment {
         list.add(new Category_KhuVuc("Hà Nội"));
         list.add(new Category_KhuVuc("Huế"));
         return list;
-    }
-
-    // tao du lieu gia cho lst san
-    private void createDataForListStadiums(){
-        listStadiums = new ArrayList<>();
-        listStadiums.add(new information_listStadium(R.drawable.img_team1,"San 1","San 5 , San 7","San nhan tao","204 duong so 8, khu pho 3, TP.HCM"));
-        listStadiums.add(new information_listStadium(R.drawable.img_team2,"San 2","San 5 , San 7","San nhan tao","205 duong so 9, khu pho 3, Da Nang"));
-        listStadiums.add(new information_listStadium(R.drawable.img_team3,"San 3","San 5 , San 7","San nhan tao","206 duong so 7, khu pho 3, Hue"));
-        listStadiums.add(new information_listStadium(R.drawable.img_team4,"San 4","San 5 , San 7","San nhan tao","207 duong so 5, khu pho 3, Hai Phong"));
-        listStadiums.add(new information_listStadium(R.drawable.img_team5,"San 5","San 5 , San 7","San nhan tao","208 duong so 3, khu pho 3, Vung Tau"));
-        listStadiums.add(new information_listStadium(R.drawable.img_team6,"San 6","San 5 , San 7","San nhan tao","2049duong so 2, khu pho 3, TP.HCM"));
     }
 }
