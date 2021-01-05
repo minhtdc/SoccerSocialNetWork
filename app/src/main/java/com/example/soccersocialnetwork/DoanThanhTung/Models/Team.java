@@ -1,5 +1,12 @@
 package com.example.soccersocialnetwork.DoanThanhTung.Models;
 
+import com.google.firebase.database.Exclude;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.example.soccersocialnetwork.LoginActivity;
 
 import java.util.ArrayList;

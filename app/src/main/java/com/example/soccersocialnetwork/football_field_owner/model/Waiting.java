@@ -10,6 +10,9 @@ public class Waiting {
         this.gio = gio;
     }
 
+    public Waiting() {
+    }
+
     public String getTenDoi() {
         return tenDoi;
     }
