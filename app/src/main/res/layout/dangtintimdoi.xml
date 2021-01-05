@@ -41,12 +41,12 @@
                 </TextView>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtDang"
+            <Button
+                android:id="@+id/btnDang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đăng"
-                android:textColor="@color/colorBlack"></TextView>
+                android:textColor="@color/colorBlack"></Button>
 
         </LinearLayout>
 
@@ -120,6 +120,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/edtDiaDiem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit_profile_user">
@@ -142,6 +143,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/edtThoiGian"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit_profile_user">
@@ -164,6 +166,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/edtNgay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit_profile_user"
@@ -214,6 +217,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/edtThongTinThem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit_profile_user">
@@ -239,6 +243,7 @@
             </TextView>
 
             <ImageView
+                android:id="@+id/imgMoiThanhVien"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

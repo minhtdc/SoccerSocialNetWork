@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +35,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class infomation_dangtintimtran extends AppCompatActivity {
     LinearLayout lnBack;
-    TextView txtDang, txtTenDoi;
+    TextView txtTenDoi;
+    EditText edtDiaDiem,edtThoiGian,edtNgay,edtThongTinThem;
+    ImageView imgThemThanhVien;
     Button btnTimSan;
     Spinner spinner;
     CircleImageView imageTeam;
@@ -42,6 +47,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
     ArrayList<String> idTeam = new ArrayList<>();
     ArrayList<String> hinhAnh = new ArrayList<>();
+    ArrayList<thongTinTranDau> thongTinTranDaus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,11 +56,15 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         setContentView(R.layout.dangtintimdoi);
 
         lnBack = (LinearLayout) findViewById(R.id.lnBackHome);
-        txtDang = (TextView) findViewById(R.id.txtDang);
         btnTimSan = (Button) findViewById(R.id.btnTimSan);
         spinner = (Spinner) findViewById(R.id.spnChonDoi);
         txtTenDoi = (TextView) findViewById(R.id.txtTenDoi);
         imageTeam = (CircleImageView) findViewById(R.id.ImageDoi);
+        imgThemThanhVien = (ImageView) findViewById(R.id.imgMoiThanhVien);
+        edtDiaDiem = (EditText) findViewById(R.id.edtDiaDiem);
+        edtNgay = (EditText) findViewById(R.id.edtNgay);
+        edtThoiGian = (EditText) findViewById(R.id.edtThoiGian);
+        edtThongTinThem = (EditText) findViewById(R.id.edtThoiGian);
 
         loadData();
 
@@ -70,18 +80,14 @@ public class infomation_dangtintimtran extends AppCompatActivity {
                 return;
             }
         });
-        txtDang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+
         lnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+
         btnTimSan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,14 +95,16 @@ public class infomation_dangtintimtran extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // hiện thị danh sách các thành viên có trong đội khi click vào img mời thành viên
+        imgThemThanhVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
     }
-//        txtDang.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(infomation_dangtintimtran.this, home_flagment.class);
-//                startActivity(intent);
-//            }
-//        });;
+
 
     public void loadData() {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi");
@@ -175,5 +183,15 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         });
     }
 
+    public void taoThongTinTranDau(){
+        thongTinTranDau thongTinTranDau = new thongTinTranDau();
+        thongTinTranDau.setDiaDiem(edtDiaDiem.getText().toString());
+        thongTinTranDau.setNgay(edtNgay.getText().toString());
+        thongTinTranDau.setThoiGian(edtThoiGian.getText().toString());
+        thongTinTranDau.setThongTinThem(edtThongTinThem.getText().toString());
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        String keyID = FirebaseDatabase.getInstance().getReference().push().getKey();
+//        mDatabaseReference.child("ThongTinTranDau").push()
+    }
 }
 
