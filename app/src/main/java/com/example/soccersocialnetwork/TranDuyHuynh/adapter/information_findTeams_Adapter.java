@@ -13,16 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.soccersocialnetwork.R;
-import com.example.soccersocialnetwork.TranDuyHuynh.models.information_findTeams;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class information_findTeams_Adapter extends ArrayAdapter<information_findTeams> {
+public class information_findTeams_Adapter extends ArrayAdapter<thongTinTranDau> {
     Context context;
     int resource;
-    List<information_findTeams> object;
+    List<thongTinTranDau> object;
 
-    public information_findTeams_Adapter(@NonNull Context context, int resource, @NonNull List<information_findTeams> objects) {
+    public information_findTeams_Adapter(@NonNull Context context, int resource, @NonNull List<thongTinTranDau> objects) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
@@ -49,13 +50,14 @@ public class information_findTeams_Adapter extends ArrayAdapter<information_find
             information_findTeams_holder = (information_findTeams_Holder)row.getTag();
         }
 
-        information_findTeams information_findTeams = object.get(position);
+        thongTinTranDau thongTinTranDau = object.get(position);
 
-        information_findTeams_holder.imageView.setImageResource(information_findTeams.getmIcon());
-        information_findTeams_holder.txtTenDoi.setText(information_findTeams.getmTenDoi());
-        information_findTeams_holder.txtDiaDiem.setText(information_findTeams.getmDiaDiem());
-        information_findTeams_holder.txtNgay.setText(information_findTeams.getmNgay());
-        information_findTeams_holder.txtThoigian.setText(information_findTeams.getmThoiGian());
+
+        information_findTeams_holder.txtTenDoi.setText(thongTinTranDau.getTenDoi());
+        information_findTeams_holder.txtDiaDiem.setText(thongTinTranDau.getDiaDiem());
+        information_findTeams_holder.txtNgay.setText(thongTinTranDau.getNgay());
+        information_findTeams_holder.txtThoigian.setText(thongTinTranDau.getThoiGian());
+        Picasso.get().load(thongTinTranDau.getAnhDoi()).into( information_findTeams_holder.imageView);
 
         return  row;
     }

@@ -169,8 +169,7 @@
                 android:id="@+id/edtNgay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_edit_profile_user"
-                android:enabled="false">
+                android:background="@drawable/bg_edit_profile_user">
 
             </EditText>
         </LinearLayout>

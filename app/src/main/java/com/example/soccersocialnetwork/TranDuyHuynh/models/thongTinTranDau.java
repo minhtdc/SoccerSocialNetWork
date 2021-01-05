@@ -1,13 +1,43 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class thongTinTranDau {
+public class thongTinTranDau implements Serializable {
     private String diaDiem;
     private String thoiGian;
     private String Ngay;
     private String San;
     private String thongTinThem;
+
+    public String getAnhDoi() {
+        return anhDoi;
+    }
+
+    public void setAnhDoi(String anhDoi) {
+        this.anhDoi = anhDoi;
+    }
+
+    public String getTenDoi() {
+        return tenDoi;
+    }
+
+    public void setTenDoi(String tenDoi) {
+        this.tenDoi = tenDoi;
+    }
+
+    private String anhDoi;
+    private String tenDoi;
+
+    public String getIdDoiDangTin() {
+        return idDoiDangTin;
+    }
+
+    public void setIdDoiDangTin(String idDoiDangTin) {
+        this.idDoiDangTin = idDoiDangTin;
+    }
+
+    private String idDoiDangTin;
 
     public String getIdTranDau() {
         return idTranDau;
@@ -20,7 +50,7 @@ public class thongTinTranDau {
     private String idTranDau;
     private ArrayList<String> thanhVienThamGia;
 
-    public thongTinTranDau(String diaDiem, String thoiGian, String ngay, String san, String thongTinThem,String idTranDau, ArrayList<String> thanhVienThamGia) {
+    public thongTinTranDau(String diaDiem, String thoiGian, String ngay, String san, String thongTinThem,String idTranDau, ArrayList<String> thanhVienThamGia,String idDoiDangTin,String tenDoi,String anhDoi) {
         this.diaDiem = diaDiem;
         this.thoiGian = thoiGian;
         Ngay = ngay;
@@ -28,6 +58,9 @@ public class thongTinTranDau {
         this.thongTinThem = thongTinThem;
         this.idTranDau = idTranDau;
         this.thanhVienThamGia = thanhVienThamGia;
+        this.idDoiDangTin = idDoiDangTin;
+        this.tenDoi = tenDoi;
+        this.anhDoi = anhDoi;
     }
     public thongTinTranDau(){
 
