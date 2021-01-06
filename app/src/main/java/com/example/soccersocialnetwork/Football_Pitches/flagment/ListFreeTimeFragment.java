@@ -14,13 +14,24 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.soccersocialnetwork.Football_Pitches.adapter.CustomAdapterFreeTime;
+import com.example.soccersocialnetwork.Football_Pitches.model.Book;
 import com.example.soccersocialnetwork.Football_Pitches.model.FreeTime;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetFootballPitches;
+import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.RushHour;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,12 +46,13 @@ public class ListFreeTimeFragment extends Fragment {
     ListView lvGioTrong;
     ArrayList<FreeTime> data_FreeTimes = new ArrayList<>();
     ArrayAdapter adapter_FreeTimes;
-
+    DatabaseReference mFirebase;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_free_time, container, false);
         lvGioTrong = view.findViewById(R.id.lvGioTrong);
+        mFirebase = FirebaseDatabase.getInstance().getReference();
         setEvent();
         // Inflate the layout for this fragment
         return view;
@@ -151,7 +163,67 @@ public class ListFreeTimeFragment extends Fragment {
         dialog.show();
     }
 
+    /*private void loadData(){
+        mFirebase.child("SanDaDat").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable final String previousChildName) {
+                final SetFootballPitches setFootballPitches = snapshot.getValue(SetFootballPitches.class);
+                final FreeTime freeTime = new FreeTime();
+                mFirebase.child("San").child(setFootballPitches.getIdSanDat()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        final FootballPitches footballPitches = snapshot.getValue(FootballPitches.class);
 
+                        mFirebase.child("Khu").child(footballPitches.getIdKhu()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (footballPitches.getId().equals(idSan)) {
+                                    book.setTenDoi(snapshot.getValue().toString());
+                                    book.setGioBatDau(setFootballPitches.getGioBatDau() + ":"
+                                            + setFootballPitches.getPhutBatDau());
+                                    book.setGioKetThuc(setFootballPitches.getGioKetThuc() + ":"
+                                            + setFootballPitches.getPhutKetThuc());
+                                    data_Books.add(book);
+                                    adapter_Book.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }*/
 
     private void KhoiTao() {
         FreeTime freeTime = new FreeTime("06h30", "09h00");

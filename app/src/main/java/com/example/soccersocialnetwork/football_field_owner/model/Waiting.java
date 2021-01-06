@@ -1,7 +1,15 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
 public class Waiting {
-    String tenDoi, san, ngay, gio;
+    String tenDoi, san, ngay, gio, idDuyet;
+
+    public Waiting(String tenDoi, String san, String ngay, String gio, String idDuyet) {
+        this.tenDoi = tenDoi;
+        this.san = san;
+        this.ngay = ngay;
+        this.gio = gio;
+        this.idDuyet = idDuyet;
+    }
 
     public Waiting(String tenDoi, String san, String ngay, String gio) {
         this.tenDoi = tenDoi;
@@ -11,6 +19,14 @@ public class Waiting {
     }
 
     public Waiting() {
+    }
+
+    public String getIdDuyet() {
+        return idDuyet;
+    }
+
+    public void setIdDuyet(String idDuyet) {
+        this.idDuyet = idDuyet;
     }
 
     public String getTenDoi() {
