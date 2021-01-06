@@ -234,6 +234,7 @@ public class home_flagment extends Fragment {
         firebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                thongTinTranDaus.clear();
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
                     thongTinTranDau thongTinTranDau = dt.getValue(thongTinTranDau.class);
