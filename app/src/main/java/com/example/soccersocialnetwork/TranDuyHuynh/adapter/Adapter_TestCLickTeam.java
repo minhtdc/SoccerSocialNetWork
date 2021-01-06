@@ -64,12 +64,8 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
 
     static class Holder {
         ImageView imageView;
-        TextView txtTenDoi, txtKhuVuc, txtThongtinGioiHieu, txtNgay;
-        LinearLayout llDanhSachDoi;
-//
-//
-////        TextView tv_DangBai;
-////        ImageView img_DangBai;
+        TextView txtTenDoi, txtKhuVuc, txtThongtinGioiHieu;
+
     }
 
     @NonNull
@@ -85,8 +81,6 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
             holder.txtTenDoi = view.findViewById(R.id.txtTendoi_list_teams);
             holder.txtKhuVuc = view.findViewById(R.id.txtThongTinKhuVuc_lstTeams);
             holder.txtThongtinGioiHieu = view.findViewById(R.id.txtThongTinGioiThieu_lstTeams);
-            holder.llDanhSachDoi = view.findViewById(R.id.llDanhSachDoi);
-            // holder.txtNgay = view.findViewById(R.id.tv_Gio);
 
             view.setTag(holder);
         } else
@@ -100,88 +94,9 @@ public class Adapter_TestCLickTeam extends ArrayAdapter {
         holder.txtTenDoi.setText(team.getTenDoi());
         holder.txtKhuVuc.setText(team.getKhuVuc());
         holder.txtThongtinGioiHieu.setText(team.getGioiThieu());
-//        holder.llDanhSachDoi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//
-////
-//                for(int i = 0; i<listTeamUsers.size();i++){
-//                    if(LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i)) ){
-//                        Intent intent = new Intent(getContext(), DoiActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("TaoDoi_IDDoi",team.idDoi+"");
-//                        intent.putExtras(bundle);
-//
-//                        context.startActivity(intent);
-////                        break;
-////                    }else{
-////                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
-////                        Bundle bundle = new Bundle();
-////                        bundle.putString("Doi_ID",team.idDoi+"");
-////                        intent.putExtras(bundle);
-////                        context.startActivity(intent);
-////
-//                    }
-//                }
-//            }
-//        });
-//        holder.imgDoiAdapter.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, team.getTenDoi(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
         return view;
     }
 
-    ArrayList<String> listTeamUsers = new ArrayList<>();
 
-//    public void readuser(final String key) {
-//
-//        mDatabase = FirebaseDatabase.getInstance().getReference("Team").child(key).child("listThanhVien");
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                listTeamUsers.clear();
-//
-//                for (DataSnapshot dt :
-//                        snapshot.getChildren()) {
-//                    listTeamUsers.add(dt.getKey());
-//
-//                }
-
-//                for (int i = 0; i < listTeamUsers.size(); i++) {
-//                    if (LoginActivity.USER_ID_CURRENT.equals(listTeamUsers.get(i))) {
-//                        Intent intent = new Intent(getContext(), DoiActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("TaoDoi_IDDoi", key);
-//                        intent.putExtras(bundle);
-//
-//                        context.startActivity(intent);
-//                        listTeamUsers.clear();
-//                        return;
-//                    }
-//                    else {
-//                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("Doi_ID", key);
-//                        intent.putExtras(bundle);
-//                        context.startActivity(intent);
-//                    }
-
-
-             //   }
-
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//
-//
-//    }
 }

@@ -150,15 +150,28 @@
                     android:text="@string/Doi_GioiThieu"
                     ></TextView>
 
+<!--                <EditText-->
+<!--                    android:id="@+id/txtGioiThieu"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="3"-->
+<!--                    android:inputType="text"-->
+<!--                    android:maxLength="100"-->
+
+<!--                    android:maxLines="5"></EditText>-->
                 <EditText
+
                     android:id="@+id/txtGioiThieu"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:inputType="text"
-                    android:maxLength="100"
-
-                    android:maxLines="5"></EditText>
+                    android:ems="10"
+                    android:gravity="left|top"
+                    android:hint="Bạn muốn viết điều chi"
+                    android:inputType="textMultiLine"
+                    android:textSize="15sp">
+                    <requestFocus />
+                </EditText>
 
             </LinearLayout>
 

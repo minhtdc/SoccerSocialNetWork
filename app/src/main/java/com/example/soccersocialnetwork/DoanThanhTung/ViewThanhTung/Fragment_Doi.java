@@ -243,8 +243,8 @@ public class Fragment_Doi extends Fragment {
             @Override
             public void onClick(View v) {
                 final Feed feed = new Feed();
-                feed.setImgUser(userIMG);
-                feed.setNameUser(userName);
+//                feed.setImgUser(userIMG);
+//                feed.setNameUser(userName);
                 feed.setUid(LoginActivity.USER_ID_CURRENT);
                 feed.setSTT(txtSTT.getText()+"");
                // Toast.makeText(getContext(), txtSTT.getText()+"", Toast.LENGTH_SHORT).show();

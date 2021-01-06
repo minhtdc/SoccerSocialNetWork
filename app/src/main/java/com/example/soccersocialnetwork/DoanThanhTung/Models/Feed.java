@@ -3,8 +3,7 @@ package com.example.soccersocialnetwork.DoanThanhTung.Models;
 public class Feed {
     String id;
     String STT;
-    String nameUser;
-    String imgUser;
+
     String uid;
 
     public String getId() {
@@ -23,21 +22,6 @@ public class Feed {
         this.STT = STT;
     }
 
-    public String getNameUser() {
-        return nameUser;
-    }
-
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
-    }
-
-    public String getImgUser() {
-        return imgUser;
-    }
-
-    public void setImgUser(String imgUser) {
-        this.imgUser = imgUser;
-    }
 
     public String getUid() {
         return uid;
@@ -47,11 +31,10 @@ public class Feed {
         this.uid = uid;
     }
 
-    public Feed(String id, String STT, String nameUser, String imgUser, String uid) {
+    public Feed(String id, String STT, String uid) {
         this.id = id;
         this.STT = STT;
-        this.nameUser = nameUser;
-        this.imgUser = imgUser;
+
         this.uid = uid;
     }
     public Feed() {
