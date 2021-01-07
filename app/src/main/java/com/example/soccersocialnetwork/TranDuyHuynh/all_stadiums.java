@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetZoneActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_listStadiums_Adapter;
+import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_listStadium;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
@@ -47,7 +48,7 @@ public class all_stadiums extends AppCompatActivity {
         setContentView(R.layout.all_stadiums);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) findViewById(R.id.lstAll_Stadiums);
-
+        stadium_flagment.idKhu = "";
         listStadiums = new ArrayList<>();
         information_listStadiums_adapter = new information_listStadiums_Adapter(all_stadiums.this, R.layout.list_stadiums, listStadiums);
         listView.setAdapter(information_listStadiums_adapter);
