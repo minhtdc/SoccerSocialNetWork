@@ -1,13 +1,7 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +10,27 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.soccersocialnetwork.LoginActivity;
-import com.example.soccersocialnetwork.TranDuyHuynh.infomation_dangtintimtran;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_LoaiHinhSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_LoaiSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_findTeams_Adapter;
+import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.example.soccersocialnetwork.TranDuyHuynh.infomation_dangtintimtran;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiHinhSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiSan;
-import com.example.soccersocialnetwork.TranDuyHuynh.models.information_findTeams;
-import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,6 +44,7 @@ import java.util.List;
 public class home_flagment extends Fragment {
     TextView txtDangTin;
     ImageView imgUser;
+    private DatabaseReference firebaseDatabase;
 
     // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,7 +69,9 @@ public class home_flagment extends Fragment {
 
     // khai báo đối tượng cho list view
     private ListView listView;
-    private ArrayList<information_findTeams> information_findTeams;
+    private TextView txtDiaDiem,txtNgay,txtThoiGian;
+    private  ArrayList<thongTinTranDau> thongTinTranDaus = new ArrayList<>();
+    public static String idThongTinTranDau;
 
     public home_flagment() {
         // Required empty public constructor
@@ -111,6 +117,25 @@ public class home_flagment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txtDangTin = (TextView) getView().findViewById(R.id.txtDangTinTimTran);
+        imgUser = (ImageView) getView().findViewById(R.id.imgUser);
+        txtDiaDiem = (TextView) getView().findViewById(R.id.txtThongTinDiaDiem);
+        txtNgay = (TextView) getView().findViewById(R.id.txtThongTinNgay);
+        txtThoiGian = (TextView) getView().findViewById(R.id.txtThongTinGio);
+
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("userImage");
+        firebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Picasso.get().load(snapshot.getValue().toString()).into(imgUser);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         // đổ dữ liệu từ adapter vào spinner khu vực
         spnKhuVuc = getView().findViewById(R.id.spnKhuVuc);
         categoryAdapterKhuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, getListCategoryKhuVuc());
@@ -127,12 +152,13 @@ public class home_flagment extends Fragment {
         spnLoaiSan.setAdapter(categoryAdapterLoaiSan);
 
         // gọi hàm tạo dữ liệu giả cho list view
-        createDataForListView();
+        DanhSachTranDau();
+//        createDataForListView();
 
         // setAdapter cho list view
-        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(),R.layout.listview_doi_dang_tim_tran,information_findTeams);
-        listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
-        listView.setAdapter(adapter);
+//        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(),R.layout.listview_doi_dang_tim_tran,thongTinTranDaus);
+//        listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
+//        listView.setAdapter(adapter);
 
 
         // hiện thị màn hình thông tin đăng tin tìm trận khi click vào edt đăng tin tìm trận
@@ -153,6 +179,8 @@ public class home_flagment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
     }
 
 
@@ -192,13 +220,39 @@ public class home_flagment extends Fragment {
     // thêm dữ liệu giả cho list view đội tìm trận
     private void createDataForListView() {
 
-        information_findTeams = new ArrayList<information_findTeams>();
-        information_findTeams.add(new information_findTeams(R.drawable.img_team1, "Doi 1", "TP.HCM", "19h -> 20h", "20/12/2020"));
-        information_findTeams.add(new information_findTeams(R.drawable.img_team2, "Doi 2", "Hà Nội", "7h -> 10h", "21/12/2020"));
-        information_findTeams.add(new information_findTeams(R.drawable.img_team3, "Doi 3", "Hải Phòng", "14h -> 15h", "22/12/2020"));
-        information_findTeams.add(new information_findTeams(R.drawable.img_team4, "Doi 4", "Nghệ An", "18h -> 19h", "23/12/2020"));
-        information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
-        information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
-        information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
+
+//
+//        Intent intent = new Intent();
+//         thongTinTranDau = (thongTinTranDau) intent.getSerializableExtra("thongTinTranDau");
+//
+//        thongTinTranDaus.add(thongTinTranDau);
+
+    }
+
+    private void DanhSachTranDau() {
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("ThongTinTranDau");
+        firebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                thongTinTranDaus.clear();
+                for (DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    thongTinTranDau thongTinTranDau = dt.getValue(thongTinTranDau.class);
+                    thongTinTranDaus.add(thongTinTranDau);
+                }
+                // Toast.makeText(getContext(),listTeams.get(0).getIdDoi()+ "", Toast.LENGTH_SHORT).show();
+
+                information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(),R.layout.listview_doi_dang_tim_tran,thongTinTranDaus);
+                listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
