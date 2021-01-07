@@ -20,6 +20,7 @@ import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetTeam;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
+import com.example.soccersocialnetwork.activity_moithanhvien;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,7 +49,8 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     ArrayList<String> idTeam = new ArrayList<>();
     ArrayList<String> hinhAnh = new ArrayList<>();
     ArrayList<thongTinTranDau> thongTinTranDaus;
-    private String idDoiDangTin;
+    public static String idDoiDangTin;
+    public static String tenDoi;
     thongTinTranDau thongTinTranDau;
     private String anhDoi;
 
@@ -103,7 +105,9 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         imgThemThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(infomation_dangtintimtran.this, activity_moithanhvien.class);
+                startActivity(intent);
+//                Toast.makeText(infomation_dangtintimtran.this,idDoiDangTin.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -143,6 +147,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     txtTenDoi.setText(adapterView.getItemAtPosition(i).toString());
+                                    tenDoi = txtTenDoi.getText().toString();
                                     idDoiDangTin = listTeam.get(i).getIdDoi();
                                     mDatabaseReference = FirebaseDatabase.getInstance().getReference(String.format("Team/%s/hinhAnh", listTeam.get(i).getIdDoi()));
                                     mDatabaseReference.addValueEventListener(new ValueEventListener() {

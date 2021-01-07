@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
@@ -21,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
-import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.ThemThanhVien;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.data_models.Users;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,7 +47,6 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
         this.context = context;
         this.data = data;
         this.resource = resource;
-
         this.datafull = data;
 
     }
