@@ -23,6 +23,7 @@ public class adapter_MoiThanhVien extends BaseAdapter {
     int resource;
     DatabaseReference mDatabase;
     ArrayList<Users> data;
+    public static ArrayList<String> lstIdCheck;
 
     public adapter_MoiThanhVien(@NonNull Context context, int resource, ArrayList<Users> data) {
 
@@ -47,22 +48,28 @@ public class adapter_MoiThanhVien extends BaseAdapter {
             holder = (adapter_MoiThanhVien.holder) view1.getTag();
         }
 
-         Users users = data.get(i);
+         final Users users = data.get(i);
         if (users.getUserImage().equals("")) {
 
         } else {
             Picasso.get().load(users.getUserImage()).into(holder.imageView);
         }
         holder.tenThanhVien.setText(users.getUserName().toString());
-//
+
 //        if (holder.checkBox.isChecked())
 //        {
-//
+//                lstIdCheck.add(users.getUserID());
 //        }
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lstIdCheck.add("1");
+            }
+        });
         return view1;
 
     }
-    static class holder{
+   public static class holder{
         ImageView imageView;
         TextView tenThanhVien;
         CheckBox checkBox;

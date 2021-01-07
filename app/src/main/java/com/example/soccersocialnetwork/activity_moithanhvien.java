@@ -1,8 +1,11 @@
 package com.example.soccersocialnetwork;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +25,9 @@ public class activity_moithanhvien extends AppCompatActivity {
 
     ListView listView;
     TextView txtTenDoi;
+    Button btnMoi;
     DatabaseReference databaseReference;
-     ArrayList<Users> listUser = new ArrayList<>();
+    ArrayList<Users> listUser = new ArrayList<>();
     String idDoi = infomation_dangtintimtran.idDoiDangTin;
     String tenDoi = infomation_dangtintimtran.tenDoi;
     adapter_MoiThanhVien adapter_moiThanhVien;
@@ -32,13 +36,22 @@ public class activity_moithanhvien extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moithanhvien);
-        listView =(ListView) findViewById(R.id.lstMoiThanhVien);
+        listView = (ListView) findViewById(R.id.lstMoiThanhVien);
         txtTenDoi = (TextView) findViewById(R.id.txtDoi);
+        btnMoi = (Button) findViewById(R.id.btnMoi);
         txtTenDoi.setText(tenDoi);
         getUser();
 
+        btnMoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(activity_moithanhvien.this, adapter_MoiThanhVien.lstIdCheck.size(), Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
-    private void getUser(){
+
+    private void getUser() {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -56,8 +69,8 @@ public class activity_moithanhvien extends AppCompatActivity {
                             adapter_moiThanhVien = new adapter_MoiThanhVien(activity_moithanhvien.this, R.layout.activity_list_moi_thanh_vien, listUser);
                             listView.setAdapter(adapter_moiThanhVien);
                             adapter_moiThanhVien.notifyDataSetChanged();
-                        }
 
+                        }
                     }
 
                 }
