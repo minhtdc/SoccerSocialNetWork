@@ -296,7 +296,7 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Loại bỏ thành viên");
+                builder.setTitle("Thêm thành viên");
                 builder.setMessage("Bạn có chắc không? \n ->>" + users.getUserName() + "<<-  ?");
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override

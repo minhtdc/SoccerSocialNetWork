@@ -78,9 +78,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:background="@color/colorXanhLa"
-                    android:entries="@array/listKhuVuc"
-                    android:gravity="center_horizontal"
-                    android:textAlignment="center"></Spinner>
+                    ></Spinner>
             </LinearLayout>
 
             <LinearLayout

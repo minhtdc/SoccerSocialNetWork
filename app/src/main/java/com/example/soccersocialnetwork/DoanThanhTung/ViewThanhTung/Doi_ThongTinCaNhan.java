@@ -26,6 +26,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.ThongBao;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,8 +50,8 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
     MenuItem mnEdit;
     Button btnThamGiaDoi;
     TextView tvTenDoiThongTinDoi, tvGioiThieuThongTinDoi, tvTieuChiThongTinDoi, tvSloganThongTinDoi, tvEmailThongTinDoi, tvSDTThongTinDoi, tvKhuThongTinDoi;
-    String idDoi, uriIMG, tenDoi, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
-
+    String idDoi, uriIMG, khuVuc, email, sdt, gioiThieu, tieuChi, slogan;
+    String tenDoi;
     ArrayList<String> listTeamUsers = new ArrayList<>();
 
     String adminOrUser = "";
@@ -85,7 +86,7 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
     private void takeData() {
 
         idDoi = getIntent().getExtras().getString("Doi_ID");
-//        tenDoi = getIntent().getExtras().getString("Doi_TenDoi");
+//       tenDoi = getIntent().getExtras().getString("Doi_TenDoi");
 //        uriIMG = getIntent().getExtras().getString("Doi_uriIMG");
 //        khuVuc = getIntent().getExtras().getString("Doi_KhuVuc");
 //        email = getIntent().getExtras().getString("Doi_Email");
@@ -143,8 +144,22 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
                 btnThamGiaDoi.setEnabled(false);
                 btnThamGiaDoi.setBackgroundColor(Color.GREEN);
                 btnThamGiaDoi.setText("Chờ duyệt");
+
+                //        thongBao.
+                String idThongBao;
+                ThongBao thongBao = new ThongBao();
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                idThongBao = databaseReference.push().getKey();
+
+                thongBao.setIdDoi(idDoi);
+                thongBao.setImg(uriIMG);
+                thongBao.setIdThongBao(idThongBao);
+                thongBao.setNoiDung(LoginActivity.USER_NAME_CURRENT +" xin vào đội "+ tenDoi);
+
+                databaseReference.child("ThongBao").child(idThongBao).setValue(thongBao);
             }
         });
+
     }
 
     private void readTeamChoDuyet(){
@@ -182,6 +197,8 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
                     if (idDoi.equals(dt.getKey())) {
                         Team team = dt.getValue(Team.class);
                         // listTeam.add(team);
+                        tenDoi = team.getTenDoi();
+                        uriIMG = team.getHinhAnh();
                         Picasso.get().load(team.getHinhAnh()).into(imgThongTinDoi);
                         tvTenDoiThongTinDoi.setText(team.getTenDoi());
                         tvKhuThongTinDoi.setText(team.getKhuVuc());

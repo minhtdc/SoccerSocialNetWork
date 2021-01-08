@@ -2,11 +2,13 @@ package com.example.soccersocialnetwork.DoanThanhTung.Adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feed;
@@ -26,6 +29,7 @@ import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.data_models.Users;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -131,12 +135,11 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
         Button btnGui = bottomSheetDialog.findViewById(R.id.btnGui);
 
 
-
 //        adapter_binhLuan = new Adapter_BinhLuan(context,R.layout.adapter_binhluan, listCMTS);
 //        lvBinhLuan.setAdapter(adapter_binhLuan);
 //        adapter_binhLuan.notifyDataSetChanged();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Team");
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Team");
         databaseReference.child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT").addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -163,6 +166,47 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
             }
         });
 
+        lvBinhLuan.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                final CharSequence[] items = {"Xóa", "Sửa"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            if (LoginActivity.USER_ID_CURRENT.equals(listCMTS.get(position).getUid())) {
+                                DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
+                                databaseReference1.child("Team").child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT").child(listCMTS.get(position).getIdCMT()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            } else {
+                                Toast.makeText(context, "Bạn không có quyền", Toast.LENGTH_SHORT).show();
+                            }
+                        }else if(which == 1){
+                            if (LoginActivity.USER_ID_CURRENT.equals(listCMTS.get(position).getUid())){
+                                txtBinhLuan.setText(listCMTS.get(position).getCmt());
+                            }else {
+                                Toast.makeText(context, "Bạn không có quyền", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }
+                });
+                builder.show();
+//                if(LoginActivity.USER_ID_CURRENT.equals(listCMTS.get(position).getUid())){
+//                    Toast.makeText(context, listCMTS.get(position).getCmt()+"Đã xóa", Toast.LENGTH_SHORT).show();
+//                }else
+//                {
+//                    Toast.makeText(context, "123123", Toast.LENGTH_SHORT).show();
+//                }
+                return false;
+            }
+        });
         btnGui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +215,8 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
 
             }
         });
+
+
         bottomSheetDialog.show();
 
     }
@@ -196,11 +242,14 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
     }
 
     private void insertBinhLuan(String idBinhLuan, String noiDungBL) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Team");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Team").child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT");
         ListCMT listCMT = new ListCMT();
+        String idCMT = databaseReference.push().getKey();
         listCMT.setCmt(noiDungBL);
+        listCMT.setIdCMT(idCMT);
         listCMT.setUid(LoginActivity.USER_ID_CURRENT);
-        databaseReference.child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT").push().setValue(listCMT);
+        databaseReference.child(idCMT).setValue(listCMT);
+       // databaseReference.child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT").push().setValue(listCMT);
 
 
     }

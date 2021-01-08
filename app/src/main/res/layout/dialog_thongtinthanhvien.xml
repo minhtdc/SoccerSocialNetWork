@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center"
-            android:text="ThÃ nh viÃªn"
+            android:text="Thành viên"
             android:textSize="25dp"
             android:textStyle="bold"></TextView>
 
@@ -63,7 +63,7 @@
 
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Vá»‹ trÃ­:"
+                    android:text="Vị trí:"
                     android:textStyle="bold"></TextView>
 
                 <TextView
@@ -83,7 +83,7 @@
 
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Chiá»u cao:"
+                    android:text="Chiều cao:"
                     android:textStyle="bold"></TextView>
 
                 <TextView
@@ -103,7 +103,7 @@
 
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="CÃ¢n nÄƒng:"
+                    android:text="Cân năng:"
                     android:textStyle="bold"></TextView>
 
                 <TextView
@@ -143,7 +143,7 @@
 
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Sinh nháº­t:"
+                    android:text="Sinh nhật:"
                     android:textStyle="bold"></TextView>
 
                 <TextView
@@ -184,7 +184,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
 
-                    android:text="Khu vá»±c:"
+                    android:text="Khu vực:"
                     android:textStyle="bold"></TextView>
 
                 <TextView
@@ -199,7 +199,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
 
-                    android:text="QuÃª quÃ¡n:"
+                    android:text="Quê quán:"
                     android:textStyle="bold"></TextView>
 
                 <TextView
