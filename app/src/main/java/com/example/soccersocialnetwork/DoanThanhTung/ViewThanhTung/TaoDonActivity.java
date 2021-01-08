@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,6 +38,8 @@ import com.example.soccersocialnetwork.DoanThanhTung.Models.ListTeamUser;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -68,7 +71,8 @@ public class TaoDonActivity extends AppCompatActivity {
     Spinner spKhuVuc;
     ImageView imgTaoDoi;
 
-
+    ArrayList<City> city = new ArrayList<>();
+    ArrayAdapter adapter_tp;
     ArrayList<Team> listTeam = new ArrayList<>();
     FireBaseTeam fireBaseTeam = new FireBaseTeam();
 
@@ -113,9 +117,13 @@ public class TaoDonActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
         readTeam();
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
-
+        city = dataBaseHelper.getAllCity();
+        setAdapterSpinner(city, adapter_tp, spKhuVuc);
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,7 +209,16 @@ public class TaoDonActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
+    }
     private Team getTeam() {
         Team team = new Team();
 
