@@ -37,8 +37,6 @@ public class WaitingListFragment extends Fragment {
     ArrayList<SetFootballPitches> data_SetFootballPitches = new ArrayList<>();
     ArrayList<Waiting> data_waiting = new ArrayList<>();
 
-    ArrayAdapter adapter_waiting;
-
     DatabaseReference mFirebase;
     String idKhu = ListZone.idKhu;
 
