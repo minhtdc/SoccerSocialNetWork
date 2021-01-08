@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,7 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetTeam;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.adapter_MoiThanhVien;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
+import com.example.soccersocialnetwork.activity_moithanhvien;
+import com.example.soccersocialnetwork.data_models.Users;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,10 +52,12 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     ArrayList<String> idTeam = new ArrayList<>();
     ArrayList<String> hinhAnh = new ArrayList<>();
     ArrayList<thongTinTranDau> thongTinTranDaus;
-    private String idDoiDangTin;
+    public static String idDoiDangTin;
+    public static String tenDoi;
     thongTinTranDau thongTinTranDau;
     private String anhDoi;
-
+    ListView listViewThanhVienThamGia;
+    ArrayList<Users> DanhThanhVienThamGia = adapter_MoiThanhVien.thanhVienThamgia;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -69,6 +75,16 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         edtThoiGian = (EditText) findViewById(R.id.edtThoiGian);
         edtThongTinThem = (EditText) findViewById(R.id.edtThongTinThem);
         btnDang = (Button) findViewById(R.id.btnDang);
+        listViewThanhVienThamGia = (ListView) findViewById(R.id.lstThanhVienDuocMoi);
+
+        if (DanhThanhVienThamGia.isEmpty())
+        {
+            listViewThanhVienThamGia.setVisibility(View.GONE);
+        }
+       else {
+           ArrayAdapter arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1,DanhThanhVienThamGia);
+           listViewThanhVienThamGia.setAdapter(arrayAdapter);
+        }
         loadData();
 
 
@@ -103,7 +119,10 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         imgThemThanhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                adapter_MoiThanhVien.thanhVienThamgia.clear();
+                Intent intent = new Intent(infomation_dangtintimtran.this, activity_moithanhvien.class);
+                startActivity(intent);
+//                Toast.makeText(infomation_dangtintimtran.this,idDoiDangTin.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -143,6 +162,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     txtTenDoi.setText(adapterView.getItemAtPosition(i).toString());
+                                    tenDoi = txtTenDoi.getText().toString();
                                     idDoiDangTin = listTeam.get(i).getIdDoi();
                                     mDatabaseReference = FirebaseDatabase.getInstance().getReference(String.format("Team/%s/hinhAnh", listTeam.get(i).getIdDoi()));
                                     mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -208,6 +228,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         thongTinTranDau.setIdDoiDangTin(idDoiDangTin);
         thongTinTranDau.setTenDoi(txtTenDoi.getText().toString());
         thongTinTranDau.setAnhDoi(anhDoi);
+        thongTinTranDau.setThanhVienThamGia(DanhThanhVienThamGia);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         String keyID = FirebaseDatabase.getInstance().getReference().push().getKey();
         thongTinTranDau.setIdTranDau(keyID);
