@@ -53,16 +53,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView" />
 
-    <EditText
-        android:id="@+id/edtDialogAria"
-        style="@style/EditTextStyle"
+    <Spinner
+        android:id="@+id/spnDialogThanhPho"
+
         android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:hint="Nhập khu vực"
+        android:hint="Chọn thành phố"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="@+id/edtDialogBirthday"
         app:layout_constraintStart_toStartOf="@+id/edtDialogBirthday"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Spinner
+        android:id="@+id/spnDialogQuan"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Chọn quận"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/spnDialogThanhPho"
+        app:layout_constraintStart_toStartOf="@+id/spnDialogThanhPho"
+        app:layout_constraintTop_toBottomOf="@+id/spnDialogThanhPho" />
 </androidx.constraintlayout.widget.ConstraintLayout>

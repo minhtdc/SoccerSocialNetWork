@@ -7,10 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +27,8 @@ import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.searchUserAdapter;
 import com.example.soccersocialnetwork.data_models.Users;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +43,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.security.DigestInputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,6 +54,10 @@ public class edit_profile_user extends AppCompatActivity {
     EditText edtHoTen, edtNamSinh, edtQueQuan, edtViTri, edtCanNang, edtChieuCao, edtSlogan;
     TextView txtTenTaiKhoan;
     CircleImageView imgUserPage;
+    Spinner spnEditTP, spnEditQuan;
+    ArrayList<City> data_tp = new ArrayList<>();
+    ArrayList<String> data_quan = new ArrayList<>();
+    ArrayAdapter adapter_tp, adapter_quan;
     //Firebase
     FirebaseStorage storage;
     StorageReference storageRef;
@@ -65,6 +76,33 @@ public class edit_profile_user extends AppCompatActivity {
         edtCanNang = findViewById(R.id.edtCanNang);
         edtChieuCao = findViewById(R.id.edtChieuCao);
         imgUserPage = findViewById(R.id.imgUserPage);
+        spnEditTP = findViewById(R.id.spnEditTP);
+        spnEditQuan = findViewById(R.id.spnEditQuan);
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
+
+        data_tp = dataBaseHelper.getAllCity();
+        setAdapterSpinner(data_tp, adapter_tp, spnEditTP);
+        spnEditTP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+                City items = data_tp.get(i);
+                data_quan = dataBaseHelper.getAllDistrict(items.getId());
+                setAdapterSpinner(data_quan, adapter_quan, spnEditQuan);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spnEditTP.setVisibility(View.GONE);
+        spnEditQuan.setVisibility(View.GONE);
+
 
         if (!searchUserAdapter.clickUserID.equalsIgnoreCase(LoginActivity.USER_ID_CURRENT)) {
 
@@ -141,13 +179,18 @@ public class edit_profile_user extends AppCompatActivity {
                         edtHoTen.setEnabled(true);
                         edtSlogan.setEnabled(true);
                         edtNamSinh.setEnabled(true);
-                        edtQueQuan.setEnabled(true);
+                        edtQueQuan.setVisibility(View.GONE);
+                        spnEditTP.setVisibility(View.VISIBLE);
+                        spnEditQuan.setVisibility(View.VISIBLE);
                         edtViTri.setEnabled(true);
                         edtCanNang.setEnabled(true);
                         edtChieuCao.setEnabled(true);
 
                     } else {
                         btnEditProfile.setText("Chỉnh sửa");
+                        edtQueQuan.setVisibility(View.VISIBLE);
+                        spnEditTP.setVisibility(View.GONE);
+                        spnEditQuan.setVisibility(View.GONE);
                         edtHoTen.setEnabled(false);
                         edtSlogan.setEnabled(false);
                         edtNamSinh.setEnabled(false);
@@ -160,7 +203,7 @@ public class edit_profile_user extends AppCompatActivity {
                         myRef.child("userName").setValue(edtHoTen.getText().toString());
                         myRef.child("userBirth").setValue(edtNamSinh.getText().toString());
                         myRef.child("userSologan").setValue(edtSlogan.getText().toString());
-                        myRef.child("userQueQuan").setValue(edtQueQuan.getText().toString());
+                        myRef.child("userQueQuan").setValue(spnEditTP.getSelectedItem().toString() + ", " + spnEditQuan.getSelectedItem().toString());
                         myRef.child("userViTri").setValue(edtViTri.getText().toString());
                         myRef.child("userCanNang").setValue(edtCanNang.getText().toString());
                         myRef.child("userChieuCao").setValue(edtChieuCao.getText().toString());
@@ -223,6 +266,16 @@ public class edit_profile_user extends AppCompatActivity {
         });
 
 
+    }
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
     }
 
 

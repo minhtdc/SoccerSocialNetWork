@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -28,6 +30,8 @@ import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiHinhSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_findTeams;
 import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,17 +55,10 @@ public class home_flagment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    // khai báo SpinnerKhuVuc và adapter
-    private Spinner spnKhuVuc;
-    private CategoryAdapter_KhuVuc categoryAdapterKhuVuc;
-
-    // khai báo spinner Loại hinh sân và apdater
-    private Spinner spnLoaiHinhSan;
-    private CategoryAdapter_LoaiHinhSan categoryAdapterLoaiHinhSan;
-
-    // khai báo spinner loại sân và adapter
-    private Spinner spnLoaiSan;
-    private CategoryAdapter_LoaiSan categoryAdapterLoaiSan;
+    private Spinner spnThanhPho, spnQuan;
+    ArrayList<City> data_tp = new ArrayList<>();
+    ArrayList<String> data_quan = new ArrayList<>();
+    ArrayAdapter adapter_tp, adapter_quan;
 
     // khai báo đối tượng cho list view
     private ListView listView;
@@ -111,27 +108,37 @@ public class home_flagment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txtDangTin = (TextView) getView().findViewById(R.id.txtDangTinTimTran);
-        // đổ dữ liệu từ adapter vào spinner khu vực
-        spnKhuVuc = getView().findViewById(R.id.spnKhuVuc);
-        categoryAdapterKhuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, getListCategoryKhuVuc());
-        spnKhuVuc.setAdapter(categoryAdapterKhuVuc);
+        spnThanhPho = getView().findViewById(R.id.spnThanhPho);
+        spnQuan = getView().findViewById(R.id.spnTinh);
 
-        // đổ dữ liệu từ adapter vào spinner loại hình sân
-        spnLoaiHinhSan = getView().findViewById(R.id.spnLoaiHinhSan);
-        categoryAdapterLoaiHinhSan = new CategoryAdapter_LoaiHinhSan(getContext(), R.layout.item_selected, getListCategoryLoaiHinhSan());
-        spnLoaiHinhSan.setAdapter(categoryAdapterLoaiHinhSan);
+        //duw lieu spn
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
 
-        // đổ dữ liệu từ adapter vào spinner loại sân
-        spnLoaiSan = getView().findViewById(R.id.spnLoaiSan);
-        categoryAdapterLoaiSan = new CategoryAdapter_LoaiSan(getContext(), R.layout.item_selected, getListCategoryLoaiSan());
-        spnLoaiSan.setAdapter(categoryAdapterLoaiSan);
+        data_tp = dataBaseHelper.getAllCity();
+        setAdapterSpinner(data_tp, adapter_tp, spnThanhPho);
+        spnThanhPho.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+                City items = data_tp.get(i);
+                data_quan = dataBaseHelper.getAllDistrict(items.getId());
+                setAdapterSpinner(data_quan, adapter_quan, spnQuan);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         // gọi hàm tạo dữ liệu giả cho list view
         createDataForListView();
 
         // setAdapter cho list view
-        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(),R.layout.listview_doi_dang_tim_tran,information_findTeams);
-        listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
+        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(), R.layout.listview_doi_dang_tim_tran, information_findTeams);
+        listView = (ListView) getView().findViewById(R.id.listview_tim_tran);
         listView.setAdapter(adapter);
 
 
@@ -139,7 +146,7 @@ public class home_flagment extends Fragment {
         txtDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),infomation_dangtintimtran.class);
+                Intent intent = new Intent(getContext(), infomation_dangtintimtran.class);
                 startActivity(intent);
             }
         });
@@ -149,7 +156,7 @@ public class home_flagment extends Fragment {
         imgUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),edit_profile_user.class);
+                Intent intent = new Intent(getContext(), edit_profile_user.class);
                 startActivity(intent);
             }
         });
@@ -200,5 +207,17 @@ public class home_flagment extends Fragment {
         information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
         information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
         information_findTeams.add(new information_findTeams(R.drawable.img_team5, "Doi 5", "Quảng Bình", "18h -> 20h", "21/12/2020"));
+    }
+
+
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
     }
 }
