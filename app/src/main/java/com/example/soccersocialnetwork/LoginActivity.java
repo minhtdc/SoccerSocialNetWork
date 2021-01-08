@@ -399,7 +399,7 @@ public class LoginActivity extends AppCompatActivity {
         json.put("userName", user.getUserName());
         json.put("userBirth", user.getUserBirth());
         json.put("userAria", user.getUserAria());
-        json.put("userImage", user.getUserImage());
+        json.put("userImage", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2Fimg_user.jpg?alt=media&token=5c0b05eb-1bf7-4ae3-8449-32cc7c3c162f");
         return json;
     }
 

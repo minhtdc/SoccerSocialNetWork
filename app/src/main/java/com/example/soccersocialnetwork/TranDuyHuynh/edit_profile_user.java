@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.searchUserAdapter;
 import com.example.soccersocialnetwork.data_models.Users;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -65,80 +66,109 @@ public class edit_profile_user extends AppCompatActivity {
         edtChieuCao = findViewById(R.id.edtChieuCao);
         imgUserPage = findViewById(R.id.imgUserPage);
 
-        txtTenTaiKhoan.setText(LoginActivity.USER_NAME_CURRENT);
+        if (!searchUserAdapter.clickUserID.equalsIgnoreCase(LoginActivity.USER_ID_CURRENT)) {
 
-        //set anh dai dien
-        Picasso.get().load(LoginActivity.USER_IMG_CURRENT).into(imgUserPage);
+            //lay thong tin nguoi dung
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(String.format("/users/%s/", searchUserAdapter.clickUserID));
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Users users = snapshot.getValue(Users.class);
 
-        //lay thong tin nguoi dung
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(String.format("/users/%s/", LoginActivity.USER_ID_CURRENT));
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Users users = snapshot.getValue(Users.class);
+                    txtTenTaiKhoan.setText(users.getUserEmail());
+                    edtHoTen.setText(users.getUserName());
+                    edtSlogan.setText(users.getUserSologan());
+                    edtNamSinh.setText(users.getUserBirth());
+                    edtQueQuan.setText(users.getUserQueQuan());
+                    edtViTri.setText(users.getUserViTri());
+                    edtCanNang.setText(users.getUserCanNang());
+                    edtChieuCao.setText(users.getUserChieuCao());
+                    Picasso.get().load(users.getUserImage()).into(imgUserPage);
+                }
 
-                txtTenTaiKhoan.setText(users.getUserEmail());
-                edtHoTen.setText(users.getUserName());
-                edtSlogan.setText(users.getUserSologan());
-                edtNamSinh.setText(users.getUserBirth());
-                edtQueQuan.setText(users.getUserQueQuan());
-                edtViTri.setText(users.getUserViTri());
-                edtCanNang.setText(users.getUserCanNang());
-                edtChieuCao.setText(users.getUserChieuCao());
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+            btnEditProfile.setVisibility(View.GONE);
+            searchUserAdapter.clickUserID = LoginActivity.USER_ID_CURRENT;
+        } else {
 
-            }
-        });
+            //set anh dai dien
+            Picasso.get().load(LoginActivity.USER_IMG_CURRENT).into(imgUserPage);
 
-        imgUserPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, 1);
-                btnEditProfile.setText("Lưu");
-                edtHoTen.setEnabled(true);
-            }
-        });
+            //lay thong tin nguoi dung
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(String.format("/users/%s/", LoginActivity.USER_ID_CURRENT));
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Users users = snapshot.getValue(Users.class);
 
-        btnEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtHoTen.isEnabled() == false) {
+                    txtTenTaiKhoan.setText(users.getUserEmail());
+                    edtHoTen.setText(users.getUserName());
+                    edtSlogan.setText(users.getUserSologan());
+                    edtNamSinh.setText(users.getUserBirth());
+                    edtQueQuan.setText(users.getUserQueQuan());
+                    edtViTri.setText(users.getUserViTri());
+                    edtCanNang.setText(users.getUserCanNang());
+                    edtChieuCao.setText(users.getUserChieuCao());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            imgUserPage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);
                     btnEditProfile.setText("Lưu");
                     edtHoTen.setEnabled(true);
-                    edtSlogan.setEnabled(true);
-                    edtNamSinh.setEnabled(true);
-                    edtQueQuan.setEnabled(true);
-                    edtViTri.setEnabled(true);
-                    edtCanNang.setEnabled(true);
-                    edtChieuCao.setEnabled(true);
-
-                } else {
-                    btnEditProfile.setText("Chỉnh sửa");
-                    edtHoTen.setEnabled(false);
-                    edtSlogan.setEnabled(false);
-                    edtNamSinh.setEnabled(false);
-                    edtQueQuan.setEnabled(false);
-                    edtViTri.setEnabled(false);
-                    edtCanNang.setEnabled(false);
-                    edtChieuCao.setEnabled(false);
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference(String.format("/users/%s/", LoginActivity.USER_ID_CURRENT));
-                    myRef.child("userName").setValue(edtHoTen.getText().toString());
-                    myRef.child("userBirth").setValue(edtNamSinh.getText().toString());
-                    myRef.child("userSologan").setValue(edtSlogan.getText().toString());
-                    myRef.child("userQueQuan").setValue(edtQueQuan.getText().toString());
-                    myRef.child("userViTri").setValue(edtViTri.getText().toString());
-                    myRef.child("userCanNang").setValue(edtCanNang.getText().toString());
-                    myRef.child("userChieuCao").setValue(edtChieuCao.getText().toString());
-                    uploadImage(imgUserPage);
                 }
-            }
-        });
+            });
+
+            btnEditProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (edtHoTen.isEnabled() == false) {
+                        btnEditProfile.setText("Lưu");
+                        edtHoTen.setEnabled(true);
+                        edtSlogan.setEnabled(true);
+                        edtNamSinh.setEnabled(true);
+                        edtQueQuan.setEnabled(true);
+                        edtViTri.setEnabled(true);
+                        edtCanNang.setEnabled(true);
+                        edtChieuCao.setEnabled(true);
+
+                    } else {
+                        btnEditProfile.setText("Chỉnh sửa");
+                        edtHoTen.setEnabled(false);
+                        edtSlogan.setEnabled(false);
+                        edtNamSinh.setEnabled(false);
+                        edtQueQuan.setEnabled(false);
+                        edtViTri.setEnabled(false);
+                        edtCanNang.setEnabled(false);
+                        edtChieuCao.setEnabled(false);
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference(String.format("/users/%s/", LoginActivity.USER_ID_CURRENT));
+                        myRef.child("userName").setValue(edtHoTen.getText().toString());
+                        myRef.child("userBirth").setValue(edtNamSinh.getText().toString());
+                        myRef.child("userSologan").setValue(edtSlogan.getText().toString());
+                        myRef.child("userQueQuan").setValue(edtQueQuan.getText().toString());
+                        myRef.child("userViTri").setValue(edtViTri.getText().toString());
+                        myRef.child("userCanNang").setValue(edtCanNang.getText().toString());
+                        myRef.child("userChieuCao").setValue(edtChieuCao.getText().toString());
+                        uploadImage(imgUserPage);
+                    }
+                }
+            });
+        }
     }
 
     @Override
