@@ -8,12 +8,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
+import com.example.soccersocialnetwork.football_field_owner.flagment.WaitingListFragment;
 import com.example.soccersocialnetwork.football_field_owner.model.Waiting;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -21,6 +29,7 @@ public class CustomAdapterWaiting extends ArrayAdapter {
     Context context;
     int resource;
     ArrayList<Waiting> data;
+    DatabaseReference mFirebase;
     public CustomAdapterWaiting(Context context, int resource, ArrayList<Waiting> data) {
         super(context, resource);
         this.context=context;
@@ -44,7 +53,8 @@ public class CustomAdapterWaiting extends ArrayAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        mFirebase = FirebaseDatabase.getInstance().getReference();
         View view = convertView;
         Holder holder = null;
         if (view == null) {
@@ -68,7 +78,33 @@ public class CustomAdapterWaiting extends ArrayAdapter {
         holder.tvNgay.setText(waiting.getNgay());
         holder.tvGio.setText(waiting.getGio());
         holder.imgAnh.setImageResource(R.drawable.sanbong);
+        holder.btnChon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        mFirebase.child("SanDaDat").child(snapshot.getKey()).setValue(snapshot.getValue());
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).removeValue();
+                data.remove(position);
+                notifyDataSetChanged();
+            }
+        });
+        holder.btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).removeValue();
+                data.remove(position);
+                notifyDataSetChanged();
+            }
+        });
         return  view;
     }
 }

@@ -8,6 +8,9 @@ public class FreeTime {
         this.gioKetThuc = gioKetThuc;
     }
 
+    public FreeTime() {
+    }
+
     public String getGioBatDau() {
         return gioBatDau;
     }

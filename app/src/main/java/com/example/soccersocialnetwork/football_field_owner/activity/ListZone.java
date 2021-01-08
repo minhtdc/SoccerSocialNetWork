@@ -52,7 +52,6 @@ public class ListZone extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(ListZone.this, ZoneInfoActivity.class);
-                intent.putExtra("key", data.get(i).getPushId());
                 idKhu = data.get(i).getPushId();
                 startActivity(intent);
             }

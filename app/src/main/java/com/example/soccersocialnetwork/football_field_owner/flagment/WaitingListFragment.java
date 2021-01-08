@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetFootballPitches;
@@ -30,11 +32,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class WaitingListFragment extends Fragment {
+    ArrayAdapter adapter_waiting;
     ListView lvWaiting;
     ArrayList<SetFootballPitches> data_SetFootballPitches = new ArrayList<>();
     ArrayList<Waiting> data_waiting = new ArrayList<>();
-
-    ArrayAdapter adapter_waiting;
 
     DatabaseReference mFirebase;
     String idKhu = ListZone.idKhu;
@@ -52,7 +53,6 @@ public class WaitingListFragment extends Fragment {
     }
 
     private void setEvent() {
-
         adapter_waiting = new CustomAdapterWaiting(getContext(), R.layout.item_listview_waiting, data_waiting);
         lvWaiting.setAdapter(adapter_waiting);
         loadData();
@@ -61,18 +61,21 @@ public class WaitingListFragment extends Fragment {
     private void loadData() {
         mFirebase.child("ChoDuyetDatSan").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable final String previousChildName) {
                 final SetFootballPitches setFootballPitches = snapshot.getValue(SetFootballPitches.class);
                 final Waiting waiting = new Waiting();
+                final String idDuyet = snapshot.getKey();
                 mFirebase.child("San").child(setFootballPitches.getIdSanDat()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final FootballPitches footballPitches = snapshot.getValue(FootballPitches.class);
+
                         mFirebase.child("Team").child(setFootballPitches.getIdDoiDat()).child("tenDoi").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (footballPitches.getIdKhu().equals(idKhu)) {
                                     data_SetFootballPitches.add(setFootballPitches);
+                                    waiting.setIdDuyet(idDuyet);
                                     waiting.setSan(footballPitches.getTenSan());
                                     waiting.setTenDoi(snapshot.getValue().toString());
                                     waiting.setGio(setFootballPitches.getGioBatDau() + ":"

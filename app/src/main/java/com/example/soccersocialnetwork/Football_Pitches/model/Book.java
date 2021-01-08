@@ -9,6 +9,9 @@ public class Book {
         this.gioKetThuc = gioKetThuc;
     }
 
+    public Book() {
+    }
+
     public String getTenDoi() {
         return tenDoi;
     }
