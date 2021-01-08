@@ -33,7 +33,7 @@ public class ListOfYardFragment extends Fragment {
     ArrayList<FootballPitches> data_FootballPitches;
     ArrayAdapter adapter_FootballPitches;
     DatabaseReference mFirebaseDatabase;
-    String idKhu;
+    String idKhu ;
     public static String idSan;
 
     @Override

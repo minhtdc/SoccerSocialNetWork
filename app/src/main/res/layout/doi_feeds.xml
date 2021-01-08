@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,8 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvTrangThai"
@@ -35,27 +34,28 @@
 
                 android:src="@drawable/ic_back"></ImageView>
         </LinearLayout>
+
         <TextView
             android:id="@+id/tvChuaCoBai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chưa có bái viết nào"
             android:gravity="center"
+            android:text="Chưa có bái viết nào"
             android:textSize="30dp"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
         </TextView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_Feed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="false"
-            android:isScrollContainer="false"
-            android:keepScreenOn="false"
-            android:scrollbarAlwaysDrawHorizontalTrack="false"
-            android:scrollbarAlwaysDrawVerticalTrack="false"></androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_Feed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="false"
+                    android:isScrollContainer="false"
+                    android:keepScreenOn="false"
+                    android:scrollbarAlwaysDrawHorizontalTrack="false"
+                    android:scrollbarAlwaysDrawVerticalTrack="false"></androidx.recyclerview.widget.RecyclerView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.core.widget.NestedScrollView>

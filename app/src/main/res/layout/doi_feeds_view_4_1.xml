@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_user"></ImageView>
+
+        <TextView
+            android:layout_margin="10dp"
+            android:id="@+id/tvNameUser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:text="ten bạn"
+            android:textSize="20dp"
+            android:textStyle="bold"></TextView>
+    </LinearLayout>
+
+    <TextView
+        android:paddingLeft="10dp"
+        android:id="@+id/tvSTT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="left|top"
+        android:inputType="textMultiLine"
+        android:textSize="15sp">
+        <requestFocus />
+    </TextView>
+    <Button
+        android:id="@+id/btnBinhLuan"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shap_button_list_teams"
+        android:layout_height="wrap_content"
+        android:text="bình luận"></Button>
+    <TextView
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/bg_shape_register"></TextView>
+</LinearLayout>

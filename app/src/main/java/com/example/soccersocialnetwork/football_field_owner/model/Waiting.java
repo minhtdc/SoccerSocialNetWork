@@ -31,6 +31,9 @@ public class Waiting {
         this.idDuyet = idDuyet;
     }
 
+    public Waiting() {
+    }
+
     public String getTenDoi() {
         return tenDoi;
     }

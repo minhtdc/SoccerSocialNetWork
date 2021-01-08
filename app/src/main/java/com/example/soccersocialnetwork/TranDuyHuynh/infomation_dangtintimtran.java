@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -234,5 +235,6 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         thongTinTranDau.setIdTranDau(keyID);
         mDatabaseReference.child("ThongTinTranDau").child(keyID).setValue(thongTinTranDau);
     }
+
 }
 

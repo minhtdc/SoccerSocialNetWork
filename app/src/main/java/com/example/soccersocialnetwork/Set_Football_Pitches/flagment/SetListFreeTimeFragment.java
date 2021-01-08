@@ -135,7 +135,6 @@ public class SetListFreeTimeFragment extends Fragment {
                 timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
                 timePickerDialog.updateTime(gioBD, phutBD);
                 timePickerDialog.show();
-
             }
         });
         tvGioKT.setOnClickListener(new View.OnClickListener() {

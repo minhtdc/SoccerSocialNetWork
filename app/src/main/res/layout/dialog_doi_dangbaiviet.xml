@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnBackDangBai"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/icon_back"></Button>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="Đăng bài viết"
+                    android:textSize="25dp"
+                    android:textStyle="bold"></TextView>
+
+                <Button
+                    android:id="@+id/btnDangBai"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="Đăng bài"></Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:padding="30dp">
+
+              <ImageView
+                  android:id="@+id/imgAvatar"
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+                  android:src="@drawable/icon_user"></ImageView>
+
+                <TextView
+                    android:id="@+id/tvNameUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="ten bạn"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:gravity="center|left"></TextView>
+            </LinearLayout>
+
+
+                <EditText
+
+                    android:id="@+id/txtSTT"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:ems="10"
+                    android:gravity="left|top"
+                    android:hint="Bạn muốn viết điều chi"
+                    android:inputType="textMultiLine"
+                    android:textSize="15sp">
+                    <requestFocus />
+                </EditText>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -166,7 +166,7 @@ public class team_flagment extends Fragment {
                         startActivity(intent);
                         check = false;
                         break;
-                   }
+                    }
 //                    else {
 //                        Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
 //                        Bundle bundle = new Bundle();
@@ -175,7 +175,7 @@ public class team_flagment extends Fragment {
 //                        startActivity(intent);
 //                        break;
 //                    }
-                    }
+                }
                 if(check == true){
                     Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
                     Bundle bundle = new Bundle();
@@ -265,17 +265,18 @@ public class team_flagment extends Fragment {
 //
 
     private void readUser() {
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi");
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        String uid = LoginActivity.USER_ID_CURRENT;
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+        mDatabase.child(uid).child("listDoi").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 keyDoi.clear();
                 for (DataSnapshot dt :
                         snapshot.getChildren()) {
                     keyDoi.add(dt.getKey());
-
-
                 }
+
             }
 
             @Override
@@ -283,6 +284,7 @@ public class team_flagment extends Fragment {
 
             }
         });
+
 
     }
 
@@ -353,7 +355,7 @@ public class team_flagment extends Fragment {
 
     private void clickVaoTeam(final String idDoi) {
 
-      //  DatabaseReference mDatabase2 = FirebaseDatabase.getInstance().getReference().child("Team");
+        //  DatabaseReference mDatabase2 = FirebaseDatabase.getInstance().getReference().child("Team");
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mListener = mDatabase.addValueEventListener(new ValueEventListener() {
@@ -364,8 +366,8 @@ public class team_flagment extends Fragment {
                     for (DataSnapshot dtt :
                             dt.child("listDoi").getChildren()) {
 
-                        }
                     }
+                }
 
             }
 
