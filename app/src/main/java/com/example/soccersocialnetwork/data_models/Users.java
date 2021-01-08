@@ -5,19 +5,7 @@ public class Users {
 
     @Override
     public String toString() {
-        return "Users{" +
-                "userID='" + userID + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userBirth='" + userBirth + '\'' +
-                ", userAria='" + userAria + '\'' +
-                ", userSologan='" + userSologan + '\'' +
-                ", userQueQuan='" + userQueQuan + '\'' +
-                ", userViTri='" + userViTri + '\'' +
-                ", userCanNang='" + userCanNang + '\'' +
-                ", userChieuCao='" + userChieuCao + '\'' +
-                ", userImage='" + userImage + '\'' +
-                '}';
+        return userName;
     }
 
     private String userEmail;

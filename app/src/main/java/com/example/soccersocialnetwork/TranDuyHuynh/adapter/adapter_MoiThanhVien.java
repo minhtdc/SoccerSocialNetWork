@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -23,17 +24,20 @@ public class adapter_MoiThanhVien extends BaseAdapter {
     int resource;
     DatabaseReference mDatabase;
     ArrayList<Users> data;
-    public static ArrayList<String> lstIdCheck;
+  public static  ArrayList<Users> thanhVienThamgia = new ArrayList<Users>();
+
+//    boolean trangThaiCheck = false;
 
     public adapter_MoiThanhVien(@NonNull Context context, int resource, ArrayList<Users> data) {
 
         this.context = context;
         this.data = data;
         this.resource = resource;
+
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         View view1 = view;
         adapter_MoiThanhVien.holder holder =  new adapter_MoiThanhVien.holder();
         if(view1 == null){
@@ -56,23 +60,29 @@ public class adapter_MoiThanhVien extends BaseAdapter {
         }
         holder.tenThanhVien.setText(users.getUserName().toString());
 
-//        if (holder.checkBox.isChecked())
-//        {
-//                lstIdCheck.add(users.getUserID());
-//        }
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lstIdCheck.add("1");
+                boolean checked = ((CheckBox) view).isChecked();
+                if (checked)
+                {
+//                    Toast.makeText(context,users.getUserName(),Toast.LENGTH_LONG).show();
+                    thanhVienThamgia.add(users);
+                    Toast.makeText(context,thanhVienThamgia.size() + "",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    thanhVienThamgia.remove(users);
+                }
             }
         });
         return view1;
 
     }
+
    public static class holder{
         ImageView imageView;
         TextView tenThanhVien;
-        CheckBox checkBox;
+         CheckBox checkBox;
     }
     @Override
     public int getCount() {
