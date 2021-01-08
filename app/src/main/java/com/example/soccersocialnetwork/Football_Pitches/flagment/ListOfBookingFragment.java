@@ -64,15 +64,16 @@ public class ListOfBookingFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final FootballPitches footballPitches = snapshot.getValue(FootballPitches.class);
 
-                        mFirebase.child("Team").child(setFootballPitches.getIdDoiDat()).child("tenDoi").addListenerForSingleValueEvent(new ValueEventListener() {
+                        mFirebase.child("Team").child(setFootballPitches.getIdDoiDat()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (footballPitches.getId().equals(idSan)) {
-                                    book.setTenDoi(snapshot.getValue().toString());
+                                    book.setTenDoi(snapshot.child("tenDoi").getValue().toString());
                                     book.setGioBatDau(setFootballPitches.getGioBatDau() + ":"
                                             + setFootballPitches.getPhutBatDau());
                                     book.setGioKetThuc(setFootballPitches.getGioKetThuc() + ":"
                                             + setFootballPitches.getPhutKetThuc());
+                                    book.setAnhDoi(snapshot.child("hinhAnh").getValue().toString());
                                     data_Books.add(book);
                                     adapter_Book.notifyDataSetChanged();
                                 }

@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class CustomAdapterWaiting extends ArrayAdapter {
             holder = (Holder) view.getTag();
 
         final Waiting waiting = data.get(position);
-
+        Picasso.get().load(waiting.getAnhDoi()).fit().into(holder.imgAnh);
         holder.tvTenDoi.setText(waiting.getTenDoi());
         holder.tvsan.setText(waiting.getSan());
         holder.tvNgay.setText(waiting.getNgay());

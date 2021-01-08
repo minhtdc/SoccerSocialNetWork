@@ -1,24 +1,26 @@
 package com.example.soccersocialnetwork.football_field_owner.model;
 
 public class Waiting {
-    String tenDoi, san, ngay, gio, idDuyet;
+    String tenDoi, san, ngay, gio, idDuyet, anhDoi;
 
-    public Waiting(String tenDoi, String san, String ngay, String gio, String idDuyet) {
+    public Waiting(String tenDoi, String san, String ngay, String gio, String idDuyet, String anhDoi) {
         this.tenDoi = tenDoi;
         this.san = san;
         this.ngay = ngay;
         this.gio = gio;
         this.idDuyet = idDuyet;
-    }
-
-    public Waiting(String tenDoi, String san, String ngay, String gio) {
-        this.tenDoi = tenDoi;
-        this.san = san;
-        this.ngay = ngay;
-        this.gio = gio;
+        this.anhDoi = anhDoi;
     }
 
     public Waiting() {
+    }
+
+    public String getAnhDoi() {
+        return anhDoi;
+    }
+
+    public void setAnhDoi(String anhDoi) {
+        this.anhDoi = anhDoi;
     }
 
     public String getIdDuyet() {
@@ -63,11 +65,13 @@ public class Waiting {
 
     @Override
     public String toString() {
-        return "waiting{" +
+        return "Waiting{" +
                 "tenDoi='" + tenDoi + '\'' +
                 ", san='" + san + '\'' +
                 ", ngay='" + ngay + '\'' +
                 ", gio='" + gio + '\'' +
+                ", idDuyet='" + idDuyet + '\'' +
+                ", anhDoi='" + anhDoi + '\'' +
                 '}';
     }
 }

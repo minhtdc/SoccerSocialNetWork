@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.soccersocialnetwork.Football_Pitches.model.Book;
 import com.example.soccersocialnetwork.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,7 @@ public class CustomAdapterBooked extends ArrayAdapter {
             holder = (Holder) view.getTag();
 
         final Book book = data.get(position);
+        Picasso.get().load(book.getAnhDoi()).fit().into(holder.imgAnh);
         holder.imgAnh.setImageResource(R.drawable.sanbong);
         holder.tvTenDoi.setText(book.getTenDoi());
         holder.tvGioDaDat.setText("Giờ: " + book.getGioBatDau() + "-" + book.getGioKetThuc());

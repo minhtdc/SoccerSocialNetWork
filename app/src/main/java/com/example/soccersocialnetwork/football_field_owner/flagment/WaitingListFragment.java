@@ -70,19 +70,20 @@ public class WaitingListFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final FootballPitches footballPitches = snapshot.getValue(FootballPitches.class);
 
-                        mFirebase.child("Team").child(setFootballPitches.getIdDoiDat()).child("tenDoi").addListenerForSingleValueEvent(new ValueEventListener() {
+                        mFirebase.child("Team").child(setFootballPitches.getIdDoiDat()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (footballPitches.getIdKhu().equals(idKhu)) {
                                     data_SetFootballPitches.add(setFootballPitches);
                                     waiting.setIdDuyet(idDuyet);
                                     waiting.setSan(footballPitches.getTenSan());
-                                    waiting.setTenDoi(snapshot.getValue().toString());
+                                    waiting.setTenDoi(snapshot.child("tenDoi").getValue().toString());
                                     waiting.setGio(setFootballPitches.getGioBatDau() + ":"
                                             + setFootballPitches.getPhutBatDau() + " - "
                                             + setFootballPitches.getGioKetThuc() + ":"
                                             + setFootballPitches.getPhutKetThuc());
                                     waiting.setNgay(setFootballPitches.getNgayDat());
+                                    waiting.setAnhDoi(snapshot.child("hinhAnh").getValue().toString());
                                     data_waiting.add(waiting);
                                     adapter_waiting.notifyDataSetChanged();
                                 }

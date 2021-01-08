@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.all_stadiums;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
 import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
 import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
@@ -30,13 +31,18 @@ public class SetZoneInfoFragment extends Fragment {
     DatabaseReference mData;
     TextView txtTenkhu,txtDiachi,txtLoaihinhsan,txtLoaisan,txtGio;
     ArrayList<Zone> data = new ArrayList<>();
-    String idKhu = stadium_flagment.idKhu;
+    String idKhu;
     String loaiSan, loaiHinhSan;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_zone_info, container, false);
+        if(stadium_flagment.idKhu.equals("")){
+            idKhu = all_stadiums.idKhu;
+        }else {
+            idKhu = stadium_flagment.idKhu;
+        }
         txtTenkhu = view.findViewById(R.id.txtTenKhu);
         txtDiachi = view.findViewById(R.id.txtDiaChi);
         txtLoaihinhsan = view.findViewById(R.id.txtLoaiHinhSan);

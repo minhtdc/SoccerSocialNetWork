@@ -1,15 +1,24 @@
 package com.example.soccersocialnetwork.Football_Pitches.model;
 
 public class Book {
-    String tenDoi, gioBatDau,gioKetThuc;
+    String tenDoi, gioBatDau, gioKetThuc, anhDoi;
 
-    public Book(String tenDoi, String gioBatDau, String gioKetThuc) {
+    public Book(String tenDoi, String gioBatDau, String gioKetThuc, String anhDoi) {
         this.tenDoi = tenDoi;
         this.gioBatDau = gioBatDau;
         this.gioKetThuc = gioKetThuc;
+        this.anhDoi = anhDoi;
     }
 
     public Book() {
+    }
+
+    public String getAnhDoi() {
+        return anhDoi;
+    }
+
+    public void setAnhDoi(String anhDoi) {
+        this.anhDoi = anhDoi;
     }
 
     public String getTenDoi() {
@@ -42,6 +51,7 @@ public class Book {
                 "tenDoi='" + tenDoi + '\'' +
                 ", gioBatDau='" + gioBatDau + '\'' +
                 ", gioKetThuc='" + gioKetThuc + '\'' +
+                ", anhDoi='" + anhDoi + '\'' +
                 '}';
     }
 }

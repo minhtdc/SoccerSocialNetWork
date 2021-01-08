@@ -15,6 +15,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -30,6 +31,7 @@ import com.example.soccersocialnetwork.data_models.Users;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.RushHour;
 import com.example.soccersocialnetwork.football_field_owner.model.Zone;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -133,6 +135,7 @@ public class SetListFreeTimeFragment extends Fragment {
                 timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
                 timePickerDialog.updateTime(gioBD, phutBD);
                 timePickerDialog.show();
+
             }
         });
         tvGioKT.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +154,7 @@ public class SetListFreeTimeFragment extends Fragment {
                                 try {
                                     Date date = f24hours.parse(time);
                                     Toast.makeText(getContext(), time + "", Toast.LENGTH_SHORT).show();
+                                    tinhTongTien();
                                     tvGioKT.setText(time);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -163,6 +167,8 @@ public class SetListFreeTimeFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
+
+
         //cancel
         alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
@@ -184,7 +190,7 @@ public class SetListFreeTimeFragment extends Fragment {
         dialog.show();
     }
 
-    private SetFootballPitches getSetFootballPitches(){
+    private SetFootballPitches getSetFootballPitches() {
         SetFootballPitches setFootballPitches = new SetFootballPitches();
         setFootballPitches.setIdDoiDat(dataDoi.get(spDoi.getSelectedItemPosition()).getIdDoi());
         setFootballPitches.setIdNguoiDat(idUser);
@@ -196,6 +202,59 @@ public class SetListFreeTimeFragment extends Fragment {
         setFootballPitches.setTongTien(tvTongTien.getText().toString());
         setFootballPitches.setNgayDat(SetFootballPitchesActivity.ngayDat);
         return setFootballPitches;
+    }
+
+    private void tinhTongTien() {
+        final int batDau = gioBD * 60 + phutBD;
+        final int ketThuc = gioKT * 60 + phutKT;
+
+        mFirebaseDatabase.child("San").child(idSan).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final FootballPitches footballPitches = snapshot.getValue(FootballPitches.class);
+                mFirebaseDatabase.child("GioCaoDiem").child(idSan).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            RushHour rushHour = data.getValue(RushHour.class);
+                            int tongTien;
+                            int batDauCD = Integer.valueOf(rushHour.getGioBD()) * 60 + Integer.valueOf(rushHour.getPhutBD());
+                            int ketThucCD = Integer.valueOf(rushHour.getGioKT()) * 60 + Integer.valueOf(rushHour.getPhutKT());
+                            if (batDau >= batDauCD && ketThuc <= ketThucCD) {
+                                tongTien = ((ketThuc - batDau)  * Integer.valueOf(footballPitches.getGiaCD())/ 60);
+                                tvTongTien.setText(String.valueOf(tongTien));
+                                break;
+                            } else {
+                                if (batDau >= batDauCD && batDau <= ketThucCD) {
+                                    tongTien = (((ketThucCD - batDau)  * Integer.valueOf(footballPitches.getGiaCD()))/ 60) + (((ketThuc - ketThucCD) * Integer.valueOf(footballPitches.getGiaBT()))/ 60);
+                                    tvTongTien.setText(String.valueOf(tongTien));
+                                    break;
+                                } else if (ketThuc >= batDauCD && ketThuc <= ketThucCD) {
+                                    tongTien = (((ketThuc - batDauCD)  * Integer.valueOf(footballPitches.getGiaCD()))/ 60) + (((batDauCD - batDau)  * Integer.valueOf(footballPitches.getGiaBT()))/ 60);
+                                    tvTongTien.setText(String.valueOf(tongTien));
+                                    break;
+                                } else {
+                                    tongTien = 0;
+                                    tongTien = ((ketThuc - batDau)  * Integer.valueOf(footballPitches.getGiaBT())/ 60);
+                                    tvTongTien.setText(String.valueOf(tongTien));
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void loadDoi() {
