@@ -146,9 +146,9 @@ public class home_flagment extends Fragment {
 //        createDataForListView();
 
         // setAdapter cho list view
-        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(), R.layout.listview_doi_dang_tim_tran, information_findTeams);
-        listView = (ListView) getView().findViewById(R.id.listview_tim_tran);
-        listView.setAdapter(adapter);
+//        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(), R.layout.listview_doi_dang_tim_tran, information_findTeams);
+//        listView = (ListView) getView().findViewById(R.id.listview_tim_tran);
+//        listView.setAdapter(adapter);
 
 
         // hiện thị màn hình thông tin đăng tin tìm trận khi click vào edt đăng tin tìm trận

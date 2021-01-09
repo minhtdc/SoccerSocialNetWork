@@ -25,8 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ChoDuyetThanhVien;
-import android.widget.Toast;
-
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThemThanhVien_2;
@@ -50,7 +48,6 @@ public class Fragment_Doi_Menu extends Fragment {
 
     public static ArrayList<Users> listUser = new ArrayList<>();
     String adminOrUser;
-
 
     ArrayList<String> keyUser = new ArrayList<>();
 
@@ -193,6 +190,7 @@ public class Fragment_Doi_Menu extends Fragment {
 
     private void dialogThemThanh() {
         mDatabase.getDatabase().goOnline();
+
         final Adapter_ThemThanhVien adapterDanhSach;
 
 
@@ -307,7 +305,7 @@ public class Fragment_Doi_Menu extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for(DataSnapshot dtt:
-                            snapshot.getChildren()){
+                                    snapshot.getChildren()){
                                 Users users = dtt.getValue(Users.class);
                                 if(dtt.getKey().equals(dt.getKey())){
                                     listChoDuyet.add(users);
