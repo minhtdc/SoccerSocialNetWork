@@ -46,7 +46,9 @@ public class activity_moithanhvien extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity_moithanhvien.this,infomation_dangtintimtran.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+                finish();
 //                onBackPressed();
             }
         });

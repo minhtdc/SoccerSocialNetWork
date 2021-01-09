@@ -58,6 +58,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     private String anhDoi;
     ListView listViewThanhVienThamGia;
     ArrayList<Users> DanhThanhVienThamGia = adapter_MoiThanhVien.thanhVienThamgia;
+    ArrayAdapter arrayAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -76,15 +77,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         edtThongTinThem = (EditText) findViewById(R.id.edtThongTinThem);
         btnDang = (Button) findViewById(R.id.btnDang);
         listViewThanhVienThamGia = (ListView) findViewById(R.id.lstThanhVienDuocMoi);
-
-        if (DanhThanhVienThamGia.isEmpty())
-        {
-            listViewThanhVienThamGia.setVisibility(View.GONE);
-        }
-       else {
-           ArrayAdapter arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1,DanhThanhVienThamGia);
-           listViewThanhVienThamGia.setAdapter(arrayAdapter);
-        }
+        arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1,DanhThanhVienThamGia);
         loadData();
 
 
@@ -121,6 +114,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
             public void onClick(View view) {
                 adapter_MoiThanhVien.thanhVienThamgia.clear();
                 Intent intent = new Intent(infomation_dangtintimtran.this, activity_moithanhvien.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
 //                Toast.makeText(infomation_dangtintimtran.this,idDoiDangTin.toString(),Toast.LENGTH_LONG).show();
             }
@@ -161,6 +155,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
                             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    arrayAdapter.clear();
                                     txtTenDoi.setText(adapterView.getItemAtPosition(i).toString());
                                     tenDoi = txtTenDoi.getText().toString();
                                     idDoiDangTin = listTeam.get(i).getIdDoi();
@@ -233,6 +228,12 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         String keyID = FirebaseDatabase.getInstance().getReference().push().getKey();
         thongTinTranDau.setIdTranDau(keyID);
         mDatabaseReference.child("ThongTinTranDau").child(keyID).setValue(thongTinTranDau);
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        listViewThanhVienThamGia.setAdapter(arrayAdapter);
+
     }
 }
 
