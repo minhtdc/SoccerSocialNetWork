@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -31,6 +33,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.information_findTeams;
+import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,17 +61,10 @@ public class home_flagment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    // khai báo SpinnerKhuVuc và adapter
-    private Spinner spnKhuVuc;
-    private CategoryAdapter_KhuVuc categoryAdapterKhuVuc;
-
-    // khai báo spinner Loại hinh sân và apdater
-    private Spinner spnLoaiHinhSan;
-    private CategoryAdapter_LoaiHinhSan categoryAdapterLoaiHinhSan;
-
-    // khai báo spinner loại sân và adapter
-    private Spinner spnLoaiSan;
-    private CategoryAdapter_LoaiSan categoryAdapterLoaiSan;
+    private Spinner spnThanhPho, spnQuan;
+    ArrayList<City> data_tp = new ArrayList<>();
+    ArrayList<String> data_quan = new ArrayList<>();
+    ArrayAdapter adapter_tp, adapter_quan;
 
     // khai báo đối tượng cho list view
     private ListView listView;
@@ -117,55 +116,46 @@ public class home_flagment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txtDangTin = (TextView) getView().findViewById(R.id.txtDangTinTimTran);
-        imgUser = (ImageView) getView().findViewById(R.id.imgUser);
-        txtDiaDiem = (TextView) getView().findViewById(R.id.txtThongTinDiaDiem);
-        txtNgay = (TextView) getView().findViewById(R.id.txtThongTinNgay);
-        txtThoiGian = (TextView) getView().findViewById(R.id.txtThongTinGio);
+        spnThanhPho = getView().findViewById(R.id.spnThanhPho);
+        spnQuan = getView().findViewById(R.id.spnTinh);
 
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("userImage");
-        firebaseDatabase.addValueEventListener(new ValueEventListener() {
+        //duw lieu spn
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
+
+        data_tp = dataBaseHelper.getAllCity();
+        setAdapterSpinner(data_tp, adapter_tp, spnThanhPho);
+        spnThanhPho.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Picasso.get().load(snapshot.getValue().toString()).into(imgUser);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+                City items = data_tp.get(i);
+                data_quan = dataBaseHelper.getAllDistrict(items.getId());
+                setAdapterSpinner(data_quan, adapter_quan, spnQuan);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
-
-
-        // đổ dữ liệu từ adapter vào spinner khu vực
-        spnKhuVuc = getView().findViewById(R.id.spnKhuVuc);
-        categoryAdapterKhuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, getListCategoryKhuVuc());
-        spnKhuVuc.setAdapter(categoryAdapterKhuVuc);
-
-        // đổ dữ liệu từ adapter vào spinner loại hình sân
-        spnLoaiHinhSan = getView().findViewById(R.id.spnLoaiHinhSan);
-        categoryAdapterLoaiHinhSan = new CategoryAdapter_LoaiHinhSan(getContext(), R.layout.item_selected, getListCategoryLoaiHinhSan());
-        spnLoaiHinhSan.setAdapter(categoryAdapterLoaiHinhSan);
-
-        // đổ dữ liệu từ adapter vào spinner loại sân
-        spnLoaiSan = getView().findViewById(R.id.spnLoaiSan);
-        categoryAdapterLoaiSan = new CategoryAdapter_LoaiSan(getContext(), R.layout.item_selected, getListCategoryLoaiSan());
-        spnLoaiSan.setAdapter(categoryAdapterLoaiSan);
 
         // gọi hàm tạo dữ liệu giả cho list view
         DanhSachTranDau();
 //        createDataForListView();
 
         // setAdapter cho list view
-//        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(),R.layout.listview_doi_dang_tim_tran,thongTinTranDaus);
-//        listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
-//        listView.setAdapter(adapter);
+        information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(), R.layout.listview_doi_dang_tim_tran, information_findTeams);
+        listView = (ListView) getView().findViewById(R.id.listview_tim_tran);
+        listView.setAdapter(adapter);
 
 
         // hiện thị màn hình thông tin đăng tin tìm trận khi click vào edt đăng tin tìm trận
         txtDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),infomation_dangtintimtran.class);
+                Intent intent = new Intent(getContext(), infomation_dangtintimtran.class);
                 startActivity(intent);
             }
         });
@@ -175,7 +165,7 @@ public class home_flagment extends Fragment {
         imgUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),edit_profile_user.class);
+                Intent intent = new Intent(getContext(), edit_profile_user.class);
                 startActivity(intent);
             }
         });
@@ -254,5 +244,17 @@ public class home_flagment extends Fragment {
 
             }
         });
+    }
+
+
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
     }
 }

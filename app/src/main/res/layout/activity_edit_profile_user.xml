@@ -71,16 +71,17 @@
 
     <EditText
         android:id="@+id/edtSologan"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/bg_shape_textview_dangtin"
         android:ems="10"
         android:enabled="false"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:singleLine="false"
-        android:text="Name"
+        android:gravity="center_horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -268,6 +269,36 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtChieuCao" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="243dp" />
+
+    <Spinner
+        android:id="@+id/spnEditTP"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toStartOf="@+id/edtNamSinh"
+        app:layout_constraintTop_toTopOf="@+id/textView14" />
+
+    <Spinner
+        android:id="@+id/spnEditQuan"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spnEditTP"
+        app:layout_constraintEnd_toEndOf="@+id/edtNamSinh"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="@+id/spnEditTP" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

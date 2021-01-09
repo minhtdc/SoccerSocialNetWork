@@ -124,6 +124,9 @@ public class TaoDonActivity extends AppCompatActivity {
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
         city = dataBaseHelper.getAllCity();
         setAdapterSpinner(city, adapter_tp, spKhuVuc);
+        readTeam();
+        final ProgressDialog progreDiaglog = new ProgressDialog(this);
+
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

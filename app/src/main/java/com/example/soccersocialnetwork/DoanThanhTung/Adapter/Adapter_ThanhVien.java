@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
@@ -371,5 +372,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
 
             }
         });
+
+
     }
 }

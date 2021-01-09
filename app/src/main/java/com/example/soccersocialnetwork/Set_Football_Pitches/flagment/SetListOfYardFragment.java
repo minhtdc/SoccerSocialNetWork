@@ -2,6 +2,11 @@ package com.example.soccersocialnetwork.Set_Football_Pitches.flagment;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,9 @@ import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
 import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetZoneActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.all_stadiums;
+import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetZoneActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
 import com.example.soccersocialnetwork.football_field_owner.adapter.CustomAdapterFootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
@@ -48,7 +56,7 @@ public class SetListOfYardFragment extends Fragment {
         }else {
             idKhu = stadium_flagment.idKhu;
         }
-        lvFootballPitches = view.findViewById(R.id.lvFootballPitches);
+            lvFootballPitches = view.findViewById(R.id.lvFootballPitches);
         txt = view.findViewById(R.id.txtxxx);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
         mActivity = (SetZoneActivity) getActivity();

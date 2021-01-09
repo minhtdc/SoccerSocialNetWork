@@ -12,15 +12,19 @@ import android.text.InputType;
 import android.util.Log;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.TranDuyHuynh.home_layout;
 import com.example.soccersocialnetwork.data_models.Users;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -42,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -57,6 +64,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    private String aloo;
     private support_func support_func;
     Animation topAnimation, bottomAnimation;
     Button btnRegister, btnLogin;
@@ -71,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
     public static boolean IS_LOGIN;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
+    ArrayList<City> data_tp = new ArrayList<>();
+    ArrayList<String> data_quan = new ArrayList<>();
+    ArrayAdapter adapter_tp, adapter_quan;
 
 
     @Override
@@ -231,7 +242,9 @@ public class LoginActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_login_2_layout, null);
         final EditText edtDialogBirthday = (EditText) alertLayout.findViewById(R.id.edtDialogBirthday);
-        final EditText edtDialogAria = (EditText) alertLayout.findViewById(R.id.edtDialogAria);
+        final Spinner spnDialogThanhPho = (Spinner) alertLayout.findViewById(R.id.spnDialogThanhPho);
+        final Spinner spnDialogQuan = (Spinner) alertLayout.findViewById(R.id.spnDialogQuan);
+
 
         //enable
         edtDialogBirthday.setInputType(InputType.TYPE_NULL);
@@ -259,6 +272,28 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
+
+        data_tp = dataBaseHelper.getAllCity();
+        setAdapterSpinner(data_tp, adapter_tp, spnDialogThanhPho);
+        spnDialogThanhPho.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+                City items = data_tp.get(i);
+                data_quan = dataBaseHelper.getAllDistrict(items.getId());
+                setAdapterSpinner(data_quan, adapter_quan, spnDialogQuan);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         final AlertDialog alert = new AlertDialog.Builder(this)
                 .setView(alertLayout)
                 .setTitle("Đăng ký")
@@ -284,7 +319,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String birthDay = edtDialogBirthday.getText().toString();
-                        String userAria = edtDialogAria.getText().toString();
+                        String userAria = spnDialogThanhPho.getSelectedItem().toString() + ", " + spnDialogQuan.getSelectedItem().toString();
                         if (birthDay.equalsIgnoreCase("") || userAria.equalsIgnoreCase("")) {
                             Toast.makeText(getBaseContext(), "Vui lòng nhập đủ thông tin!", Toast.LENGTH_SHORT).show();
                         } else {
@@ -399,7 +434,7 @@ public class LoginActivity extends AppCompatActivity {
         json.put("userName", user.getUserName());
         json.put("userBirth", user.getUserBirth());
         json.put("userAria", user.getUserAria());
-        json.put("userImage", user.getUserImage());
+        json.put("userImage", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2Fimg_user.jpg?alt=media&token=5c0b05eb-1bf7-4ae3-8449-32cc7c3c162f");
         return json;
     }
 
@@ -426,4 +461,16 @@ public class LoginActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
+    }
+
 }
