@@ -51,6 +51,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    private String aloo;
     private support_func support_func;
     Animation topAnimation, bottomAnimation;
     Button btnRegister, btnLogin;
