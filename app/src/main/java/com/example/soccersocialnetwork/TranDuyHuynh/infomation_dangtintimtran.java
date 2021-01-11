@@ -22,9 +22,12 @@ import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetTeam;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.adapter_MoiThanhVien;
+import com.example.soccersocialnetwork.TranDuyHuynh.fragments.home_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
 import com.example.soccersocialnetwork.activity_moithanhvien;
 import com.example.soccersocialnetwork.data_models.Users;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,10 +44,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class infomation_dangtintimtran extends AppCompatActivity {
     LinearLayout lnBack;
     TextView txtTenDoi;
-    EditText edtDiaDiem, edtThoiGian, edtNgay, edtThongTinThem;
+    EditText edtThoiGian, edtNgay, edtThongTinThem;
     ImageView imgThemThanhVien;
     Button btnTimSan, btnDang;
-    Spinner spinner;
+    Spinner spinner, dangTinSpnTinh, dangTinSpnQuan;
     CircleImageView imageTeam;
     public List<SetTeam> listTeam = new ArrayList<>();
     ArrayList<String> data = new ArrayList<>();
@@ -60,6 +63,10 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     ListView listViewThanhVienThamGia;
     ArrayList<Users> DanhThanhVienThamGia = adapter_MoiThanhVien.thanhVienThamgia;
     ArrayAdapter arrayAdapter;
+    ArrayList<City> data_tp = new ArrayList<>();
+    ArrayList<String> data_quan = new ArrayList<>();
+    ArrayAdapter adapter_tp, adapter_quan;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -72,14 +79,37 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         txtTenDoi = (TextView) findViewById(R.id.txtTenDoi);
         imageTeam = (CircleImageView) findViewById(R.id.ImageDoi);
         imgThemThanhVien = (ImageView) findViewById(R.id.imgMoiThanhVien);
-        edtDiaDiem = (EditText) findViewById(R.id.edtDiaDiem);
         edtNgay = (EditText) findViewById(R.id.edtNgay);
         edtThoiGian = (EditText) findViewById(R.id.edtThoiGian);
         edtThongTinThem = (EditText) findViewById(R.id.edtThongTinThem);
         btnDang = (Button) findViewById(R.id.btnDang);
         listViewThanhVienThamGia = (ListView) findViewById(R.id.lstThanhVienDuocMoi);
-        arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1,DanhThanhVienThamGia);
+        dangTinSpnTinh = findViewById(R.id.dangTinSpnTinh);
+        dangTinSpnQuan = findViewById(R.id.dangTinSpnQuan);
+        arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1, DanhThanhVienThamGia);
         loadData();
+
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
+
+        data_tp = dataBaseHelper.getAllCity();
+        setAdapterSpinner(data_tp, adapter_tp, dangTinSpnTinh);
+        dangTinSpnTinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+                City items = data_tp.get(i);
+                data_quan = dataBaseHelper.getAllDistrict(items.getId());
+                setAdapterSpinner(data_quan, adapter_quan, dangTinSpnQuan);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
         lnBack.setOnClickListener(new View.OnClickListener() {
@@ -113,9 +143,9 @@ public class infomation_dangtintimtran extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 taoThongTinTranDau();
-//               Intent intent = new Intent(infomation_dangtintimtran.this, home_flagment.class);
-//               intent.putExtra("thongTinTranDau",thongTinTranDau);
-//               startActivity(intent);
+                Intent intent = new Intent(infomation_dangtintimtran.this, home_flagment.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -178,6 +208,9 @@ public class infomation_dangtintimtran extends AppCompatActivity {
                     });
 
                 }
+                if(snapshot.getValue() == null){
+                    btnDang.setEnabled(false);
+                }
 
             }
 
@@ -203,9 +236,20 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         });
     }
 
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
+    }
+
     public void taoThongTinTranDau() {
         thongTinTranDau = new thongTinTranDau();
-        thongTinTranDau.setDiaDiem(edtDiaDiem.getText().toString());
+        thongTinTranDau.setDiaDiem(dangTinSpnTinh.getSelectedItem().toString() + ", " + dangTinSpnQuan.getSelectedItem().toString());
         thongTinTranDau.setNgay(edtNgay.getText().toString());
         thongTinTranDau.setThoiGian(edtThoiGian.getText().toString());
         thongTinTranDau.setThongTinThem(edtThongTinThem.getText().toString());
@@ -219,6 +263,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         mDatabaseReference.child("ThongTinTranDau").child(keyID).setValue(thongTinTranDau);
         mDatabaseReference.child("ThongTinTranDau").child(keyID).child("idNguoiDangTin").setValue(LoginActivity.USER_ID_CURRENT);
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
