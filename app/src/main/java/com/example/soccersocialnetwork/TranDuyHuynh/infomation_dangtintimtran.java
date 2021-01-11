@@ -82,18 +82,6 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         loadData();
 
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                return;
-            }
-        });
-
         lnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,7 +204,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     }
 
     public void taoThongTinTranDau() {
-         thongTinTranDau = new thongTinTranDau();
+        thongTinTranDau = new thongTinTranDau();
         thongTinTranDau.setDiaDiem(edtDiaDiem.getText().toString());
         thongTinTranDau.setNgay(edtNgay.getText().toString());
         thongTinTranDau.setThoiGian(edtThoiGian.getText().toString());
@@ -229,6 +217,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         String keyID = FirebaseDatabase.getInstance().getReference().push().getKey();
         thongTinTranDau.setIdTranDau(keyID);
         mDatabaseReference.child("ThongTinTranDau").child(keyID).setValue(thongTinTranDau);
+        mDatabaseReference.child("ThongTinTranDau").child(keyID).child("idNguoiDangTin").setValue(LoginActivity.USER_ID_CURRENT);
     }
     @Override
     protected void onRestart() {

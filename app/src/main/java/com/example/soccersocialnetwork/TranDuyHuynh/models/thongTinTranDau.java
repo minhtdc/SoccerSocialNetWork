@@ -11,7 +11,13 @@ public class thongTinTranDau implements Serializable {
     private String Ngay;
     private String San;
     private String thongTinThem;
+    private String anhDoi;
+    private String tenDoi;
+    private String idTranDau;
+    private String idDoiDangTin;
+    private String idNguoiDangTin;
     ArrayList<Users> thanhVienThamGia;
+
 
     public String getAnhDoi() {
         return anhDoi;
@@ -29,8 +35,6 @@ public class thongTinTranDau implements Serializable {
         this.tenDoi = tenDoi;
     }
 
-    private String anhDoi;
-    private String tenDoi;
 
     public String getIdDoiDangTin() {
         return idDoiDangTin;
@@ -40,7 +44,6 @@ public class thongTinTranDau implements Serializable {
         this.idDoiDangTin = idDoiDangTin;
     }
 
-    private String idDoiDangTin;
 
     public String getIdTranDau() {
         return idTranDau;
@@ -50,22 +53,31 @@ public class thongTinTranDau implements Serializable {
         this.idTranDau = idTranDau;
     }
 
-    private String idTranDau;
 
-    public thongTinTranDau(String diaDiem, String thoiGian, String ngay, String san, String thongTinThem,String idTranDau, ArrayList<Users> thanhVienThamGia,String idDoiDangTin,String tenDoi,String anhDoi) {
+    public thongTinTranDau(String diaDiem, String thoiGian, String ngay, String san, String thongTinThem, String anhDoi, String tenDoi, String idTranDau, String idDoiDangTin, String idNguoiDangTin, ArrayList<Users> thanhVienThamGia) {
         this.diaDiem = diaDiem;
         this.thoiGian = thoiGian;
         Ngay = ngay;
         San = san;
         this.thongTinThem = thongTinThem;
-        this.idTranDau = idTranDau;
-        this.thanhVienThamGia = thanhVienThamGia;
-        this.idDoiDangTin = idDoiDangTin;
-        this.tenDoi = tenDoi;
         this.anhDoi = anhDoi;
+        this.tenDoi = tenDoi;
+        this.idTranDau = idTranDau;
+        this.idDoiDangTin = idDoiDangTin;
+        this.idNguoiDangTin = idNguoiDangTin;
+        this.thanhVienThamGia = thanhVienThamGia;
     }
-    public thongTinTranDau(){
 
+    public thongTinTranDau() {
+
+    }
+
+    public String getIdNguoiDangTin() {
+        return idNguoiDangTin;
+    }
+
+    public void setIdNguoiDangTin(String idNguoiDangTin) {
+        this.idNguoiDangTin = idNguoiDangTin;
     }
 
     public String getDiaDiem() {
