@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.soccersocialnetwork.DoanThanhTung.Models.ThongBao;
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.Fragment_Doi_Menu;
 import com.example.soccersocialnetwork.R;
@@ -165,30 +166,38 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
     }
 
 
-    private void insertUser(final String key) {
-
+    private void insertUser(final String key,final boolean kt) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mListener = mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
                 for (final DataSnapshot dt :
                         snapshot.getChildren()) {
-                    //    boolean kiemTra = true;
                     Users allUsers = dt.getValue(Users.class);
-                    if (key.equals(allUsers.getUserEmail())) {
-
+                    if (key.equals(allUsers.getUserEmail()) && kt != false) {
                         databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue("User").addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 mDatabase.removeEventListener(mListener);
                                 deleteChoDuyet(dt.getKey());
-                                notifyDataSetChanged();
+                                DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
+                                String idThongBao = databaseReference1.push().getKey();
+                                ThongBao thongBao = new ThongBao();
+                                thongBao.setUid(dt.getKey());
+                                thongBao.setNoiDung("Bạn đã được chấp nhận vào đội");
+                                thongBao.setIdThongBao(idThongBao);
+                                thongBao.setIdDoi(DoiActivity.idDoi);
+
+                                databaseReference1.child("ThongBao").child(idThongBao).setValue(thongBao);
+
                             }
                         });
 
+                    }
+                    if(kt == false){
+                        deleteChoDuyet(dt.getKey());
+                        notifyDataSetChanged();
                     }
                 }
             }
@@ -198,16 +207,22 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
 
             }
         });
-
-
     }
 
-    private void deleteChoDuyet(String key){
+   
+    
+    private void deleteChoDuyet(String key) {
         mDatabase = FirebaseDatabase.getInstance().getReference("Team");
-        mDatabase.child(DoiActivity.idDoi).child("ChoDuyet").child(key).setValue(null);
-        notifyDataSetChanged();
+        mDatabase.child(DoiActivity.idDoi).child("ChoDuyet").child(key).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                notifyDataSetChanged();
+            }
+        });
+
 
     }
+
     private Dialog dialogThemTinThanhVien(final Users users) {
         //  mDatabase.getDatabase().goOnline();
 
@@ -301,13 +316,13 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Loại bỏ thành viên");
+                builder.setTitle("Chấp nhận thành viên");
                 builder.setMessage("Bạn có chắc không? \n ->>" + users.getUserName() + "<<-  ?");
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // kichThanhVien(users.getUserEmail());
-                        insertUser(users.getUserEmail());
+                        insertUser(users.getUserEmail(),true);
                         dialogThemTinThanhVien.dismiss();
                         notifyDataSetChanged();
                         dialog.dismiss();
@@ -322,7 +337,29 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
                 builder.show();
             }
         });
-
+        btnHuyBoDon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Hủy thành viên");
+                builder.setMessage("Bạn có chắc không? \n ->>" + users.getUserName() + "<<-  ?");
+                builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        insertUser(users.getUserEmail(),false);
+                        dialogThemTinThanhVien.dismiss();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Hủy Bỏ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
         dialogThemTinThanhVien.show();
         return dialogThemTinThanhVien;
 

@@ -115,7 +115,7 @@ public class notification_flagment extends Fragment {
                             for (DataSnapshot dtt :
                                     snapshot.getChildren()) {
                                 ThongBao thongBao = dtt.getValue(ThongBao.class);
-                                if (thongBao.getIdDoi().equals(dt.getKey())) {
+                                if (thongBao.getIdDoi().equals(dt.getKey()) && dt.getValue().equals("Admin")) {
 
                                     listThongBao.add(thongBao);
                                     //Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();

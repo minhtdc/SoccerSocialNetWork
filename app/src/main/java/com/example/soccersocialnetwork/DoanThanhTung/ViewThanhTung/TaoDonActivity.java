@@ -73,6 +73,7 @@ public class TaoDonActivity extends AppCompatActivity {
 
     ArrayList<City> city = new ArrayList<>();
     ArrayAdapter adapter_tp;
+
     ArrayList<Team> listTeam = new ArrayList<>();
     FireBaseTeam fireBaseTeam = new FireBaseTeam();
 
@@ -124,6 +125,7 @@ public class TaoDonActivity extends AppCompatActivity {
         final ProgressDialog progreDiaglog = new ProgressDialog(this);
         city = dataBaseHelper.getAllCity();
         setAdapterSpinner(city, adapter_tp, spKhuVuc);
+
         readTeam();
 
         btnTaoDoi.setOnClickListener(new View.OnClickListener() {

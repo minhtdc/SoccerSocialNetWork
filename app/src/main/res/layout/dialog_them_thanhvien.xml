@@ -42,12 +42,13 @@
             android:id="@+id/svThemThanhVien"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
+            android:background="@color/colorSilver"
+            android:iconifiedByDefault="true"
             android:queryHint="nhập tên"></SearchView>
 
         <Spinner
             android:id="@+id/spThanhPhoDoi"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             ></Spinner>
         <TextView

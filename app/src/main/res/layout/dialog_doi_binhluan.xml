@@ -53,6 +53,17 @@
             android:textColor="@color/colorWhite" />
 
         <Button
+            android:id="@+id/btnSua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_shape_login"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="Sửa"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Button
+
             android:id="@+id/btnGui"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

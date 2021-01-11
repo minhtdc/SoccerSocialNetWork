@@ -112,7 +112,7 @@ public class home_layout extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.icon_team);
         tabLayout.getTabAt(2).setIcon(R.drawable.icon_stadium);
         tabLayout.getTabAt(3).setIcon(R.drawable.icon_notification);
-        tabLayout.getTabAt(4).setIcon(R.drawable.icon_menu);
+        tabLayout.getTabAt(4).setIcon(R.drawable.icon_menu_stt);
 //        BadgeDrawable badgeDrawable = tabLayout.getTabAt(3).getOrCreateBadge();
 //        badgeDrawable.setVisible(true);
 //        badgeDrawable.setNumber(0);

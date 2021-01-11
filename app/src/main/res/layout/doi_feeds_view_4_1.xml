@@ -13,17 +13,29 @@
             android:id="@+id/imgAvatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:src="@drawable/icon_user"></ImageView>
 
         <TextView
             android:layout_margin="10dp"
             android:id="@+id/tvNameUser"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="10"
             android:gravity="center|left"
             android:text="ten bạn"
             android:textSize="20dp"
             android:textStyle="bold"></TextView>
+
+        <ImageView
+            android:id="@+id/img_admin"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/bamvao"
+            android:src="@drawable/icon_menu_stt"></ImageView>
+
     </LinearLayout>
 
     <TextView
