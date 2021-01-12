@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,8 @@ import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_findTeam
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_listTeams_Adapter;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_listTeams;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,6 +73,7 @@ public class team_flagment extends Fragment {
     private Spinner spinner;
     private ImageView imgTaoDoi;
     private Button btn_list_your_team, btn_list_team;
+    private SearchView searchDoi;
     private CategoryAdapter_KhuVuc categoryAdapter_khuVuc;
 
     DatabaseReference mDatabase;
@@ -83,11 +87,14 @@ public class team_flagment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     ArrayList<Team> listTeams = new ArrayList<>();
-    ArrayAdapter adapterDoi;
+    Adapter_TestCLickTeam adapterDoi;
 
     ArrayList<String> listTeams2 = new ArrayList<>();
     //  ArrayList<Team> listTeamDoiCuaBan = new ArrayList<>();
     ArrayAdapter adapterDoi2;
+
+    ArrayList<City> city = new ArrayList<>();
+    ArrayAdapter adapter_tp;
 
     //-------------new
     List<String> keyDoi = new ArrayList<>();
@@ -146,10 +153,18 @@ public class team_flagment extends Fragment {
         listView = (ListView) getView().findViewById(R.id.lstTeam);
         btn_list_your_team = getView().findViewById(R.id.btn_list_your_team);
         btn_list_team = getView().findViewById(R.id.btn_list_team);
+        searchDoi = getView().findViewById(R.id.searchDoi);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         readDoiFirebase();
         readUser();
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
+        city = dataBaseHelper.getAllCity();
+        setAdapterSpinner(city, adapter_tp, spinner);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -157,7 +172,7 @@ public class team_flagment extends Fragment {
                 adapterDoi.notifyDataSetChanged();
                 boolean check = true;
                 final String key = listTeams.get(position).getIdDoi() + "";
-
+                final String tendoi = listTeams.get(position).getTenDoi() + "";
 
 
                 for (int i = 0; i < keyDoi.size(); i++) {
@@ -166,6 +181,7 @@ public class team_flagment extends Fragment {
                         Intent intent = new Intent(getContext(), DoiActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("TaoDoi_IDDoi", key);
+                        bundle.putString("Doi_TenDoi", tendoi);
                         intent.putExtras(bundle);
                         //kiemTraLayoutDoi = true;
                         startActivity(intent);
@@ -181,7 +197,7 @@ public class team_flagment extends Fragment {
 //                        break;
 //                    }
                 }
-                if(check == true){
+                if (check == true) {
                     Intent intent = new Intent(getContext(), Doi_ThongTinCaNhan.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("Doi_ID", key + "");
@@ -252,8 +268,69 @@ public class team_flagment extends Fragment {
             }
         });
 
+        searchDoi.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapterDoi.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                adapterDoi.getFilter().filter(newText);
+
+
+                return false;
+            }
+        });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
+                Toast.makeText(getContext(),city.get(position).getName()+ "", Toast.LENGTH_SHORT).show();
+                DatabaseReference teamDataBase = FirebaseDatabase.getInstance().getReference();
+                teamDataBase.child("Team").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listTeams.clear();
+                        adapterDoi = new Adapter_TestCLickTeam(getContext(), R.layout.list_doi, listTeams);
+                        listView.setAdapter(adapterDoi);
+                        for(DataSnapshot dt:
+                        snapshot.getChildren()){
+                            Team team = dt.getValue(Team.class);
+                            if(team.getKhuVuc().equals(city.get(position).getName())){
+                                listTeams.add(team);
+                            }
+                            adapterDoi.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
+    }
 
     // tạo dữ liệu giả cho spinner khu vực
     private List<Category_KhuVuc> createDataForSpn_KhuVuc() {
@@ -300,6 +377,7 @@ public class team_flagment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listTeams.clear();
+
                 for (int i = 0; i < keyDoi.size(); i++) {
                     for (DataSnapshot dt : snapshot.getChildren()) {
 

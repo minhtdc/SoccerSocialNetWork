@@ -213,7 +213,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
         TextView tvSinhNhat = dialogThongTinThanhVien.findViewById(R.id.tvSinhNhat);
         TextView tvEmail = dialogThongTinThanhVien.findViewById(R.id.tvEmail);
         TextView tvKhuVuc = dialogThongTinThanhVien.findViewById(R.id.tvKhuVuc);
-        TextView tvQueQuan = dialogThongTinThanhVien.findViewById(R.id.tvQueQuan);
+
 
         //setevent
         if (users.getUserImage().equals("")) {
@@ -233,11 +233,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
         } else {
             tvCanNang.setText(users.getUserCanNang());
         }
-        if (users.getUserQueQuan().equals("")) {
 
-        } else {
-            tvQueQuan.setText(users.getUserQueQuan());
-        }
 
         if (users.getUserAria().equals("")) {
 

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -56,6 +59,9 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
     Spinner spKhuVucChinhSua;
     EditText txtEmailChinhSua, txtSDTChinhSua, txtGioiThieuChinhSua, txtTieuChiChinhSua, txtSloganChinhSua, txtTenDoiChinhSua;
     Button btnChinhSua;
+
+    ArrayList<City> city = new ArrayList<>();
+    ArrayAdapter adapter_tp;
 
     DatabaseReference mDatabase;
     //img
@@ -86,9 +92,17 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
 
         txtTenDoiChinhSua.setText(tenDoi + "");
         //spiner
-        String[] arrayKhuVucSpinner = getResources().getStringArray(R.array.listKhuVuc);
-        for (int i = 0; i < arrayKhuVucSpinner.length; i++) {
-            if (arrayKhuVucSpinner[i].equals(khuVuc)) {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
+        city = dataBaseHelper.getAllCity();
+        setAdapterSpinner(city, adapter_tp, spKhuVucChinhSua);
+
+        //spiner
+        ArrayList<City> arrayKhuVucSpinner = city;
+        for (int i = 0; i < city.size(); i++) {
+
+            if (city.get(i).getName().equals(khuVuc)) {
                 spKhuVucChinhSua.setSelection(i);
                 break;
             }
@@ -101,6 +115,17 @@ public class Doi_ThongTin_ChinhSua extends AppCompatActivity {
 
         setEvent();
 
+    }
+
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
     }
 
     private void takeData() {

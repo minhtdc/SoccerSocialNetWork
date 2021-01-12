@@ -23,6 +23,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.ViewPagerAdapter;
 import com.example.soccersocialnetwork.DoanThanhTung.DataBase.DBTeam;
+import com.example.soccersocialnetwork.DoanThanhTung.DialogBinhLuan;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.team_flagment;
@@ -61,8 +62,8 @@ public class DoiActivity extends AppCompatActivity {
 
     ImageView imgDoi;
     TextView tvTenDoi;
-    String uriIMG,tenDoi,khuVuc,email,sdt,gioiThieu,tieuChi,slogan;
-    public static String idDoi;
+    String uriIMG,khuVuc,email,sdt,gioiThieu,tieuChi,slogan;
+    public static String idDoi,tenDoi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class DoiActivity extends AppCompatActivity {
 
 
         //Toast.makeText(this, fireBaseTeam.getListTeam().size() +"", Toast.LENGTH_SHORT).show();
+
         setEvent();
     }
 
@@ -197,6 +199,7 @@ public class DoiActivity extends AppCompatActivity {
 
     private void setupViewPager() {
         idDoi = getIntent().getExtras().getString("TaoDoi_IDDoi");
+        tenDoi = getIntent().getExtras().getString("Doi_TenDoi");
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 

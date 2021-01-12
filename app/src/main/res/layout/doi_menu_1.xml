@@ -18,7 +18,8 @@
                 android:id="@+id/llThongTinDoi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="@drawable/bamvao">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -59,7 +60,8 @@
             <LinearLayout
                 android:id="@+id/llThanhVien"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/bamvao">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -78,7 +80,8 @@
             <LinearLayout
                 android:id="@+id/llThemThanhVien"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/bamvao">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -98,7 +101,8 @@
                 android:id="@+id/llChoDuyet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/bamvao">
 
                 <ImageView
                     android:layout_width="50dp"
@@ -154,7 +158,8 @@
                 android:id="@+id/llRoiDoi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="@drawable/bamvao">
 
                 <ImageView
                     android:layout_width="50dp"

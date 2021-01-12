@@ -3,6 +3,7 @@ package com.example.soccersocialnetwork.DoanThanhTung.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.soccersocialnetwork.DoanThanhTung.DialogBinhLuan;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feed;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.ListCMT;
@@ -122,8 +124,15 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
         holder.btnBinhLuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id_Feed",feed.getId());
+                bundle.putString("id_User",feed.getUid());
+                DialogBinhLuan dialogBinhLuan = new DialogBinhLuan(context,bundle);
 
-                dialogBinhLuan(feed.getId());
+
+                dialogBinhLuan.show();
+
+            //   dialogBinhLuan(feed.getId(),feed.getUid());
 
             }
         });
@@ -154,7 +163,7 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
 
     ArrayAdapter adapter_binhLuan;
 
-    private void dialogBinhLuan(final String idBinhLuan) {
+    private void dialogBinhLuan(final String idBinhLuan, final String uid) {
         final ArrayList<ListCMT> listCMTS = new ArrayList<>();
 
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
@@ -266,7 +275,7 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
         btnGui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertBinhLuan(idBinhLuan, txtBinhLuan.getText() + "");
+                insertBinhLuan(idBinhLuan, txtBinhLuan.getText() + "",uid);
                 txtBinhLuan.setText("");
 
             }
@@ -315,7 +324,7 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
         bottomSheetDialog.show();
     }
 
-    private void insertBinhLuan(final String idBinhLuan, String noiDungBL) {
+    private void insertBinhLuan(final String idBinhLuan, String noiDungBL, final String uid) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Team").child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT");
         ListCMT listCMT = new ListCMT();
         String idCMT = databaseReference.push().getKey();
@@ -325,17 +334,25 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
         databaseReference.child(idCMT).setValue(listCMT).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-//                DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("ThongBao");
-//                String idThongBao = databaseReference1.push().getKey();
-//                ThongBao thongBao = new ThongBao();
-//                thongBao.setNoiDung(LoginActivity.USER_NAME_CURRENT + " đã bình luận bài viết của bạn");
-//                thongBao.setIdThongBao(idThongBao);
-//                thongBao.setUid(LoginActivity.USER_ID_CURRENT);
-//
-//                databaseReference1.child("ThongBao").child(idThongBao).setValue(thongBao);
+
+                DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
+                String idThongBao = databaseReference1.push().getKey();
+                ThongBao thongBao = new ThongBao();
+                thongBao.setNoiDung(LoginActivity.USER_NAME_CURRENT + " đã bình luận bài viết của bạn");
+                thongBao.setIdThongBao(idThongBao);
+                thongBao.setIdDoi(DoiActivity.idDoi);
+                thongBao.setUid(LoginActivity.USER_ID_CURRENT);
+                thongBao.setImg("https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgTeam%2FIDTeam_IMG%3A%205%2Ffb631f43-09f2-4300-9349-4c066deb032e?alt=media&token=3062a8e5-49eb-458e-be1c-1bab84c644d6");
+
+                DatabaseReference userBL = FirebaseDatabase.getInstance().getReference();
+                if(!LoginActivity.USER_ID_CURRENT.equals(uid)){
+                    userBL.child("users").child(uid).child("listThongBao").child(idThongBao).setValue("Có người bình luận bài viết của bạn");
+                    databaseReference1.child("ThongBao").child(idThongBao).setValue(thongBao);
+                }
+
             }
         });
-        // databaseReference.child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT").push().setValue(listCMT);
+        // databaseReference.child().child("listFeeds").child(idBinhLuan).child("listCMT").push().setValue(listCMT);
 
 
     }

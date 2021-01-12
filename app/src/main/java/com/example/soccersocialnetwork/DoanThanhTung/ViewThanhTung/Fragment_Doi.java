@@ -29,6 +29,8 @@ import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi2;
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_FeedsDoi_4_1;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feed;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Feeds;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
+import com.example.soccersocialnetwork.DoanThanhTung.Models.ThongBao;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.data_models.Users;
@@ -58,7 +60,7 @@ public class Fragment_Doi extends Fragment {
     TextView tvGioEnd;
     TextView tvNgay;
     TextView txtThongBao;
-
+    ValueEventListener mListener;
     Spinner spHanGio, spThanhPho, spQuan;
 
     ArrayList<Feeds> listFeeds = new ArrayList<>();
@@ -164,7 +166,7 @@ public class Fragment_Doi extends Fragment {
                 } else {
                     tvChuaCoBai.setVisibility(View.GONE);
                 }
-                adapter_feedsDoi_4_1 = new Adapter_FeedsDoi_4_1(getContext(),listFirebaseDangBai);
+                adapter_feedsDoi_4_1 = new Adapter_FeedsDoi_4_1(getContext(), listFirebaseDangBai);
                 recyclerView.setAdapter(adapter_feedsDoi_4_1);
                 adapter_feedsDoi_4_1.notifyDataSetChanged();
 //                adapter2 = new Adapter_FeedsDoi2(getContext(), listFirebaseDangBai);
@@ -212,7 +214,7 @@ public class Fragment_Doi extends Fragment {
         dialogFullScreen.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
         dialogFullScreen.setContentView(R.layout.dialog_doi_dangbaiviet);
 //        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Button btnBackDangBai = dialogFullScreen.findViewById(R.id.btnBackDangBai);
+        ImageView btnBackDangBai = dialogFullScreen.findViewById(R.id.btnBackDangBai);
         ImageView imgAvatar = dialogFullScreen.findViewById(R.id.imgAvatar);
         TextView tvNameUser = dialogFullScreen.findViewById(R.id.tvNameUser);
         final EditText txtSTT = dialogFullScreen.findViewById(R.id.txtSTT);
@@ -234,10 +236,23 @@ public class Fragment_Doi extends Fragment {
 //                feed.setImgUser(userIMG);
 //                feed.setNameUser(userName);
                 feed.setUid(LoginActivity.USER_ID_CURRENT);
-                feed.setSTT(txtSTT.getText()+"");
+                feed.setSTT(txtSTT.getText() + "");
                 // Toast.makeText(getContext(), txtSTT.getText()+"", Toast.LENGTH_SHORT).show();
                 insertFirebaseDangBai(feed);
+                thongBao();
                 dialogFullScreen.dismiss();
+
+//                DatabaseReference thongbao = FirebaseDatabase.getInstance().getReference();
+//                String idThongBao = thongbao.push().getKey();
+//                ThongBao thongBao = new ThongBao();
+//                thongBao.setIdDoi(DoiActivity.idDoi);
+//                thongBao.setNoiDung("Chủ đội "+DoiActivity.tenDoi + " có thông báo");
+//
+//                thongBao.setIdThongBao(idThongBao);
+//                thongBao.setImg("https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgTeam%2FIDTeam_IMG%3A%203%2Ffdd47dd6-3846-4eed-ad68-0d5246d3f823?alt=media&token=bcd53626-ac23-4b31-b2bb-0d10925b03be");
+//
+//                //them 1 cái list all thành viên, dê biết các thành viên đó nhận được thông báo
+//                thongbao.child("ThongBao").child(idThongBao).setValue(thongBao);
 
             }
         });
@@ -250,13 +265,70 @@ public class Fragment_Doi extends Fragment {
         dialogFullScreen.show();
     }
 
-    private ProgressDialog progressDialogLoading() {
-        final ProgressDialog progreDiaglog = new ProgressDialog(getActivity());
-        progreDiaglog.setTitle("Tải dữ liệu");
-        progreDiaglog.setMessage("Đang tải dữ liệu");
-        progreDiaglog.show();
-        return progreDiaglog;
+    boolean kiemtraTB = true;
 
+    private void thongBao() {
+        //        thongBao.
+        final String idThongBao;
+        final ThongBao thongBao = new ThongBao();
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
+
+        idThongBao = databaseReference.push().getKey();
+
+        thongBao.setIdDoi(DoiActivity.idDoi);
+
+        thongBao.setIdThongBao(idThongBao);
+        thongBao.setNoiDung("Chủ đội " + DoiActivity.tenDoi + " có thông báo");
+
+
+        databaseReference2.child("Team").child(DoiActivity.idDoi).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
+                final Team team = snapshot.getValue(Team.class);
+                mListener = databaseReference1.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        for (DataSnapshot dt :
+                                snapshot.getChildren()) {
+                            Users users = dt.getValue(Users.class);
+
+                            for (DataSnapshot dtt :
+                                    dt.child("listDoi").getChildren()) {
+                                if (team.getIdDoiTruong().equals(LoginActivity.USER_ID_CURRENT)) {
+                                    if (dtt.getKey().equals(DoiActivity.idDoi) && !dtt.getValue().equals("Admin")) {
+                                        final DatabaseReference user = FirebaseDatabase.getInstance().getReference();
+                                        user.child("users").child(dt.getKey()).child("listThongBao").child(idThongBao).setValue("Đội trưởng có thông báo " + DoiActivity.tenDoi).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                thongBao.setImg(team.getHinhAnh());
+                                                databaseReference.child("ThongBao").child(idThongBao).setValue(thongBao);
+                                                databaseReference1.removeEventListener(mListener);
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void getUser() {

@@ -193,6 +193,8 @@ public class Fragment_Doi_Menu extends Fragment {
 
     public static ArrayList<Users> strings = new ArrayList<>();
 
+    Adapter_ThemThanhVien adapterDanhSach;
+    ListView lvDanhSachDaThem;
     private void dialogThemThanh() {
         mDatabase.getDatabase().goOnline();
 
@@ -200,7 +202,7 @@ public class Fragment_Doi_Menu extends Fragment {
         dataBaseHelper.createDataBase();
         dataBaseHelper.openDataBase();
 
-        final Adapter_ThemThanhVien adapterDanhSach;
+
 
 
         final Dialog dialogThemThanhVien = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
@@ -208,12 +210,12 @@ public class Fragment_Doi_Menu extends Fragment {
         dialogThemThanhVien.setContentView(R.layout.dialog_them_thanhvien);
         //dialogThemThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //ánh xạ
-        SearchView svThemThanhVien = dialogThemThanhVien.findViewById(R.id.svThemThanhVien);
+        final SearchView svThemThanhVien = dialogThemThanhVien.findViewById(R.id.svThemThanhVien);
         Button btnEXIT = dialogThemThanhVien.findViewById(R.id.btnEXIT);
         Spinner spThanhPhoDoi = dialogThemThanhVien.findViewById(R.id.spThanhPhoDoi);
 
 //        ListView lvThemThanhVien = dialogThemThanhVien.findViewById(R.id.lvThemThanhVien);
-        ListView lvDanhSachDaThem = dialogThemThanhVien.findViewById(R.id.lvDanhSachDaThem);
+         lvDanhSachDaThem = dialogThemThanhVien.findViewById(R.id.lvDanhSachDaThem);
 
 
         city = dataBaseHelper.getAllCity();
@@ -238,13 +240,13 @@ public class Fragment_Doi_Menu extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-
                 adapterDanhSach.getFilter().filter(newText);
 
 
                 return false;
             }
         });
+
 
 
         btnEXIT.setOnClickListener(new View.OnClickListener() {
@@ -254,28 +256,57 @@ public class Fragment_Doi_Menu extends Fragment {
                 dialogThemThanhVien.cancel();
             }
         });
-        //them adapter hinh anh
 
-//        lvDanhSachDaThem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getContext(),listUser.get(position).getUserName()+ "", Toast.LENGTH_SHORT).show();
-//            }
-//        });
         spThanhPhoDoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
-              //  Toast.makeText(getContext(), position + "", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getContext(), position + "", Toast.LENGTH_SHORT).show();
+
                 DatabaseReference dataKhu = FirebaseDatabase.getInstance().getReference();
                 dataKhu.child("users").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot dt:
-                        snapshot.getChildren()){
-                            Users users = dt.getValue(Users.class);
-                        //    if(users.getUserAria().equals(city.get(position).getName())){
-                                Toast.makeText(getContext(), users.getUserAria()+"", Toast.LENGTH_SHORT).show();
-                         //   }
+                        listUser.clear();
+                        adapterDanhSach = new Adapter_ThemThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listUser);
+                        lvDanhSachDaThem.setAdapter(adapterDanhSach);
+                        for (DataSnapshot dt :
+                                snapshot.getChildren()) {
+                            //    boolean kiemTra = true;
+                            Users allUsers = dt.getValue(Users.class);
+                            Users usersDaCo = new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0");
+
+                            String sOne = allUsers.getUserAria().substring(0, 8);
+                            String sTwo = city.get(position).getName().substring(0, 8);
+                            String sSOne = allUsers.getUserAria().substring(0, 9);
+                            String sSTwo = city.get(position).getName().substring(0, 9);
+                            for (DataSnapshot dtt :
+                                    dt.child("listDoi").getChildren()) {
+                                String key = dtt.getKey();
+                                if (key.equals(idDoi)) {
+
+                                    usersDaCo = dt.getValue(Users.class);
+
+                                }
+                            }
+                            if (!allUsers.getUserEmail().equals(usersDaCo.getUserEmail())) {
+                                if (sSOne.equals("Thành phố") && sSTwo.equals("Thành phố")) {
+                                    sSTwo = city.get(position).getName().substring(0, 16);
+                                    sSOne = allUsers.getUserAria().substring(0, 16);
+                                    if (sSOne.equals(sSTwo)) {
+                                        listUser.add(allUsers);
+                                        adapterDanhSach.notifyDataSetChanged();
+
+                                    }
+                                } else if (sOne.equals(sTwo)) {
+                                    listUser.add(allUsers);
+                                    adapterDanhSach.notifyDataSetChanged();
+
+                                }
+
+                            }
+
+                            adapterDanhSach.notifyDataSetChanged();
+
                         }
                     }
 
@@ -284,7 +315,6 @@ public class Fragment_Doi_Menu extends Fragment {
 
                     }
                 });
-
 
 
             }
