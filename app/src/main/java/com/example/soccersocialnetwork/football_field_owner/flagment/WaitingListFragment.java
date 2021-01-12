@@ -53,12 +53,14 @@ public class WaitingListFragment extends Fragment {
     }
 
     private void setEvent() {
+
         adapter_waiting = new CustomAdapterWaiting(getContext(), R.layout.item_listview_waiting, data_waiting);
         lvWaiting.setAdapter(adapter_waiting);
         loadData();
     }
 
     private void loadData() {
+        data_waiting.clear();
         mFirebase.child("ChoDuyetDatSan").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable final String previousChildName) {

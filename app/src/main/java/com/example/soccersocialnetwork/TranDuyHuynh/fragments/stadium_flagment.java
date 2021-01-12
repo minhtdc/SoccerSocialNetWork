@@ -22,10 +22,13 @@ import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetZoneActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.CategoryAdapter_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_listStadiums_Adapter;
+import com.example.soccersocialnetwork.TranDuyHuynh.infomation_dangtintimtran;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.information_listStadium;
 import com.example.soccersocialnetwork.football_field_owner.activity.AddZoneActivity;
 import com.example.soccersocialnetwork.football_field_owner.activity.ListZone;
+import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
+import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.Zone;
 import com.google.firebase.database.ChildEventListener;
@@ -54,10 +57,13 @@ public class stadium_flagment extends Fragment {
     private ListView listView;
     ArrayList<information_listStadium> listStadiums;
     ArrayList<FootballPitches> data_listStadiums = new ArrayList<>();
+
+    ArrayAdapter adapter_tp;
+
     DatabaseReference mFirebaseDatabase;
     ArrayAdapter information_listStadiums_adapter;
+    ArrayList<City> data_tp = new ArrayList<>();
     String loaiSan, loaiHinhSan = "";
-    TextView t;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -108,15 +114,22 @@ public class stadium_flagment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        dataBaseHelper.createDataBase();
+        dataBaseHelper.openDataBase();
+
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        t = view.findViewById(R.id.test);
         spinner = view.findViewById(R.id.spnKhuVuc_lstSan);
         listView = view.findViewById(R.id.lstStadiums);
         btnSanCuaBan = view.findViewById(R.id.btn_list_your_stadiums);
         btnAdd = view.findViewById(R.id.btnAdd);
-        createDataForSpn_KhuVuc();
-        categoryAdapter_khuVuc = new CategoryAdapter_KhuVuc(getContext(), R.layout.item_selected, createDataForSpn_KhuVuc());
-        spinner.setAdapter(categoryAdapter_khuVuc);
+        City city = new City();
+        city.setName("Khu Vực");
+
+        data_tp = dataBaseHelper.getAllCity();
+        data_tp.add(0,city);
+        setAdapterSpinner(data_tp, adapter_tp, spinner);
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +156,7 @@ public class stadium_flagment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getContext(), SetZoneActivity.class);
                 idKhu = listStadiums.get(i).getIdKhu();
-
+                infomation_dangtintimtran.timSan = "";
                 startActivity(intent);
             }
         });
@@ -225,14 +238,14 @@ public class stadium_flagment extends Fragment {
         });
     }
 
-    // tạo dữ liệu giả cho spinner khu vực
-    private List<Category_KhuVuc> createDataForSpn_KhuVuc() {
-        List<Category_KhuVuc> list = new ArrayList<Category_KhuVuc>();
-        list.add(new Category_KhuVuc("Khu vực"));
-        list.add(new Category_KhuVuc("TP.HCM"));
-        list.add(new Category_KhuVuc("Đà Nẵng"));
-        list.add(new Category_KhuVuc("Hà Nội"));
-        list.add(new Category_KhuVuc("Huế"));
-        return list;
+    private void setAdapterSpinner(ArrayList data, ArrayAdapter adapter, Spinner spinner) {
+        if (adapter == null) {
+            adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, data);
+            spinner.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.notifyDataSetChanged();
+            spinner.setSelection(adapter.getCount() - 1);
+        }
     }
 }

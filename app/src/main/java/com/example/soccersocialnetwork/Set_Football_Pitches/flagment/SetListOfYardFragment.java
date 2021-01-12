@@ -39,7 +39,6 @@ import java.util.ArrayList;
 
 public class SetListOfYardFragment extends Fragment {
     ListView lvFootballPitches;
-    TextView txt;
     ArrayList<FootballPitches> data_FootballPitches;
     ArrayAdapter adapter_FootballPitches;
     DatabaseReference mFirebaseDatabase;
@@ -57,7 +56,6 @@ public class SetListOfYardFragment extends Fragment {
             idKhu = stadium_flagment.idKhu;
         }
             lvFootballPitches = view.findViewById(R.id.lvFootballPitches);
-        txt = view.findViewById(R.id.txtxxx);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
         mActivity = (SetZoneActivity) getActivity();
         setEvent();
@@ -81,7 +79,6 @@ public class SetListOfYardFragment extends Fragment {
     }
 
     private void loadData() {
-        txt.setText(idKhu);
         data_FootballPitches = new ArrayList<>();
         mFirebaseDatabase.child("San").addChildEventListener(new ChildEventListener() {
             @Override

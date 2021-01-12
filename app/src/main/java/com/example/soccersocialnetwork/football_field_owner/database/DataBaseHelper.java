@@ -114,7 +114,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             cities.add(city);
         } while (cursor.moveToNext());
 
-
         return cities;
     }
     public ArrayList<String> getAllDistrict(String key) {

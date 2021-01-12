@@ -77,6 +77,11 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Đội:" />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgAnhDoiDat"
+            ></ImageView>
 
         <Spinner
             android:id="@+id/spDoi"

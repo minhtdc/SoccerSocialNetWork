@@ -203,7 +203,10 @@ public class AddZoneActivity extends AppCompatActivity {
                                 String id = mFirebaseDatabase.child("Khu").push().getKey();
                                 Zone zone = getZone(downloadPhotoUrl.toString(),id);
                                 mFirebaseDatabase.child("Khu").child(id).setValue(zone);
-                                Toast.makeText(AddZoneActivity.this, "thanhcong", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(AddZoneActivity.this, ZoneInfoActivity.class);
+                                ListZone.idKhu = id;
+                                startActivity(intent);
+                                finish();
                             }
                         });
                     }

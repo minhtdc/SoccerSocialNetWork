@@ -36,7 +36,6 @@ public class CustomAdapterWaiting extends ArrayAdapter {
         this.context=context;
         this.data= data;
         this.resource=resource;
-
     }
 
     @Override
@@ -78,7 +77,6 @@ public class CustomAdapterWaiting extends ArrayAdapter {
         holder.tvsan.setText(waiting.getSan());
         holder.tvNgay.setText(waiting.getNgay());
         holder.tvGio.setText(waiting.getGio());
-        holder.imgAnh.setImageResource(R.drawable.sanbong);
         holder.btnChon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

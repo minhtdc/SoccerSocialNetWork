@@ -2,12 +2,14 @@ package com.example.soccersocialnetwork.Set_Football_Pitches.flagment;
 
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,9 +26,15 @@ import com.example.soccersocialnetwork.Football_Pitches.model.FreeTime;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetZoneActivity;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetFootballPitches;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetTeam;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.Adapter_TimSan;
+import com.example.soccersocialnetwork.TranDuyHuynh.all_stadiums;
 import com.example.soccersocialnetwork.TranDuyHuynh.fragments.stadium_flagment;
+import com.example.soccersocialnetwork.TranDuyHuynh.infomation_dangtintimtran;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.information_TimSan;
+import com.example.soccersocialnetwork.activity_moithanhvien;
 import com.example.soccersocialnetwork.data_models.Users;
 import com.example.soccersocialnetwork.football_field_owner.model.FootballPitches;
 import com.example.soccersocialnetwork.football_field_owner.model.RushHour;
@@ -37,6 +45,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,26 +54,37 @@ import java.util.Date;
 
 public class SetListFreeTimeFragment extends Fragment {
     TextView tvTenKhu, tvDiaChi, tvSan, tvTenNguoiDat, tvSDT, tvGioBD, tvGioKT, tvTongTien;
+    ImageView imgAnhDoiDat;
     Spinner spDoi;
     int gioBD, phutBD, gioKT, phutKT;
-    String idKhu = stadium_flagment.idKhu;
+    String idKhu = "";
     String idSan = SetListOfYardFragment.idSan;
     String idUser = LoginActivity.USER_ID_CURRENT;
     ListView lvGioTrong;
     ArrayList<FreeTime> data_FreeTimes = new ArrayList<>();
     ArrayList<SetTeam> dataDoi = new ArrayList<>();
+    public static ArrayList<information_TimSan> data_timSan = new ArrayList<information_TimSan>();
     ArrayAdapter adapter_FreeTimes;
     ArrayAdapter adapter_tenDoi;
+    ArrayAdapter adapter_datSan;
+
+
     DatabaseReference mFirebaseDatabase;
     SetFootballPitchesActivity mActivity;
+    SetZoneActivity mSetZoneActivity;
+    String anh;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_free_time, container, false);
+        if(stadium_flagment.idKhu.equals("")){
+            idKhu = all_stadiums.idKhu;
+        }else {
+            idKhu = stadium_flagment.idKhu;
+        }
         lvGioTrong = view.findViewById(R.id.lvGioTrong);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
-
         setEvent();
         // Inflate the layout for this fragment
         return view;
@@ -84,7 +104,7 @@ public class SetListFreeTimeFragment extends Fragment {
 
     private void dialogDatSan() {
         mActivity = (SetFootballPitchesActivity) getActivity();
-        LayoutInflater inflater = getLayoutInflater();
+        final LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_set_football_pitches, null);
         //ánh xạ
         tvTenKhu = alertLayout.findViewById(R.id.tvTenKhu);
@@ -95,9 +115,9 @@ public class SetListFreeTimeFragment extends Fragment {
         tvTongTien = alertLayout.findViewById(R.id.tvTongTien);
         tvGioBD = alertLayout.findViewById(R.id.tvGioBD);
         tvGioKT = alertLayout.findViewById(R.id.tvGioKT);
+        imgAnhDoiDat = alertLayout.findViewById(R.id.imgAnhDoiDat);
         spDoi = alertLayout.findViewById(R.id.spDoi);
         //khởi tạo dữ liệu
-        KhoiTao();
         loadKhu();
         loadSan();
         loadUser();
@@ -108,6 +128,17 @@ public class SetListFreeTimeFragment extends Fragment {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setView(alertLayout);
         alert.setCancelable(false);
+        spDoi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Picasso.get().load(dataDoi.get(i).getAnhDoi()).fit().into(imgAnhDoiDat);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         tvGioBD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,7 +203,6 @@ public class SetListFreeTimeFragment extends Fragment {
         alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mActivity.recreate();
                 Toast.makeText(getContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -181,8 +211,26 @@ public class SetListFreeTimeFragment extends Fragment {
         alert.setPositiveButton("Thêm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mFirebaseDatabase.child("ChoDuyetDatSan").push().setValue(getSetFootballPitches());
-                mActivity.recreate();
+                if(infomation_dangtintimtran.timSan.equals("abc")){
+                    String id = mFirebaseDatabase.child("ChoDuyetDatSan").push().getKey();
+                    mFirebaseDatabase.child("ChoDuyetDatSan").child(id).setValue(getSetFootballPitches());
+                    information_TimSan timSan = new information_TimSan();
+                    timSan.setTenKhu(tvTenKhu.getText().toString());
+                    timSan.setTenSan(tvSan.getText().toString());
+                    timSan.setGioDat(tvGioBD.getText().toString() + " - " + tvGioKT.getText().toString());
+                    timSan.setNgayDat(SetFootballPitchesActivity.ngayDat);
+                    timSan.setIdDat(id);
+                    timSan.setAnh(anh);
+                    data_timSan.add(timSan);
+                    Intent intent = new Intent(getContext(),infomation_dangtintimtran.class);
+                    intent.putExtra("idDatSan", id);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    mActivity.finish();
+                }
+                else {
+                    mFirebaseDatabase.child("ChoDuyetDatSan").push().setValue(getSetFootballPitches());
+                }
             }
         });
         AlertDialog dialog = alert.create();
@@ -263,12 +311,13 @@ public class SetListFreeTimeFragment extends Fragment {
                 for (DataSnapshot dt :
                         snapshot.child("listDoi").getChildren()) {
                     final String key = dt.getKey();
-                    mFirebaseDatabase.child("Team").child(key).child("tenDoi").addListenerForSingleValueEvent(new ValueEventListener() {
+                    mFirebaseDatabase.child("Team").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             SetTeam setTeam = new SetTeam();
                             setTeam.setIdDoi(key);
-                            setTeam.setTenDoi(snapshot.getValue().toString());
+                            setTeam.setTenDoi(snapshot.child("tenDoi").getValue().toString());
+                            setTeam.setAnhDoi(snapshot.child("hinhAnh").getValue().toString());
                             dataDoi.add(setTeam);
                             adapter_tenDoi.notifyDataSetChanged();
                         }
@@ -323,6 +372,7 @@ public class SetListFreeTimeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Zone zone = snapshot.getValue(Zone.class);
+                anh = zone.getAnh();
                 tvTenKhu.setText(zone.getTenKhu());
                 tvDiaChi.setText(zone.getDiaChi() + ", " + zone.getQuan() + ", " + zone.getThanhPho());
             }
@@ -335,6 +385,7 @@ public class SetListFreeTimeFragment extends Fragment {
     }
 
     private void KhoiTao() {
+        data_FreeTimes = new ArrayList<>();
         FreeTime freeTime = new FreeTime("06h30", "09h00");
         FreeTime freeTime1 = new FreeTime("12h30", "14h00");
         FreeTime freeTime2 = new FreeTime("16h30", "17h30");

@@ -20,8 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.Set_Football_Pitches.flagment.SetListFreeTimeFragment;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetTeam;
+import com.example.soccersocialnetwork.TranDuyHuynh.adapter.Adapter_TimSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.adapter_MoiThanhVien;
+import com.example.soccersocialnetwork.TranDuyHuynh.models.information_TimSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
 import com.example.soccersocialnetwork.activity_moithanhvien;
 import com.example.soccersocialnetwork.data_models.Users;
@@ -44,6 +47,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     EditText edtDiaDiem, edtThoiGian, edtNgay, edtThongTinThem;
     ImageView imgThemThanhVien;
     Button btnTimSan, btnDang;
+    ListView lvDanhSach;
     Spinner spinner;
     CircleImageView imageTeam;
     public List<SetTeam> listTeam = new ArrayList<>();
@@ -55,11 +59,18 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     ArrayList<thongTinTranDau> thongTinTranDaus;
     public static String idDoiDangTin;
     public static String tenDoi;
+    public static String timSan = "";
+    public static String dongActivity = "";
+
     thongTinTranDau thongTinTranDau;
     private String anhDoi;
     ListView listViewThanhVienThamGia;
     ArrayList<Users> DanhThanhVienThamGia = adapter_MoiThanhVien.thanhVienThamgia;
+    ArrayList<information_TimSan> data_timSan = SetListFreeTimeFragment.data_timSan;
+
     ArrayAdapter arrayAdapter;
+    ArrayAdapter adapter_TimSan;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -78,9 +89,10 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         edtThongTinThem = (EditText) findViewById(R.id.edtThongTinThem);
         btnDang = (Button) findViewById(R.id.btnDang);
         listViewThanhVienThamGia = (ListView) findViewById(R.id.lstThanhVienDuocMoi);
+        lvDanhSach = findViewById(R.id.lvSan);
+
         arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1,DanhThanhVienThamGia);
         loadData();
-
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,6 +117,8 @@ public class infomation_dangtintimtran extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(infomation_dangtintimtran.this, all_stadiums.class);
+                timSan = "abc";
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
@@ -130,6 +144,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
 //               startActivity(intent);
             }
         });
+
 
     }
 
@@ -233,8 +248,18 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        listViewThanhVienThamGia.setAdapter(arrayAdapter);
+        try {
+            listViewThanhVienThamGia.setAdapter(arrayAdapter);
+        }catch (Exception e){
 
+        }
+        try {
+            adapter_TimSan = new Adapter_TimSan(this, R.layout.item_listview_timsan, SetListFreeTimeFragment.data_timSan);
+            lvDanhSach.setAdapter(adapter_TimSan);
+            adapter_TimSan.notifyDataSetChanged();
+        }catch (Exception e){
+
+        }
     }
 }
 
