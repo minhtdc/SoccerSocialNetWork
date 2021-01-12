@@ -142,10 +142,15 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         btnDang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                taoThongTinTranDau();
-                Intent intent = new Intent(infomation_dangtintimtran.this, home_flagment.class);
-                startActivity(intent);
-                finish();
+                if(edtThoiGian.getText().toString().equals("") || edtNgay.getText().toString().equals("") || spinner.getChildAt(0) == null){
+                    Toast.makeText(infomation_dangtintimtran.this, "Không thể đăng bài, vui lòng kiểm tra thông tin!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    taoThongTinTranDau();
+                    Intent intent = new Intent(infomation_dangtintimtran.this, home_layout.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 

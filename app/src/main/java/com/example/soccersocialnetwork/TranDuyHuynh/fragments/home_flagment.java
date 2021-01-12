@@ -28,6 +28,7 @@ import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_KhuVuc;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiHinhSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.Category_LoaiSan;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
+import com.example.soccersocialnetwork.support_func;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -119,24 +120,43 @@ public class home_flagment extends Fragment {
         spnThanhPho = getView().findViewById(R.id.spnThanhPho);
         spnQuan = getView().findViewById(R.id.spnTinh);
 
+
         //duw lieu spn
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
         dataBaseHelper.createDataBase();
         dataBaseHelper.openDataBase();
-
+        City city = new City();
+        city.setName("City");
         data_tp = dataBaseHelper.getAllCity();
+        data_tp.add(city);
         setAdapterSpinner(data_tp, adapter_tp, spnThanhPho);
+        spnThanhPho.setSelection(data_tp.size());
         spnThanhPho.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
-                City items = data_tp.get(i);
-                data_quan = dataBaseHelper.getAllDistrict(items.getId());
-                setAdapterSpinner(data_quan, adapter_quan, spnQuan);
+                locDanhSachSanTheoTP();
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+                    City items = data_tp.get(i);
+                    data_quan = dataBaseHelper.getAllDistrict(items.getId());
+                    data_quan.add("District");
+                    setAdapterSpinner(data_quan, adapter_quan, spnQuan);
+                    spnQuan.setSelection(data_quan.size());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spnQuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locDanhSachSanTheoTPVaQuan();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -217,6 +237,74 @@ public class home_flagment extends Fragment {
 //
 //        thongTinTranDaus.add(thongTinTranDau);
 
+    }
+    private void locDanhSachSanTheoTPVaQuan(){
+        if(spnQuan.getSelectedItem().toString().equals("District"))
+        {
+            locDanhSachSanTheoTP();
+        }
+        else {
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("ThongTinTranDau");
+            firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    thongTinTranDaus.clear();
+                    for (DataSnapshot dt :
+                            snapshot.getChildren()) {
+                        thongTinTranDau thongTinTranDau = dt.getValue(thongTinTranDau.class);
+                        if (support_func.isStrLike(thongTinTranDau.getDiaDiem(), spnThanhPho.getSelectedItem().toString() + ", " + spnQuan.getSelectedItem().toString())) {
+                            thongTinTranDaus.add(thongTinTranDau);
+                        }
+                    }
+                    // Toast.makeText(getContext(),listTeams.get(0).getIdDoi()+ "", Toast.LENGTH_SHORT).show();
+
+                    information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(), R.layout.listview_doi_dang_tim_tran, thongTinTranDaus);
+                    listView = (ListView) getView().findViewById(R.id.listview_tim_tran);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
+    private void locDanhSachSanTheoTP(){
+        if(spnThanhPho.getSelectedItem().toString().equals("City")){
+            DanhSachTranDau();
+        }
+        else {
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("ThongTinTranDau");
+            firebaseDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    thongTinTranDaus.clear();
+                    for (DataSnapshot dt :
+                            snapshot.getChildren()) {
+                        thongTinTranDau thongTinTranDau = dt.getValue(thongTinTranDau.class);
+                        if (support_func.isStrLike(thongTinTranDau.getDiaDiem(), spnThanhPho.getSelectedItem().toString())) {
+                            thongTinTranDaus.add(thongTinTranDau);
+                        }
+                    }
+                    // Toast.makeText(getContext(),listTeams.get(0).getIdDoi()+ "", Toast.LENGTH_SHORT).show();
+
+                    information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(), R.layout.listview_doi_dang_tim_tran, thongTinTranDaus);
+                    listView = (ListView) getView().findViewById(R.id.listview_tim_tran);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 
     private void DanhSachTranDau() {
