@@ -3,11 +3,10 @@
     package="com.example.soccersocialnetwork">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    //vao thu vien anh
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    //check network
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".list_moi_thanh_vien"></activity>
+        <activity android:name=".ChiTietTranDauActivity"></activity>
+        <activity android:name=".list_moi_thanh_vien" />
         <activity android:name=".activity_moithanhvien" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua" />
         <activity android:name=".TranDuyHuynh.edit_profile_user" />

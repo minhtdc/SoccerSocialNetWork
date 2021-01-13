@@ -75,8 +75,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/ImageDoi"
                     android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:src="@drawable/img_team1">
+                    android:layout_height="70dp">
 
                 </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -86,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
-                    android:text="doi"
+                    android:text="Bạn không là admin của đội nào"
                     android:textColor="@color/colorBlack"
                     android:textSize="20dp">
 
@@ -99,8 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_spinner_khuvuc"
-                android:entries="@array/spnDoi">
+                android:background="@drawable/bg_spinner_khuvuc">
 
             </Spinner>
         </LinearLayout>
@@ -119,13 +117,18 @@
 
             </TextView>
 
-            <EditText
-                android:id="@+id/edtDiaDiem"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/dangTinSpnTinh"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_edit_profile_user">
+                android:layout_weight="1" />
 
-            </EditText>
+            <Spinner
+                android:id="@+id/dangTinSpnQuan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
         </LinearLayout>
 
         <LinearLayout

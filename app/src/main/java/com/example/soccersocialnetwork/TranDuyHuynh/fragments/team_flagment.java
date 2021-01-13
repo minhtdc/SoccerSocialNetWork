@@ -347,10 +347,9 @@ public class team_flagment extends Fragment {
 //
 
     private void readUser() {
-        String uid = LoginActivity.USER_ID_CURRENT;
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
-        mDatabase.child(uid).child("listDoi").addValueEventListener(new ValueEventListener() {
+        mDatabase.child(LoginActivity.USER_ID_CURRENT).child("listDoi").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 keyDoi.clear();
