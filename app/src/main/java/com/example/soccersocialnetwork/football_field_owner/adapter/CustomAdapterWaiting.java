@@ -110,6 +110,7 @@
 package com.example.soccersocialnetwork.football_field_owner.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,6 +124,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.soccersocialnetwork.Football_Pitches.model.Book;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.home_layout;
+import com.example.soccersocialnetwork.football_field_owner.activity.ZoneInfoActivity;
+import com.example.soccersocialnetwork.football_field_owner.flagment.WaitingListFragment;
 import com.example.soccersocialnetwork.football_field_owner.model.Waiting;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -138,11 +142,12 @@ public class CustomAdapterWaiting extends ArrayAdapter {
     int resource;
     ArrayList<Waiting> data;
     DatabaseReference mFirebase;
+
     public CustomAdapterWaiting(Context context, int resource, ArrayList<Waiting> data) {
         super(context, resource);
-        this.context=context;
-        this.data= data;
-        this.resource=resource;
+        this.context = context;
+        this.data = data;
+        this.resource = resource;
 
     }
 
@@ -150,6 +155,7 @@ public class CustomAdapterWaiting extends ArrayAdapter {
     public int getCount() {
         return data.size();
     }
+
     private static class Holder {
         ImageView imgAnh;
         TextView tvTenDoi;
@@ -168,13 +174,13 @@ public class CustomAdapterWaiting extends ArrayAdapter {
         if (view == null) {
             holder = new Holder();
             view = LayoutInflater.from(context).inflate(resource, null);
-            holder.tvTenDoi= view.findViewById(R.id.tvTenDoi);
-            holder.tvsan= view.findViewById(R.id.tvSan);
-            holder.tvNgay= view.findViewById(R.id.tvNgay);
-            holder.tvGio= view.findViewById(R.id.tvGio);
-            holder.imgAnh= view.findViewById(R.id.imgAnh);
-            holder.btnChon= view.findViewById(R.id.btnChon);
-            holder.btnHuy= view.findViewById(R.id.btnHuy);
+            holder.tvTenDoi = view.findViewById(R.id.tvTenDoi);
+            holder.tvsan = view.findViewById(R.id.tvSan);
+            holder.tvNgay = view.findViewById(R.id.tvNgay);
+            holder.tvGio = view.findViewById(R.id.tvGio);
+            holder.imgAnh = view.findViewById(R.id.imgAnh);
+            holder.btnChon = view.findViewById(R.id.btnChon);
+            holder.btnHuy = view.findViewById(R.id.btnHuy);
             view.setTag(holder);
         } else
             holder = (Holder) view.getTag();
@@ -188,10 +194,13 @@ public class CustomAdapterWaiting extends ArrayAdapter {
         holder.btnChon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                mFirebase.child("BaiVietChoDuyetSan").child(WaitingListFragment.idDuyet).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        mFirebase.child("SanDaDat").child(snapshot.getKey()).setValue(snapshot.getValue());
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("ThongTinTranDau").child(snapshot.getKey());
+                        reference.setValue(snapshot.getValue());
+                        //mFirebase.child("ThongTinTranDau").child("2").setValue(snapshot.getValue());
                     }
 
                     @Override
@@ -199,9 +208,31 @@ public class CustomAdapterWaiting extends ArrayAdapter {
 
                     }
                 });
+                mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        mFirebase.child("SanDaDat").child(snapshot.getKey()).setValue(snapshot.getValue());
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("BaiVietChoDuyetSan").child(waiting.getIdDuyet());
+
                 mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).removeValue();
-                data.remove(position);
-                notifyDataSetChanged();
+                mFirebase.child("BaiVietChoDuyetSan").child(waiting.getIdDuyet()).removeValue();
+                try {
+                    data.remove(position);
+                    notifyDataSetChanged();
+                } catch (Exception e) {
+
+                }
+//                Intent intent = new Intent(getContext(), home_layout.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                context.startActivity(intent);
             }
         });
         holder.btnHuy.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +244,6 @@ public class CustomAdapterWaiting extends ArrayAdapter {
             }
         });
 
-        return  view;
+        return view;
     }
 }

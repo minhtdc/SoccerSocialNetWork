@@ -67,6 +67,7 @@ public class SetListFreeTimeFragment extends Fragment {
     ArrayAdapter adapter_FreeTimes;
     ArrayAdapter adapter_tenDoi;
     ArrayAdapter adapter_datSan;
+    public static String idDatSan = "";
 
 
     DatabaseReference mFirebaseDatabase;
@@ -223,7 +224,8 @@ public class SetListFreeTimeFragment extends Fragment {
                     timSan.setAnh(anh);
                     data_timSan.add(timSan);
                     Intent intent = new Intent(getContext(),infomation_dangtintimtran.class);
-                    intent.putExtra("idDatSan", id);
+//                    intent.putExtra("idDatSan", id);
+                    idDatSan = id;
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                     mActivity.finish();

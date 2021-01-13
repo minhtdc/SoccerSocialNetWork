@@ -64,7 +64,7 @@ public class WaitingListFragment extends Fragment {
     String tenChuCLB;
     Waiting waitings = new Waiting();
     int index = -1;
-
+    public static String idDuyet = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -236,7 +236,7 @@ public class WaitingListFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable final String previousChildName) {
                 final SetFootballPitches setFootballPitches = snapshot.getValue(SetFootballPitches.class);
                 final Waiting waiting = new Waiting();
-                final String idDuyet = snapshot.getKey();
+                idDuyet = snapshot.getKey();
                 mFirebase.child("San").child(setFootballPitches.getIdSanDat()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
