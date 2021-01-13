@@ -215,7 +215,7 @@ public class Fragment_Doi_Menu extends Fragment {
         Spinner spThanhPhoDoi = dialogThemThanhVien.findViewById(R.id.spThanhPhoDoi);
 
 //        ListView lvThemThanhVien = dialogThemThanhVien.findViewById(R.id.lvThemThanhVien);
-         lvDanhSachDaThem = dialogThemThanhVien.findViewById(R.id.lvDanhSachDaThem);
+        lvDanhSachDaThem = dialogThemThanhVien.findViewById(R.id.lvDanhSachDaThem);
 
 
         city = dataBaseHelper.getAllCity();
@@ -353,10 +353,41 @@ public class Fragment_Doi_Menu extends Fragment {
         final ListView lvDanhSachChoDuyet = dialogChoDuyet.findViewById(R.id.lvChoDuyet);
 
 
-        //  strings.add(new Users("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgUser%2FQY2wgkB3OtNCmcSb2gfDpc8S9Kj2%2Fa8fe8517-fbc4-47d4-ba6f-1fe00586ff81?alt=media&token=e8c0696c-2196-41be-a047-b3153c9efdb8"));
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mListener = mDatabase.child("Team").child(idDoi).child("ChoDuyet").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                keyUserChoDuyet.clear();
+                listChoDuyet.clear();
+                for (final DataSnapshot dt :
+                        snapshot.getChildren()) {
+                    keyUserChoDuyet.add(dt.getKey());
+                    final DatabaseReference mDataUser = FirebaseDatabase.getInstance().getReference();
+                    mListener = mDataUser.child("users").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot dtt :
+                                    snapshot.getChildren()) {
+                                Users users = dtt.getValue(Users.class);
+                                users.setUserID(dtt.getKey());
+                                if (dtt.getKey().equals(dt.getKey())) {
+                                    listChoDuyet.add(users);
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
 
-//        adapterThem = new Adapter_ThemThanhVien_2(getContext(), R.layout.dialog_them_thanhvien_2, strings);
-//        lvThemThanhVien.setAdapter(adapterThem);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         adapterDanhSachChoDuyet = new Adapter_ChoDuyetThanhVien(getContext(), R.layout.dialog_them_thanhvien_1, listChoDuyet);
         lvDanhSachChoDuyet.setAdapter(adapterDanhSachChoDuyet);
 
@@ -386,23 +417,24 @@ public class Fragment_Doi_Menu extends Fragment {
                 for (final DataSnapshot dt :
                         snapshot.getChildren()) {
                     keyUserChoDuyet.add(dt.getKey());
-                    mDataUser.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot dtt :
-                                    snapshot.getChildren()) {
-                                Users users = dtt.getValue(Users.class);
-                                if (dtt.getKey().equals(dt.getKey())) {
-                                    listChoDuyet.add(users);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+//                    mDataUser.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            for (DataSnapshot dtt :
+//                                    snapshot.getChildren()) {
+//                                Users users = dtt.getValue(Users.class);
+//                                users.setUserID(dtt.getKey());
+//                                if (dtt.getKey().equals(dt.getKey())) {
+//                                    listChoDuyet.add(users);
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
                 }
                 if (keyUserChoDuyet.size() == 0 || keyUserChoDuyet == null) {
                     tvThongBao123.setVisibility(View.GONE);

@@ -109,12 +109,17 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
 
         DatabaseReference userADmin = FirebaseDatabase.getInstance().getReference();
         final Holder finalHolder = holder;
-        userADmin.child("users").child(user.getUserID()).child("listDoi").child(DoiActivity.idDoi).addListenerForSingleValueEvent(new ValueEventListener() {
+        userADmin.child("users").child(user.getUserID()).child("listDoi").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dt:
+                snapshot.getChildren()){
+                    if (dt.getKey().equals(DoiActivity.idDoi)){
+                        if(dt.getValue().equals("Admin")){
+                            finalHolder.tvAdmin.setVisibility(View.VISIBLE);
+                        }
+                    }
 
-                if(snapshot.getValue().equals("Admin")){
-                    finalHolder.tvAdmin.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -372,13 +377,19 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
 
     public void readUserOrAdmin() {
         adminOrUser = "khongnull";
-        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi").child(DoiActivity.idDoi);
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                adminOrUser = snapshot.getValue(String.class);
+                for(DataSnapshot dt:
+                snapshot.getChildren()){
+                    if(dt.getKey().equals(DoiActivity.idDoi)){
+                        if(dt.getValue().equals("Admin")){
+                            adminOrUser = dt.getValue(String.class);
+                        }
+                    }
 
-                // Toast.makeText(Doi_ThongTinCaNhan.this,snapshot.getValue()+ "", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

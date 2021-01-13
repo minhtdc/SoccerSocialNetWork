@@ -119,6 +119,7 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
             @Override
             public void onClick(View v) {
                 dialogThemTinThanhVien(user);
+//                Toast.makeText(context,user.getUserID()+ "", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -168,59 +169,62 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
     }
 
     boolean kiemt = true;
-    private void insertUser(final String key, final boolean kt) {
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mListener = mDatabase.addValueEventListener(new ValueEventListener() {
+    private void insertUser(final String key) {
+
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("users").child(key).child("listDoi").child(DoiActivity.idDoi).setValue("User").addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                kiemt = true;
-                for (final DataSnapshot dt :
-                        snapshot.getChildren()) {
-
-                    Users allUsers = dt.getValue(Users.class);
-
-                    if (key.equals(allUsers.getUserEmail()) && kt != false) {
-                        databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue("User").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                mDatabase.removeEventListener(mListener);
-                                deleteChoDuyet(dt.getKey());
-//
-
-
-                            }
-                        });
-
-                        if (kiemt == false) {
-
-                            continue;
-                        }
-                    }
-                    if (kt == false) {
-                        deleteChoDuyet(dt.getKey());
-                        notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onSuccess(Void aVoid) {
+                deleteChoDuyet(key);
             }
         });
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mListener = mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                kiemt = true;
+//                for (final DataSnapshot dt :
+//                        snapshot.getChildren()) {
+//
+//                    Users allUsers = dt.getValue(Users.class);
+//
+//                    if (key.equals(allUsers.getUserEmail()) && kt != false) {
+//                        databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue("User").addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                mDatabase.removeEventListener(mListener);
+//                                deleteChoDuyet(dt.getKey());
+////
+//
+//
+//                            }
+//                        });
+//
+//                    }
+//                    if (kt == false) {
+//                        deleteChoDuyet(dt.getKey());
+//                        mDatabase.removeEventListener(mListener);
+//                        notifyDataSetChanged();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
 
     private void deleteChoDuyet(String key) {
-        mDatabase = FirebaseDatabase.getInstance().getReference("Team");
-        mDatabase.child(DoiActivity.idDoi).child("ChoDuyet").child(key).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("Team").child(DoiActivity.idDoi).child("ChoDuyet").child(key).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 notifyDataSetChanged();
             }
         });
-
 
     }
 
@@ -319,10 +323,10 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // kichThanhVien(users.getUserEmail());
-                        insertUser(users.getUserEmail(), true);
+                        insertUser(users.getUserID());
                         dialogThemTinThanhVien.dismiss();
                         thongBao(users.getUserEmail());
-                        dialogThemTinThanhVien.dismiss();
+
                         notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -345,7 +349,8 @@ public class Adapter_ChoDuyetThanhVien extends BaseAdapter implements Filterable
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        insertUser(users.getUserEmail(), false);
+                       // insertUser(users.getUserEmail(), false);
+                        deleteChoDuyet(users.getUserID());
                         dialogThemTinThanhVien.dismiss();
                         dialog.dismiss();
                     }

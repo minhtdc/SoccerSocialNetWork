@@ -69,9 +69,9 @@ public class Fragment_Doi_2 extends Fragment {
 
                 }
 
-                adapter_TranDau = new Adapter_TranDau(getContext(),R.layout.doi_match_view,listTranDau);
-                lvTranDau.setAdapter(adapter_TranDau);
-                adapter_TranDau.notifyDataSetChanged();
+//                adapter_TranDau = new Adapter_TranDau(getContext(),R.layout.doi_match_view,listTranDau);
+//                lvTranDau.setAdapter(adapter_TranDau);
+//                adapter_TranDau.notifyDataSetChanged();
             }
 
             @Override
