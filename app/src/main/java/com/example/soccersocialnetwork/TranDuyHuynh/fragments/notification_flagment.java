@@ -15,8 +15,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Adapter.Adapter_ThongBao;
+import com.example.soccersocialnetwork.DoanThanhTung.DialogBinhLuan;
 import com.example.soccersocialnetwork.DoanThanhTung.Models.ThongBao;
 import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.DoiActivity;
+import com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung.TaoDonActivity;
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.information_notifications_Adapter;
@@ -90,6 +92,9 @@ public class notification_flagment extends Fragment {
         return inflater.inflate(R.layout.notification_flagment, container, false);
     }
 
+    public static boolean kiemTraLayout = true;
+    boolean kiemtraUser = true;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         listView = (ListView) view.findViewById(R.id.lstNotification);
@@ -97,63 +102,129 @@ public class notification_flagment extends Fragment {
 //        createDataForListView();
         //    information_notifications_Adapter information_notifications_adapter = new information_notifications_Adapter(getContext(),R.layout.list_notification,information_notifications);
 //        listThongBao.add(new ThongBao("a","a","a","a","a","a"));
-
+        adapter_thongBao = new Adapter_ThongBao(getContext(), R.layout.list_notification, listThongBao);
+        listView.setAdapter(adapter_thongBao);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        mListener = databaseReference.child("users").child(LoginActivity.USER_ID_CURRENT).child("listDoi").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("users").child(LoginActivity.USER_ID_CURRENT).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listThongBao.clear();
-                for (final DataSnapshot dt :
-                        snapshot.getChildren()) {
-
-                    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
-                    databaseReference1.child("ThongBao").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                            for (DataSnapshot dtt :
-                                    snapshot.getChildren()) {
-                                ThongBao thongBao = dtt.getValue(ThongBao.class);
-                                if (thongBao.getIdDoi().equals(dt.getKey())) {
-
-                                    listThongBao.add(thongBao);
-                                    //Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
+                    for (final DataSnapshot dttt :
+                            snapshot.child("listThongBao").getChildren()) {
+                        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
+                        databaseReference1.child("ThongBao").child(dttt.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ThongBao thongBao = snapshot.getValue(ThongBao.class);
+                                if (snapshot.getChildrenCount() == 0) {
+                                    return;
                                 }
+                                    listThongBao.add(thongBao);
+
+                                adapter_thongBao.notifyDataSetChanged();
                             }
-                            adapter_thongBao = new Adapter_ThongBao(getContext(), R.layout.list_notification, listThongBao);
-                            listView.setAdapter(adapter_thongBao);
-                            adapter_thongBao.notifyDataSetChanged();
-                          //  databaseReference.removeValue((DatabaseReference.CompletionListener) mListener);
 
-                        }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
-
-
-            }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
 
+
+//                    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
+//                    databaseReference1.child("ThongBao").addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                            for (DataSnapshot dtt :
+//                                    snapshot.getChildren()) {
+//                                ThongBao thongBao = dtt.getValue(ThongBao.class);
+//                                // Team - có iddoi / admain hay là k / uid -> null
+//                                int demTBUser = 0;
+//                                demTBUser = listThongBao.size();
+//                                if (thongBao.getIdDoi().equals(dt.getKey()) && dt.getValue().equals("Admin") && thongBao.getUid() == null) {
+//
+//                                    listThongBao.add(thongBao);
+//
+//                                    //Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
+//
+//                                } else if (thongBao.getUid() != null) {
+//
+//                                    listThongBao.add(thongBao);
+//
+//                                    if(listThongBao.get(demTBUser).getIdThongBao().equals(dtt.getKey())){
+//
+//                                        listThongBao.remove(demTBUser);
+//                                    }
+//                                    Toast.makeText(getContext(),demTBUser+ "", Toast.LENGTH_SHORT).show();
+//
+//                                   // Toast.makeText(getContext(),dtt.getKey()+ "", Toast.LENGTH_SHORT).show();
+//
+////                                    for (int i = demTBUser; i <= listThongBao.size()+1; i++) {
+////                                        if (listThongBao.get(i).getIdThongBao().equals(dtt.getKey())) {
+////
+////                                            if (thongBao.getUid().equals(LoginActivity.USER_ID_CURRENT)) {
+////                                                listThongBao.remove(i);
+//////                                               Toast.makeText(getContext(),listThongBao.get(i).getIdThongBao()+ "", Toast.LENGTH_SHORT).show();
+////                                            }
+////                                        }
+////                                    }
+//
+//
+//                                }
+//
+//                            }
+//                            adapter_thongBao = new Adapter_ThongBao(getContext(), R.layout.list_notification, listThongBao);
+//                            listView.setAdapter(adapter_thongBao);
+//                            adapter_thongBao.notifyDataSetChanged();
+//                            databaseReference.removeEventListener(mListener);
+//                            //  databaseReference.removeValue((DatabaseReference.CompletionListener) mListener);
+//
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ThongBao thongBao = listThongBao.get(position);
-                if (!thongBao.getIdDoi().equals("")) {
+
+                if (thongBao.getIdDoi() != null && thongBao.getIdBinhLuan() == null) {
                     Intent intent = new Intent(getContext(), DoiActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("TaoDoi_IDDoi", thongBao.getIdDoi());
                     intent.putExtras(bundle);
+
                     startActivity(intent);
+
+
+
+
+                }
+                if(thongBao.getIdBinhLuan() != null){
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id_Feed",thongBao.getIdBinhLuan());
+                    bundle.putString("id_User",thongBao.getUid());
+                    bundle.putString("id_DoiBL",thongBao.getIdDoi());
+
+                    DialogBinhLuan dialogBinhLuan = new DialogBinhLuan(getContext(),bundle);
+
+
+                    dialogBinhLuan.show();
                 }
             }
         });

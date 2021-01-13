@@ -80,12 +80,7 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
 
         setEvent();
 
-        imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(Doi_ThongTinCaNhan.this, imageViewToByte(imgThongTinDoi) +"", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
     private byte[] imageViewToByte(ImageView imageView) {
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
@@ -110,14 +105,6 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
 //        slogan = getIntent().getExtras().getString("Doi_Slogan");
     }
     private void setEvent() {
-        imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(Doi_ThongTinCaNhan.this, adminOrUser + "", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         btnThamGiaDoi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,17 +146,36 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
                 btnThamGiaDoi.setText("Chờ duyệt");
 
                 //        thongBao.
-                String idThongBao;
+                final String idThongBao;
                 ThongBao thongBao = new ThongBao();
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+                DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference();
+
                 idThongBao = databaseReference.push().getKey();
 
                 thongBao.setIdDoi(idDoi);
                 thongBao.setImg(uriIMG);
                 thongBao.setIdThongBao(idThongBao);
-                thongBao.setNoiDung(LoginActivity.USER_NAME_CURRENT +" xin vào đội "+ tenDoi);
+                thongBao.setNoiDung("Xin vào đội "+ LoginActivity.USER_NAME_CURRENT);
 
                 databaseReference.child("ThongBao").child(idThongBao).setValue(thongBao);
+
+                databaseReference2.child("Team").child(idDoi).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Team team = snapshot.getValue(Team.class);
+                        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
+                        databaseReference1.child("users").child(team.getIdDoiTruong()).child("listThongBao").child(idThongBao).setValue("Thông báo vào đội");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
             }
         });
 

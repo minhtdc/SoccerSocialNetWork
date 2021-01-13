@@ -194,20 +194,7 @@
                     android:layout_weight="2"
                     android:text=""></TextView>
 
-                <TextView
 
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-
-                    android:text="Quê quán:"
-                    android:textStyle="bold"></TextView>
-
-                <TextView
-                    android:id="@+id/tvQueQuan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text=""></TextView>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

@@ -14,22 +14,15 @@
         android:layout_weight="0.8"
         android:gravity="center"
         android:orientation="horizontal">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="@string/txtDoi"
             android:textColor="@color/colorBlack"
             android:textSize="30dp">
 
         </TextView>
-
-        <Spinner
-            android:id="@+id/spnKhuVuc_lstDoi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"></Spinner>
 
         <ImageButton
             android:id="@+id/imgTaoDoi"
@@ -41,13 +34,34 @@
             android:src="@drawable/btn_add">
 
         </ImageButton>
+    </LinearLayout>
 
-        <ImageButton
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+
+        <Spinner
+            android:id="@+id/spnKhuVuc_lstDoi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"></Spinner>
+
+
+        <SearchView
+            android:id="@+id/searchDoi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.1"
             android:background="@color/colorWhite"
-            android:src="@drawable/btn_search"></ImageButton>
+            android:src="@drawable/btn_search"
+            android:iconifiedByDefault="true"
+
+            android:queryHint="nhập tên"></SearchView>
     </LinearLayout>
 
     <View
