@@ -16,7 +16,7 @@
 
     public class activity_lienhe extends AppCompatActivity {
         LinearLayout linearLayoutHuynh, linearLayoutVu, linearLayoutTung, linearLayoutMinh, linearLayoutSang;
-        String NumberPhone = "0906100493";
+        String NumberPhone = "0354863545";
         private static final String LOG_TAG = "Call fail";
         private static final int MY_PERMISSION_REQUEST_CODE_CALL_PHONE = 555;
 
@@ -25,10 +25,10 @@
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_lienhe);
             linearLayoutHuynh = findViewById(R.id.lnHuynh);
-            linearLayoutTung = findViewById(R.id.lnHuynh);
-            linearLayoutVu = findViewById(R.id.lnHuynh);
-            linearLayoutMinh = findViewById(R.id.lnHuynh);
-            linearLayoutTung = findViewById(R.id.lnHuynh);
+            linearLayoutTung = findViewById(R.id.lnTung);
+            linearLayoutVu = findViewById(R.id.lnVu);
+            linearLayoutMinh = findViewById(R.id.lnMinh);
+            linearLayoutSang = findViewById(R.id.lnSang);
 
             linearLayoutHuynh.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -43,10 +43,28 @@
                     askPermissionAndCall();
                 }
             });
+
+            linearLayoutVu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    askPermissionAndCall();
+                }
+            });
+            linearLayoutSang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    askPermissionAndCall();
+                }
+            });
+            linearLayoutMinh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    askPermissionAndCall();
+                }
+            });
         }
 
         private void askPermissionAndCall() {
-
             // With Android Level >= 23, you have to ask the user
             // for permission to Call.
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) { // 23

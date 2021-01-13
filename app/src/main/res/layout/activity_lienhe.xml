@@ -86,7 +86,7 @@
         </TextView>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/lvSang"
+        android:id="@+id/lnSang"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -107,7 +107,7 @@
         </TextView>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/lbtTung"
+        android:id="@+id/lnTung"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
