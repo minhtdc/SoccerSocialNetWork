@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_listview_doi_tim_tran"
     android:gravity="center"
-    android:padding="10dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="10dp">
+
     <ImageView
         android:id="@+id/imgLogo_Teams_list_stadiums"
         android:layout_width="80dp"
@@ -13,11 +14,11 @@
 
     <LinearLayout
 
-        android:paddingLeft="20dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="20dp">
 
         <TextView
             android:id="@+id/txttenSan_lstStadiums"
@@ -37,8 +38,8 @@
                 android:id="@+id/txtLoaiHinhSan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlack"
-                android:text="@string/txtLoaiHinhSan">
+                android:text="@string/txtLoaiHinhSan"
+                android:textColor="@color/colorBlack">
 
             </TextView>
 
@@ -61,8 +62,8 @@
                 android:id="@+id/txtLoaiSan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlack"
-                android:text="@string/txtLoaiSan">
+                android:text="@string/txtLoaiSan"
+                android:textColor="@color/colorBlack">
 
             </TextView>
 
@@ -81,19 +82,43 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/txtThongTinDiaChiSan"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:textColor="@color/colorBlack"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:ellipsize="end">
-            </TextView>
+                android:textColor="@color/colorBlack"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="end"
+            android:id="@+id/lnButton"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/btnChon"
+                android:src="@drawable/icon_chon" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/btnHuy"
+                android:src="@drawable/icon_huy" />
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/imgXoa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_next"></ImageView>
+
 </LinearLayout>

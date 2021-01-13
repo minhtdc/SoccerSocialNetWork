@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.TranDuyHuynh.home_layout;
 import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
 import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.example.soccersocialnetwork.football_field_owner.model.Zone;
@@ -73,7 +74,7 @@ public class AddZoneActivity extends AppCompatActivity {
     FirebaseDatabase mFirebaseInstance;
     String userId = LoginActivity.USER_ID_CURRENT;
     StorageReference storageRef = storage.getReference().child("anhKhu");
-
+    public static String idKhu = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,11 +201,10 @@ public class AddZoneActivity extends AppCompatActivity {
                             public void onSuccess(Uri downloadPhotoUrl) {
                                 //Now play with downloadPhotoUrl
                                 //Store data into Firebase Realtime Database
-                                String id = mFirebaseDatabase.child("Khu").push().getKey();
+                                String id = mFirebaseDatabase.child("ChoDuyetKhu").push().getKey();
                                 Zone zone = getZone(downloadPhotoUrl.toString(),id);
-                                mFirebaseDatabase.child("Khu").child(id).setValue(zone);
-                                Intent intent = new Intent(AddZoneActivity.this, ZoneInfoActivity.class);
-                                ListZone.idKhu = id;
+                                mFirebaseDatabase.child("ChoDuyetKhu").child(id).setValue(zone);
+                                Intent intent = new Intent(AddZoneActivity.this, home_layout.class);
                                 startActivity(intent);
                                 finish();
                             }

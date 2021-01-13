@@ -32,6 +32,9 @@
         <activity android:name=".football_field_owner.activity.ListZone" />
         <activity android:name=".football_field_owner.activity.ZoneInfoActivity" />
         <activity android:name=".football_field_owner.activity.AddZoneActivity" />
+
+<!--        <activity android:name=".Admin.Activity.AdminActivity"/>-->
+<!--        <activity android:name=".LoginActivity">-->
         <activity android:name=".Admin.Activity.AdminActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
