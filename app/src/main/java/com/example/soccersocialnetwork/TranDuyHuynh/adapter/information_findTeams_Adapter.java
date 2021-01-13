@@ -82,6 +82,7 @@ public class information_findTeams_Adapter extends ArrayAdapter<thongTinTranDau>
                 bundle.putString("thongTinThem", getItem(position).getThongTinThem());
                 bundle.putString("idNguoiDangTin", getItem(position).getIdNguoiDangTin());
                 bundle.putString("idTranDau", getItem(position).getIdTranDau());
+                bundle.putString("san", getItem(position).getSan());
                 usersArrayList = getItem(position).getThanhVienThamGia();
                 intent.putExtras(bundle);
                 context.startActivity(intent);

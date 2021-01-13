@@ -11,10 +11,9 @@
         android:id="@+id/dialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bạn có muốn đăng suất không ?"
+        android:text="Bạn có muốn đăng xuất không ?"
         android:textColor="@color/colorBlack"
-        android:textSize="20dp">
-    </TextView>
+        android:textSize="20dp"></TextView>
     <LinearLayout
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
