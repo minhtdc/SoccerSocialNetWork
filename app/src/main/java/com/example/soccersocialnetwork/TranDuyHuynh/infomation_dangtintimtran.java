@@ -147,7 +147,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
                 Intent intent = new Intent(infomation_dangtintimtran.this, activity_moithanhvien.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
-//                Toast.makeText(infomation_dangtintimtran.this,idDoiDangTin.toString(),Toast.LENGTH_LONG).show();
+//              Toast.makeText(infomation_dangtintimtran.this,idDoiDangTin.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -266,6 +266,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     }
 
     public void taoThongTinTranDau() {
+        
         thongTinTranDau = new thongTinTranDau();
         thongTinTranDau.setDiaDiem(dangTinSpnTinh.getSelectedItem().toString() + ", " + dangTinSpnQuan.getSelectedItem().toString());
         thongTinTranDau.setNgay(edtNgay.getText().toString());
@@ -275,6 +276,17 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         thongTinTranDau.setTenDoi(txtTenDoi.getText().toString());
         thongTinTranDau.setAnhDoi(anhDoi);
         thongTinTranDau.setThanhVienThamGia(DanhThanhVienThamGia);
+        //kiểm tra có sân hay không
+        if(lvDanhSach.getChildAt(0) == null)
+        {
+
+        }
+        else {
+            String san = SetListFreeTimeFragment.data_timSan.get(0).getTenSan() + "( " + SetListFreeTimeFragment.data_timSan.get(0).getGioDat() + " )";
+            thongTinTranDau.setSan(san);
+        }
+
+
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         String keyID = FirebaseDatabase.getInstance().getReference().push().getKey();
         thongTinTranDau.setIdTranDau(keyID);
@@ -292,11 +304,13 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         }
         try {
             adapter_TimSan = new Adapter_TimSan(this, R.layout.item_listview_timsan, SetListFreeTimeFragment.data_timSan);
+            adapter_TimSan.clear();
             lvDanhSach.setAdapter(adapter_TimSan);
             adapter_TimSan.notifyDataSetChanged();
         }catch (Exception e){
 
         }
+
     }
 }
 
