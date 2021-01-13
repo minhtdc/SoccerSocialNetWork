@@ -56,11 +56,12 @@ public class WaitingZoneFragment extends Fragment {
     }
 
     private void loadData() {
-
+        listStadiums.clear();
         mFirebase.child("ChoDuyetKhu").addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                 final Zone zone = snapshot.getValue(Zone.class);
                 if (zone.isCoTuNhien() == true) {
                     if (zone.isCoNhanTao() == true) {
