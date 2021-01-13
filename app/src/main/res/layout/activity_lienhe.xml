@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity_lienhe"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Liên hệ"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:layout_marginBottom="20dp">
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/lnHuynh"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/imghuynh"
+            android:layout_width="50dp"
+            android:layout_height="90dp"
+            android:layout_weight="1">
+        </ImageView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:text="Trần Duy Huynh"
+            android:gravity="center">
+
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnMinh"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/imgminh"
+            android:layout_width="50dp"
+            android:layout_height="90dp"
+            android:layout_weight="1">
+        </ImageView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:text="Nguyễn Văn Minh"
+            android:gravity="center">
+
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnVu"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/imgvu"
+            android:layout_width="50dp"
+            android:layout_height="90dp"
+            android:layout_weight="1">
+        </ImageView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:text="Văn Tấn Vũ"
+            android:gravity="center">
+
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnSang"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/imgsang"
+            android:layout_width="50dp"
+            android:layout_height="90dp"
+            android:layout_weight="1">
+        </ImageView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:text="Nguyễn Huỳnh Hoàng Sang"
+            android:gravity="center">
+
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnTung"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/imgtung"
+            android:layout_width="50dp"
+            android:layout_height="90dp"
+            android:layout_weight="1">
+        </ImageView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:text="Đoàn Thanh Tùng"
+            android:gravity="center">
+
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>
+
+</ScrollView>
