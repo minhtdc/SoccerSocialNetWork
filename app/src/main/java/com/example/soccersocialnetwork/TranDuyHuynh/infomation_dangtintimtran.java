@@ -266,6 +266,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     }
 
     public void taoThongTinTranDau() {
+        
         thongTinTranDau = new thongTinTranDau();
         thongTinTranDau.setDiaDiem(dangTinSpnTinh.getSelectedItem().toString() + ", " + dangTinSpnQuan.getSelectedItem().toString());
         thongTinTranDau.setNgay(edtNgay.getText().toString());
