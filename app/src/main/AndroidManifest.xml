@@ -36,13 +36,15 @@
         <activity android:name=".football_field_owner.activity.AddZoneActivity" />
 
 <!--        <activity android:name=".Admin.Activity.AdminActivity"/>-->
-<!--        <activity android:name=".LoginActivity">-->
-        <activity android:name=".Admin.Activity.AdminActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Admin.Activity.AdminActivity">
+
         </activity>
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTinCaNhan" />
         <activity android:name=".TranDuyHuynh.home_layout" />

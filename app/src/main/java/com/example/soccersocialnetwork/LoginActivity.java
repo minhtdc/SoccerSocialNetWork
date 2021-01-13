@@ -33,6 +33,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.soccersocialnetwork.Admin.Activity.AdminActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.home_layout;
 import com.example.soccersocialnetwork.data_models.Users;
 import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
@@ -41,8 +42,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,6 +123,34 @@ public class LoginActivity extends AppCompatActivity {
         edtLoginEmail.setAnimation(bottomAnimation);
         edtLoginPassword.setAnimation(bottomAnimation);
 
+        final String[] userAd = new String[2];
+
+        //getAdmin
+        DatabaseReference refAd = FirebaseDatabase.getInstance().getReference().child("Admin");
+        refAd.child("userName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userAd[0] = snapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        refAd.child("passWord").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userAd[1] = snapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         //action
         //login
@@ -128,6 +160,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (isOnline()) {
                     String userName = edtLoginEmail.getText().toString();
                     String userPass = edtLoginPassword.getText().toString();
+
+                    if(userName.equals(userAd[0]) && userPass.equals(userAd[1])){
+                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+
                     if (!userName.equalsIgnoreCase("") || !userPass.equalsIgnoreCase("")) {
                         fAuth.signInWithEmailAndPassword(userName, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
