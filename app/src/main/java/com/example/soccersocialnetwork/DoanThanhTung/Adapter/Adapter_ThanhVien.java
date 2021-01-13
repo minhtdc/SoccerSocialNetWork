@@ -72,7 +72,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
 
     static class Holder {
 
-        TextView tvTenThanhVienTrongDoi, tvEmailThanhVienTrongDoi;
+        TextView tvTenThanhVienTrongDoi, tvEmailThanhVienTrongDoi, tvAdmin;
         ImageView imgAvatar;
         LinearLayout llThanhVienDoi;
 
@@ -95,6 +95,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
             holder.tvEmailThanhVienTrongDoi = view.findViewById(R.id.tvEmailThanhVienTrongDoi);
             holder.imgAvatar = view.findViewById(R.id.imgAvatar);
             holder.llThanhVienDoi = view.findViewById(R.id.llThanhVienDoi);
+            holder.tvAdmin = view.findViewById(R.id.tvAdmin);
 
 
             // holder.txtNgay = view.findViewById(R.id.tv_Gio);
@@ -104,7 +105,24 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
             holder = (Adapter_ThanhVien.Holder) view.getTag();
 
         final Users user = data.get(position);
+        holder.tvAdmin.setVisibility(View.GONE);
 
+        DatabaseReference userADmin = FirebaseDatabase.getInstance().getReference();
+        final Holder finalHolder = holder;
+        userADmin.child("users").child(user.getUserID()).child("listDoi").child(DoiActivity.idDoi).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.getValue().equals("Admin")){
+                    finalHolder.tvAdmin.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         if (user.getUserImage().equals("")) {
 
         } else {
@@ -276,7 +294,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
         });
         if (adminOrUser.equals("Admin")) {
             btnKichThanhVien.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnKichThanhVien.setVisibility(View.GONE);
         }
         btnKichThanhVien.setOnClickListener(new View.OnClickListener() {
@@ -310,7 +328,7 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
 
     }
 
-    private void kichThanhVien(final String key){
+    private void kichThanhVien(final String key) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
         //   Toast.makeText(ThemThanhVien.this, users.getUserEmail()+"", Toast.LENGTH_SHORT).show();
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
@@ -328,10 +346,10 @@ public class Adapter_ThanhVien extends BaseAdapter implements Filterable {
                                 dt.child("listDoi").getChildren()) {
                             if (DoiActivity.idDoi.equals(dtt.getKey())) {
                                 // dtt.child(idDoi).getValue();
-                                if(dtt.getValue().equals("Admin")){
+                                if (dtt.getValue().equals("Admin")) {
                                     Toast.makeText(context, "Bạn không thể kích chính mình", Toast.LENGTH_SHORT).show();
                                     mDatabase.removeEventListener(mListener);
-                                }else{
+                                } else {
                                     databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {

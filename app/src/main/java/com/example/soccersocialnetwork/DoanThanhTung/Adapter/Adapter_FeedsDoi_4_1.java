@@ -84,11 +84,24 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Users user = snapshot.getValue(Users.class);
+                final Users user = snapshot.getValue(Users.class);
                 holder.tvNameUser.setText(user.getUserName());
                 if (!user.getUserImage().equals("")) {
                     Picasso.get().load(user.getUserImage()).into(holder.imgAvatar);
                 }
+
+                holder.tvNameUser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogThongTinThanhVien(user).show();
+                    }
+                });
+                holder.imgAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogThongTinThanhVien(user).show();
+                    }
+                });
             }
 
             @Override
@@ -96,6 +109,8 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
 
             }
         });
+
+
 
         holder.tvSTT.setText(feed.getSTT());
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("users");
@@ -353,6 +368,91 @@ public class Adapter_FeedsDoi_4_1 extends RecyclerView.Adapter<Adapter_FeedsDoi_
             }
         });
         // databaseReference.child().child("listFeeds").child(idBinhLuan).child("listCMT").push().setValue(listCMT);
+    }
+
+    private Dialog dialogThongTinThanhVien(final Users users) {
+        //  mDatabase.getDatabase().goOnline();
+
+        final Dialog dialogThongTinThanhVien = new Dialog(context);
+        dialogThongTinThanhVien.getWindow().setBackgroundDrawableResource(R.color.colorWhite);
+        dialogThongTinThanhVien.setContentView(R.layout.dialog_thongtinthanhvien);
+        dialogThongTinThanhVien.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //ánh xạ
+        Button btnKichThanhVien = dialogThongTinThanhVien.findViewById(R.id.btnKichThanhVien);
+        final Button btnEXIT = dialogThongTinThanhVien.findViewById(R.id.btnEXIT);
+        ImageView imgAvatar = dialogThongTinThanhVien.findViewById(R.id.imgAvatar);
+        TextView tvTenUser = dialogThongTinThanhVien.findViewById(R.id.tvTenUser);
+        TextView tvViTri = dialogThongTinThanhVien.findViewById(R.id.tvViTri);
+        TextView tvChieuCao = dialogThongTinThanhVien.findViewById(R.id.tvChieuCao);
+        TextView tvCanNang = dialogThongTinThanhVien.findViewById(R.id.tvChieuCao);
+        TextView tvSlogan = dialogThongTinThanhVien.findViewById(R.id.tvSlogan);
+        TextView tvSinhNhat = dialogThongTinThanhVien.findViewById(R.id.tvSinhNhat);
+        TextView tvEmail = dialogThongTinThanhVien.findViewById(R.id.tvEmail);
+        TextView tvKhuVuc = dialogThongTinThanhVien.findViewById(R.id.tvKhuVuc);
+
+        btnKichThanhVien.setVisibility(View.GONE);
+        //setevent
+        if (users.getUserImage().equals("")) {
+
+        } else {
+            Picasso.get().load(users.getUserImage()).into(imgAvatar);
+        }
+
+        if (users.getUserName().equals("")) {
+
+        } else {
+            tvTenUser.setText(users.getUserName());
+        }
+
+        if (users.getUserCanNang().equals("")) {
+
+        } else {
+            tvCanNang.setText(users.getUserCanNang());
+        }
+
+
+        if (users.getUserAria().equals("")) {
+
+        } else {
+            tvKhuVuc.setText(users.getUserAria());
+        }
+
+        if (users.getUserEmail().equals("")) {
+
+        } else {
+            tvEmail.setText(users.getUserEmail());
+        }
+
+        if (users.getUserBirth().equals("")) {
+
+        } else {
+            tvSinhNhat.setText(users.getUserBirth());
+        }
+
+        if (users.getUserSologan().equals("")) {
+
+        } else {
+            tvSlogan.setText(users.getUserSologan());
+        }
+        if (users.getUserViTri().equals("")) {
+
+        } else {
+            tvViTri.setText(users.getUserViTri());
+        }
+        if (users.getUserChieuCao().equals("")) {
+
+        } else {
+            tvChieuCao.setText(users.getUserChieuCao());
+        }
+        btnEXIT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogThongTinThanhVien.dismiss();
+            }
+        });
+
+        dialogThongTinThanhVien.show();
+        return dialogThongTinThanhVien;
 
 
     }

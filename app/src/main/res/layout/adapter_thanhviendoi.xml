@@ -6,6 +6,7 @@
 
     <LinearLayout
         android:id="@+id/llThanhVienDoi"
+        android:background="@drawable/bamvao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -17,6 +18,7 @@
             android:layout_weight="1"
             android:src="@drawable/icon_user"></ImageView>
 
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -25,15 +27,27 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đội trưởng"
+                android:textColor="@color/colorRed"
+                android:textSize="20dp"
+                android:visibility="gone"></TextView>
+
+            <TextView
                 android:id="@+id/tvTenThanhVienTrongDoi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+
                 android:text="tenThanh viên"></TextView>
 
             <TextView
                 android:id="@+id/tvEmailThanhVienTrongDoi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="tenThanh viên"
                 android:textSize="12dp"></TextView>
         </LinearLayout>

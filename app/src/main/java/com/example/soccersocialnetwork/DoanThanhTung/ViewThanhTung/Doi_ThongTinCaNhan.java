@@ -80,12 +80,7 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
 
         setEvent();
 
-        imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(Doi_ThongTinCaNhan.this, imageViewToByte(imgThongTinDoi) +"", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
     private byte[] imageViewToByte(ImageView imageView) {
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
@@ -110,14 +105,6 @@ public class Doi_ThongTinCaNhan extends AppCompatActivity {
 //        slogan = getIntent().getExtras().getString("Doi_Slogan");
     }
     private void setEvent() {
-        imgThongTinDoi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(Doi_ThongTinCaNhan.this, adminOrUser + "", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         btnThamGiaDoi.setOnClickListener(new View.OnClickListener() {
             @Override

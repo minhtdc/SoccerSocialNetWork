@@ -174,6 +174,7 @@ public class ThemThanhVien extends AppCompatActivity {
                         snapshot.getChildren()) {
 //                   Users users = new Users("1","1","1","1","1","1","1","1","1","1","1");
                     Users users = dt.getValue(Users.class);
+                    users.setUserID(dt.getKey());
                     //     Toast.makeText(ThemThanhVien.this, dt.getValue()+"", Toast.LENGTH_SHORT).show();
                     for (DataSnapshot dtt :
                             dt.child("listDoi").getChildren()) {

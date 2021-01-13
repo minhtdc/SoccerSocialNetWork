@@ -288,7 +288,7 @@ public class team_flagment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
-                Toast.makeText(getContext(),city.get(position).getName()+ "", Toast.LENGTH_SHORT).show();
+
                 DatabaseReference teamDataBase = FirebaseDatabase.getInstance().getReference();
                 teamDataBase.child("Team").addValueEventListener(new ValueEventListener() {
                     @Override
