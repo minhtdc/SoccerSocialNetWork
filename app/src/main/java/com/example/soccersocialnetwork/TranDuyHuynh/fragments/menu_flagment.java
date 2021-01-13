@@ -1,19 +1,8 @@
 package com.example.soccersocialnetwork.TranDuyHuynh.fragments;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,22 +10,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
-import com.example.soccersocialnetwork.R;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.soccersocialnetwork.LoginActivity;
+import com.example.soccersocialnetwork.R;
 import com.example.soccersocialnetwork.TranDuyHuynh.TimKiemUserActivity;
 import com.example.soccersocialnetwork.TranDuyHuynh.edit_profile_user;
-import com.example.soccersocialnetwork.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.soccersocialnetwork.activity_lienhe;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -51,6 +34,7 @@ public class menu_flagment extends Fragment {
     LinearLayout ln_choose_Helps, ln_choose_Settings,lnDangXuat;
     TextView name_user_menu;
     ImageButton btnTimKiem;
+    Button btnLienHe,btnBaoCao,btnDieuKhoan,btnTaiKhoan,btnNgonNgu,btnGiaodien;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -109,6 +93,12 @@ public class menu_flagment extends Fragment {
         lnDangXuat = rootView.findViewById(R.id.lnDangXuat);
         name_user_menu = rootView.findViewById(R.id.name_user_menu);
         btnTimKiem = rootView.findViewById(R.id.btnTimKiem);
+        btnBaoCao = rootView.findViewById(R.id.btnBaoCaoSuCo);
+        btnDieuKhoan = rootView.findViewById(R.id.btnDieuKhoan);
+        btnGiaodien = rootView.findViewById(R.id.btnGiaoDien);
+        btnLienHe = rootView.findViewById(R.id.btnLienHe);
+        btnNgonNgu = rootView.findViewById(R.id.btnNgonNgu);
+        btnTaiKhoan = rootView.findViewById(R.id.btnTaiKhoan);
 
         //set ảnh đại diện
         //imageView_user.setImageResource(R.drawable.img_team5)
@@ -167,6 +157,14 @@ public class menu_flagment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(),edit_profile_user.class);
+                startActivity(intent);
+            }
+        });
+
+        btnLienHe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), activity_lienhe.class);
                 startActivity(intent);
             }
         });
