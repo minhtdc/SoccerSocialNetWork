@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ public class stadium_flagment extends Fragment {
     public static String idKhu;
 
     ImageButton btnAdd;
+    SearchView searchSan;
     // Khai bao list view
     private ListView listView;
     ArrayList<information_listStadium> listStadiums;
@@ -123,11 +126,12 @@ public class stadium_flagment extends Fragment {
         listView = view.findViewById(R.id.lstStadiums);
         btnSanCuaBan = view.findViewById(R.id.btn_list_your_stadiums);
         btnAdd = view.findViewById(R.id.btnAdd);
+        searchSan = view.findViewById(R.id.searchSan);
         City city = new City();
         city.setName("Khu Vực");
 
         data_tp = dataBaseHelper.getAllCity();
-        data_tp.add(0,city);
+        data_tp.add(0, city);
         setAdapterSpinner(data_tp, adapter_tp, spinner);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +139,22 @@ public class stadium_flagment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddZoneActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        searchSan.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                information_listStadiums_adapter.getFilter().filter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                information_listStadiums_adapter.getFilter().filter(newText);
+
+
+                return false;
             }
         });
         btnSanCuaBan.setOnClickListener(new View.OnClickListener() {
@@ -147,10 +167,102 @@ public class stadium_flagment extends Fragment {
 
         listStadiums = new ArrayList<>();
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, final int i, long l) {
 
-        information_listStadiums_adapter = new information_listStadiums_Adapter(getContext(), R.layout.list_stadiums, listStadiums);
-        listView.setAdapter(information_listStadiums_adapter);
-        loadData();
+                if (data_tp.get(i).getName().equals("Khu Vực")) {
+                    listStadiums.clear();
+                    information_listStadiums_adapter = new information_listStadiums_Adapter(getContext(), R.layout.list_stadiums, listStadiums);
+                    listView.setAdapter(information_listStadiums_adapter);
+                    loadData();
+                } else {
+                    mFirebaseDatabase.child("Khu").addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                            listStadiums.clear();
+                            information_listStadiums_adapter = new information_listStadiums_Adapter(getContext(), R.layout.list_stadiums, listStadiums);
+                            listView.setAdapter(information_listStadiums_adapter);
+                            final Zone zone = snapshot.getValue(Zone.class);
+                            if (zone.getThanhPho().equals(data_tp.get(i).getName())) {
+                                if (zone.isCoTuNhien() == true) {
+                                    if (zone.isCoNhanTao() == true) {
+                                        loaiSan = "Cỏ Tự Nhiên, Cỏ Nhân Tạo";
+                                    } else {
+                                        loaiSan = "Cỏ Tự Nhiên";
+                                    }
+                                } else {
+                                    if (zone.isCoNhanTao() == true) {
+                                        loaiSan = "Cỏ Nhân Tạo";
+                                    } else {
+                                        loaiSan = "";
+                                    }
+                                }
+                                if (zone.isNamNguoi() == true) {
+                                    if (zone.isBayNguoi() == true) {
+                                        if (zone.isChinNguoi() == true) {
+                                            loaiHinhSan = "5 Người, 7 Người, 9 Người";
+                                        } else {
+                                            loaiHinhSan = "5 Người, 7 Người";
+                                        }
+                                    } else {
+                                        if (zone.isChinNguoi() == true) {
+                                            loaiHinhSan = "5 Người, 9 Người";
+                                        } else {
+                                            loaiHinhSan = "5 Người";
+                                        }
+                                    }
+                                } else {
+                                    if (zone.isBayNguoi() == true) {
+                                        if (zone.isChinNguoi() == true) {
+                                            loaiHinhSan = "7 Người, 9 Người";
+                                        } else {
+                                            loaiHinhSan = "7 Người";
+                                        }
+                                    } else {
+                                        if (zone.isChinNguoi() == true) {
+                                            loaiHinhSan = "9 Người";
+                                        } else {
+                                            loaiHinhSan = "";
+                                        }
+                                    }
+                                }
+                                if (!loaiSan.equals("") && !loaiHinhSan.equals("")) {
+                                    listStadiums.add(new information_listStadium(zone.getAnh(), zone.getPushId(), zone.getTenKhu(), loaiHinhSan, loaiSan, zone.getDiaChi() + zone.getQuan() + zone.getThanhPho()));
+                                    information_listStadiums_adapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

@@ -50,17 +50,17 @@
                 android:id="@+id/tvGio"
                 android:text="giờ" />
 
-            <Button
+            <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/btnChon"
-                android:background="@drawable/icon_chon" />
+                android:src="@drawable/icon_chon" />
 
-            <Button
+            <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/btnHuy"
-                android:background="@drawable/icon_huy" />
+                android:src="@drawable/icon_huy" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

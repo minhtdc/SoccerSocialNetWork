@@ -8,10 +8,19 @@
     android:orientation="vertical">
 
     <ImageView
+        android:layout_width="35dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:id="@+id/imgThoat"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/icon_huy" />
+
+    <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/img_team1"
         android:layout_marginBottom="10dp"
+        android:id="@+id/imgTeam"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -70,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/lnSan"
         android:layout_margin="10dp">
 
         <TextView
