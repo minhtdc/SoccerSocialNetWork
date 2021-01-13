@@ -1,17 +1,22 @@
 package com.example.soccersocialnetwork.TranDuyHuynh;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.soccersocialnetwork.LoginActivity;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.Set_Football_Pitches.activity.SetFootballPitchesActivity;
 import com.example.soccersocialnetwork.Set_Football_Pitches.flagment.SetListFreeTimeFragment;
 import com.example.soccersocialnetwork.Set_Football_Pitches.model.SetTeam;
 import com.example.soccersocialnetwork.TranDuyHuynh.adapter.Adapter_TimSan;
@@ -29,6 +35,7 @@ import com.example.soccersocialnetwork.TranDuyHuynh.fragments.home_flagment;
 import com.example.soccersocialnetwork.TranDuyHuynh.models.thongTinTranDau;
 import com.example.soccersocialnetwork.activity_moithanhvien;
 import com.example.soccersocialnetwork.data_models.Users;
+import com.example.soccersocialnetwork.football_field_owner.activity.AddZoneActivity;
 import com.example.soccersocialnetwork.football_field_owner.database.DataBaseHelper;
 import com.example.soccersocialnetwork.football_field_owner.model.City;
 import com.google.firebase.database.ChildEventListener;
@@ -39,7 +46,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -64,7 +75,7 @@ public class infomation_dangtintimtran extends AppCompatActivity {
     public static String tenDoi;
     public static String timSan = "";
     public static String dongActivity = "";
-    boolean stateDuyet =false;
+    int gio, phut;
 
     thongTinTranDau thongTinTranDau;
     private String anhDoi;
@@ -99,6 +110,10 @@ public class infomation_dangtintimtran extends AppCompatActivity {
         dangTinSpnTinh = findViewById(R.id.dangTinSpnTinh);
         dangTinSpnQuan = findViewById(R.id.dangTinSpnQuan);
 
+        //set
+        edtNgay.setInputType(InputType.TYPE_NULL);
+        edtThoiGian.setInputType(InputType.TYPE_NULL);
+
         arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1, DanhThanhVienThamGia);
         loadData();
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
@@ -118,6 +133,57 @@ public class infomation_dangtintimtran extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        edtThoiGian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        infomation_dangtintimtran.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                gio = hourOfDay;
+                                phut = minute;
+                                String time = gio + ":" + phut;
+
+                                try {
+                                    SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
+                                    Date date = f24hours.parse(time);
+                                    Toast.makeText(infomation_dangtintimtran.this, time+"", Toast.LENGTH_SHORT).show();
+                                    edtThoiGian.setText(time);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 12, 00, true);
+                timePickerDialog.setTitle("Thời gian");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(R.color.colorXam);
+                timePickerDialog.updateTime(gio,phut);
+                timePickerDialog.show();
+            }
+        });
+
+        edtNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(infomation_dangtintimtran.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        calendar.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        edtNgay.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                }, year, month, day);
+                datePickerDialog.show();
 
             }
         });
