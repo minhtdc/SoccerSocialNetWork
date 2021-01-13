@@ -173,7 +173,7 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
 
     private void insertUser(final String key) {
 
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mListener = mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -183,14 +183,9 @@ public class Adapter_ThemThanhVien extends BaseAdapter implements Filterable {
                     //    boolean kiemTra = true;
                     Users allUsers = dt.getValue(Users.class);
                     if (key.equals(allUsers.getUserEmail())) {
-                        databaseReference.child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue("User").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                                mDatabase.removeEventListener(mListener);
-                                notifyDataSetChanged();
-                            }
-                        });
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                        databaseReference.child("users").child(dt.getKey()).child("listDoi").child(DoiActivity.idDoi).setValue("User");
+                        mDatabase.removeEventListener(mListener);
                     }
                 }
             }

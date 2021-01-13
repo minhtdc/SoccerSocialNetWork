@@ -4,13 +4,23 @@ public class ListCMT {
     String uid;
     String idCMT;
     String cmt;
+    String thoiGian;
 
-    public ListCMT(String uid, String idCMT, String cmt) {
+
+
+    public ListCMT(String uid, String idCMT, String cmt,String thoiGian) {
         this.uid = uid;
         this.idCMT = idCMT;
         this.cmt = cmt;
+        this.thoiGian = thoiGian;
+    }
+    public String getThoiGian() {
+        return thoiGian;
     }
 
+    public void setThoiGian(String thoiGian) {
+        this.thoiGian = thoiGian;
+    }
     public String getUid() {
         return uid;
     }

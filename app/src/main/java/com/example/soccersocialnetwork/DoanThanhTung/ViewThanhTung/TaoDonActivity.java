@@ -149,25 +149,6 @@ public class TaoDonActivity extends AppCompatActivity {
                 } else {
 
                     uploadImage(imgTaoDoi, progreDiaglog, getTeam());
-
-
-//                    // chuyển qua layout khác và dữ liệu
-//                    Intent intent = new Intent(TaoDonActivity.this, DoiActivity.class);
-//
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("TaoDoi_IDDoi", IDLatter() + "");
-//                    bundle.putString("TaoDoi_IMGDoi", uri.toString());
-//                    bundle.putString("TaoDoi_TenDoi", txtTenDoi.getText().toString());
-//                    bundle.putString("TaoDoi_KhuVuc", spKhuVuc.getSelectedItem().toString());
-//                    bundle.putString("TaoDoi_Email", txtEmail.getText().toString());
-//                    bundle.putString("TaoDoi_SDT", txtSDT.getText().toString());
-//                    bundle.putString("TaoDoi_GioiThieu", txtGioiThieu.getText().toString());
-//                    bundle.putString("TaoDoi_TieuChi", txtTieuChi.getText().toString());
-//                    bundle.putString("TaoDoi_Slogan", txtSlogan.getText().toString());
-//                    intent.putExtras(bundle);
-//                    startActivity(intent);
-                    // Toast.makeText(TaoDonActivity.this, "Không có mạng!", Toast.LENGTH_SHORT).show();
-
                 }
             }
 

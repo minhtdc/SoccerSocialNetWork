@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -53,7 +54,7 @@ public class Fragment_Doi extends Fragment {
     DatabaseReference mDatabase;
 
     RecyclerView recyclerView;
-    ImageView imgDangBai;
+    LinearLayout imgDangBai;
     TextView tvTrangThai, tvChuaCoBai;
 
     TextView tvGioStart;
@@ -201,12 +202,7 @@ public class Fragment_Doi extends Fragment {
                 // fullscreenDialog();
             }
         });
-        tvTrangThai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), LoginActivity.USER_ID_CURRENT + "", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     private void fullscreenDangBai() {

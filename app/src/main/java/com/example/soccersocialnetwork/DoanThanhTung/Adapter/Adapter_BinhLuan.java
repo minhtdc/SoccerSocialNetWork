@@ -67,6 +67,7 @@ public class Adapter_BinhLuan extends ArrayAdapter {
 
         final TextView   tvNameUser = view.findViewById(R.id.tvNameUser);
         TextView   tvBinhLuan = view.findViewById(R.id.tvBinhLuan);
+        TextView   tvThoiGian = view.findViewById(R.id.tvThoiGian);
         final ImageView  imgAvatar = view.findViewById(R.id.imgAvatar);
 
 
@@ -75,6 +76,7 @@ public class Adapter_BinhLuan extends ArrayAdapter {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
+        tvThoiGian.setText(listCMT.getThoiGian());
 
         databaseReference.child(listCMT.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
