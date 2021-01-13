@@ -6,12 +6,12 @@
     android:background="@drawable/btn_rectangle_doi"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Trạng thái"
-        android:layout_margin="10dp"
-        android:gravity="center"></TextView>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Trạng thái"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:gravity="center"></TextView>-->
 
     <LinearLayout
         android:layout_width="match_parent"

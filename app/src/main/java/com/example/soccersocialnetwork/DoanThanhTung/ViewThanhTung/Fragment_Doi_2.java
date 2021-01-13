@@ -1,6 +1,7 @@
 package com.example.soccersocialnetwork.DoanThanhTung.ViewThanhTung;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Fragment_Doi_2 extends Fragment {
 
@@ -69,9 +71,9 @@ public class Fragment_Doi_2 extends Fragment {
 
                 }
 
-//                adapter_TranDau = new Adapter_TranDau(getContext(),R.layout.doi_match_view,listTranDau);
-//                lvTranDau.setAdapter(adapter_TranDau);
-//                adapter_TranDau.notifyDataSetChanged();
+                adapter_TranDau = new Adapter_TranDau(getContext(),R.layout.doi_match_view,listTranDau);
+                lvTranDau.setAdapter(adapter_TranDau);
+                adapter_TranDau.notifyDataSetChanged();
             }
 
             @Override
@@ -98,12 +100,12 @@ public class Fragment_Doi_2 extends Fragment {
         dialogTranDau.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //ánh xạ
         Button btnEXIT = dialogTranDau.findViewById(R.id.btnEXIT);
-        TextView tvTrangThai = dialogTranDau.findViewById(R.id.tvTrangThai);
+        final TextView tvTrangThai = dialogTranDau.findViewById(R.id.tvTrangThai);
         final TextView tvNgay = dialogTranDau.findViewById(R.id.tvNgay);
         final TextView tvGio = dialogTranDau.findViewById(R.id.tvGio);
         final TextView tvDD = dialogTranDau.findViewById(R.id.tvDD);
         final TextView tvThongTin = dialogTranDau.findViewById(R.id.tvThongTin);
-        final TextView tvTenTeam = dialogTranDau.findViewById(R.id.tvThongTin);
+        final TextView tvTenTeam = dialogTranDau.findViewById(R.id.tvTenTeam);
         TextView tvTenDoiThu = dialogTranDau.findViewById(R.id.tvTenDoiThu);
         final ImageView imgTeam = dialogTranDau.findViewById(R.id.imgTeam);
         ImageView imgDoiThu = dialogTranDau.findViewById(R.id.imgDoiThu);
@@ -122,6 +124,18 @@ public class Fragment_Doi_2 extends Fragment {
                 tvDD.setText(thongTin.getDiaDiem()+"");
                 tvThongTin.setText(thongTin.getThongTinThem()+"");
                 tvTenTeam.setText(thongTin.getTenDoi()+"");
+                Map<String, Object> data = (Map<String, Object>) snapshot.getValue();
+                String abc = data.get("trangThaiDuyet") + "";
+                if(abc.equals("0")){
+                    tvTrangThai.setText("Chưa tìm được đối thủ");
+                }else
+                {
+                    tvTrangThai.setText("Có đối thủ");
+                    tvTrangThai.setTextColor(Color.GREEN);
+                }
+                //Toast.makeText(getContext(), dt.getKey()+"", Toast.LENGTH_SHORT).show();
+//                    feeds.setQuan(data.get("quan") + "");
+//                    feeds.setThongBao(data.get("thongBao") + "");
                 Picasso.get().load(thongTin.getAnhDoi()).into(imgTeam);
             }
 
