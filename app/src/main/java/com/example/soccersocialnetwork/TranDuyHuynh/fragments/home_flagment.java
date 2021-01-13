@@ -119,6 +119,8 @@ public class home_flagment extends Fragment {
         txtDangTin = (TextView) getView().findViewById(R.id.txtDangTinTimTran);
         spnThanhPho = getView().findViewById(R.id.spnThanhPho);
         spnQuan = getView().findViewById(R.id.spnTinh);
+        listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
+
 
 
         //duw lieu spn
@@ -321,7 +323,6 @@ public class home_flagment extends Fragment {
                 // Toast.makeText(getContext(),listTeams.get(0).getIdDoi()+ "", Toast.LENGTH_SHORT).show();
 
                 information_findTeams_Adapter adapter = new information_findTeams_Adapter(getContext(),R.layout.listview_doi_dang_tim_tran,thongTinTranDaus);
-                listView = (ListView)getView().findViewById(R.id.listview_tim_tran);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 

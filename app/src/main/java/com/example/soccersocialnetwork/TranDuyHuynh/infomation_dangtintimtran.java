@@ -281,36 +281,43 @@ public class infomation_dangtintimtran extends AppCompatActivity {
             String san = SetListFreeTimeFragment.data_timSan.get(0).getTenSan() + "( " + SetListFreeTimeFragment.data_timSan.get(0).getGioDat() + " )";
             thongTinTranDau.setSan(san);
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SanDaDat");
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        if (dataSnapshot.getKey().equals(SetListFreeTimeFragment.idDatSan)) {
-                            mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-                            String keyID = FirebaseDatabase.getInstance().getReference().push().getKey();
-                            thongTinTranDau.setIdTranDau(keyID);
-                            mDatabaseReference.child("ThongTinTranDau").child(keyID).setValue(thongTinTranDau);
-                            mDatabaseReference.child("ThongTinTranDau").child(keyID).child("idNguoiDangTin").setValue(LoginActivity.USER_ID_CURRENT);
-                            stateDuyet = true;
-                            break;
-                        }
-                    }
-                    if (stateDuyet == false){
-                        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-                        String keyID = SetListFreeTimeFragment.idDatSan;
-                        thongTinTranDau.setIdTranDau(keyID);
-                        mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).setValue(thongTinTranDau);
-                        mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).child("idNguoiDangTin").setValue(LoginActivity.USER_ID_CURRENT);
-                        mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).child("trangThaiDuyet").setValue("0");
-                    }
-                }
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+            String keyID = SetListFreeTimeFragment.idDatSan;
+            thongTinTranDau.setIdTranDau(keyID);
+            mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).setValue(thongTinTranDau);
+            mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).child("idNguoiDangTin").setValue(LoginActivity.USER_ID_CURRENT);
+            mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).child("trangThaiDuyet").setValue("0");
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+//            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SanDaDat");
+//            ref.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                        if (dataSnapshot.getKey().equals(SetListFreeTimeFragment.idDatSan)) {
+//                            mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+//                            String keyID = FirebaseDatabase.getInstance().getReference().push().getKey();
+//                            thongTinTranDau.setIdTranDau(keyID);
+//                            mDatabaseReference.child("ThongTinTranDau").child(keyID).setValue(thongTinTranDau);
+//                            mDatabaseReference.child("ThongTinTranDau").child(keyID).child("idNguoiDangTin").setValue(LoginActivity.USER_ID_CURRENT);
+//                            stateDuyet = true;
+//                            break;
+//                        }
+//                    }
+//                    if (stateDuyet == false){
+//                        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+//                        String keyID = SetListFreeTimeFragment.idDatSan;
+//                        thongTinTranDau.setIdTranDau(keyID);
+//                        mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).setValue(thongTinTranDau);
+//                        mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).child("idNguoiDangTin").setValue(LoginActivity.USER_ID_CURRENT);
+//                        mDatabaseReference.child("BaiVietChoDuyetSan").child(keyID).child("trangThaiDuyet").setValue("0");
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
             Intent intent = new Intent(infomation_dangtintimtran.this, home_layout.class);
             startActivity(intent);
             finish();

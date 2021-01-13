@@ -111,6 +111,7 @@ package com.example.soccersocialnetwork.football_field_owner.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -194,8 +195,8 @@ public class CustomAdapterWaiting extends ArrayAdapter {
         holder.btnChon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                mFirebase.child("BaiVietChoDuyetSan").child(WaitingListFragment.idDuyet).addListenerForSingleValueEvent(new ValueEventListener() {
+                final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+                myRef.child("BaiVietChoDuyetSan").child(waiting.getIdDuyet()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("ThongTinTranDau").child(snapshot.getKey());
@@ -212,7 +213,6 @@ public class CustomAdapterWaiting extends ArrayAdapter {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         mFirebase.child("SanDaDat").child(snapshot.getKey()).setValue(snapshot.getValue());
-
                     }
 
                     @Override
@@ -222,14 +222,18 @@ public class CustomAdapterWaiting extends ArrayAdapter {
                 });
 //                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("BaiVietChoDuyetSan").child(waiting.getIdDuyet());
 
-                mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).removeValue();
-                mFirebase.child("BaiVietChoDuyetSan").child(waiting.getIdDuyet()).removeValue();
-                try {
-                    data.remove(position);
-                    notifyDataSetChanged();
-                } catch (Exception e) {
 
-                }
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFirebase.child("ChoDuyetDatSan").child(waiting.getIdDuyet()).removeValue();
+                        myRef.child("BaiVietChoDuyetSan").child(waiting.getIdDuyet()).removeValue();
+                        data.remove(position);
+                        notifyDataSetChanged();
+                    }
+                }, 3000);
+
 //                Intent intent = new Intent(getContext(), home_layout.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                context.startActivity(intent);
