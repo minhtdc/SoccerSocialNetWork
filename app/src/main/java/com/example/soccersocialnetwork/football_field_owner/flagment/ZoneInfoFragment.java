@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class ZoneInfoFragment extends Fragment {
     DatabaseReference mData;
-    TextView txtTenkhu,txtDiachi,txtLoaihinhsan,txtLoaisan,txtGio;
+    TextView txtTenkhu,txtDiachi,txtQuan,txtThanhPho,txtLoaihinhsan,txtLoaisan,txtGio;
     ArrayList<Zone> data = new ArrayList<>();
     String idKhu = ListZone.idKhu;
     String loaiSan, loaiHinhSan;
@@ -38,6 +38,8 @@ public class ZoneInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_zone_info, container, false);
         txtTenkhu = view.findViewById(R.id.txtTenKhu);
         txtDiachi = view.findViewById(R.id.txtDiaChi);
+        txtQuan = view.findViewById(R.id.txtQuan);
+        txtThanhPho = view.findViewById(R.id.txtThanhPho);
         txtLoaihinhsan = view.findViewById(R.id.txtLoaiHinhSan);
         txtLoaisan = view.findViewById(R.id.txtLoaiSan);
         txtGio = view.findViewById(R.id.txtGio);
@@ -100,6 +102,8 @@ public class ZoneInfoFragment extends Fragment {
                 }
                 txtTenkhu.setText(zone.getTenKhu());
                 txtDiachi.setText(zone.getDiaChi());
+                txtQuan.setText(zone.getQuan());
+                txtThanhPho.setText(zone.getThanhPho());
                 txtLoaisan.setText(loaiSan);
                 txtLoaihinhsan.setText(loaiHinhSan);
                 txtGio.setText(zone.getGioMo() +":"+ zone.getPhutMo() + " ~ " + zone.getGioDong() +":"+ zone.getPhutDong());
