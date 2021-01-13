@@ -9,12 +9,15 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.soccersocialnetwork.DoanThanhTung.Models.Team;
 import com.example.soccersocialnetwork.R;
+import com.example.soccersocialnetwork.data_models.Users;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -118,7 +121,13 @@ public class Adapter_TestCLickTeam extends BaseAdapter implements Filterable {
 
             }
         });
+        holder.imgXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTeam(team.getIdDoi() +"");
 
+            }
+        });
         return view;
     }
 
@@ -161,6 +170,40 @@ public class Adapter_TestCLickTeam extends BaseAdapter implements Filterable {
         }
     }
 
+    private void deleteTeam(final String idTeam){
+        DatabaseReference firebaseTeam = FirebaseDatabase.getInstance().getReference();
+        firebaseTeam.child("Team").child(idTeam).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                DatabaseReference firebaseUsers = FirebaseDatabase.getInstance().getReference();
+                firebaseUsers.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dt:
+                        snapshot.getChildren()){
+                            Users users = dt.getValue(Users.class);
+                            for(DataSnapshot dtt:
+                            dt.child("listDoi").getChildren()){
+                                if(dtt.getKey().equals(idTeam)){
+                                    DatabaseReference firebaseRemoveUser = FirebaseDatabase.getInstance().getReference();
+                                    firebaseRemoveUser.child("users").child(dt.getKey()).child("listDoi").child(dtt.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(context, "Đã xóa thành công", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+    }
 
 }
