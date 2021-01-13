@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChiTietTranDauActivity"></activity>
+        <activity android:name=".ChiTietTranDauActivity" />
         <activity android:name=".list_moi_thanh_vien" />
         <activity android:name=".activity_moithanhvien" />
         <activity android:name=".DoanThanhTung.ViewThanhTung.Doi_ThongTin_ChinhSua" />
@@ -32,7 +32,10 @@
         <activity android:name=".football_field_owner.activity.ListZone" />
         <activity android:name=".football_field_owner.activity.ZoneInfoActivity" />
         <activity android:name=".football_field_owner.activity.AddZoneActivity" />
-        <activity android:name=".LoginActivity">
+
+<!--        <activity android:name=".Admin.Activity.AdminActivity"/>-->
+<!--        <activity android:name=".LoginActivity">-->
+        <activity android:name=".Admin.Activity.AdminActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
