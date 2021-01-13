@@ -100,8 +100,6 @@ public class infomation_dangtintimtran extends AppCompatActivity {
 
         arrayAdapter = new ArrayAdapter<Users>(this, android.R.layout.simple_list_item_1,DanhThanhVienThamGia);
         loadData();
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
         dataBaseHelper.createDataBase();
         dataBaseHelper.openDataBase();
