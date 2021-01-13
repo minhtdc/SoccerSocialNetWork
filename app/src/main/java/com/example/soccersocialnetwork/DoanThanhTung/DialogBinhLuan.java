@@ -31,7 +31,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DialogBinhLuan extends BottomSheetDialog {
 
@@ -42,6 +45,7 @@ public class DialogBinhLuan extends BottomSheetDialog {
     Bundle bundle;
     ArrayList<ListCMT> listCMTS = new ArrayList<>();
     ArrayAdapter adapter_binhLuan;
+
     public DialogBinhLuan(@NonNull Context context, Bundle bundle) {
         super(context);
         this.bundle = bundle;
@@ -58,10 +62,11 @@ public class DialogBinhLuan extends BottomSheetDialog {
         btnGui = findViewById(R.id.btnGui);
         btnSua = findViewById(R.id.btnSua);
 
+
         final String idBinhLuan = bundle.getString("id_Feed");
         final String uid = bundle.getString("id_User");
         final String idDoi = bundle.getString("id_DoiBL");
-        if(DoiActivity.idDoi ==null){
+        if (DoiActivity.idDoi == null) {
             DoiActivity.idDoi = idDoi;
         }
 
@@ -168,12 +173,22 @@ public class DialogBinhLuan extends BottomSheetDialog {
     }
 
     private void insertBinhLuan(final String idBinhLuan, String noiDungBL, final String uid) {
+        final Calendar calendar = Calendar.getInstance();
+        int idate = calendar.get(Calendar.DATE);
+
+        int imonth = calendar.get(Calendar.MONTH);
+        int iyear = calendar.get(Calendar.YEAR);
+        int ihours = calendar.get(Calendar.HOUR);
+        int iminute = calendar.get(Calendar.MINUTE);
+        int isecond = calendar.get(Calendar.SECOND);
+
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Team").child(DoiActivity.idDoi).child("listFeeds").child(idBinhLuan).child("listCMT");
         ListCMT listCMT = new ListCMT();
         String idCMT = databaseReference.push().getKey();
         listCMT.setCmt(noiDungBL);
         listCMT.setIdCMT(idCMT);
         listCMT.setUid(LoginActivity.USER_ID_CURRENT);
+        listCMT.setThoiGian(idate + "/" + imonth + "/" + iyear + "\n" + ihours + ":" + iminute + ":" + isecond);
         databaseReference.child(idCMT).setValue(listCMT).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -188,7 +203,7 @@ public class DialogBinhLuan extends BottomSheetDialog {
                 thongBao.setImg("https://firebasestorage.googleapis.com/v0/b/soccersocialnetwork-733b3.appspot.com/o/imgTeam%2FIDTeam_IMG%3A%205%2Ffb631f43-09f2-4300-9349-4c066deb032e?alt=media&token=3062a8e5-49eb-458e-be1c-1bab84c644d6");
                 thongBao.setIdBinhLuan(idBinhLuan);
                 DatabaseReference userBL = FirebaseDatabase.getInstance().getReference();
-                if(!LoginActivity.USER_ID_CURRENT.equals(uid)){
+                if (!LoginActivity.USER_ID_CURRENT.equals(uid)) {
                     userBL.child("users").child(uid).child("listThongBao").child(idThongBao).setValue("Có người bình luận bài viết");
                     databaseReference1.child("ThongBao").child(idThongBao).setValue(thongBao);
                 }
@@ -199,6 +214,7 @@ public class DialogBinhLuan extends BottomSheetDialog {
 
 
     }
+
     @Override
     public void dismiss() {
         super.dismiss();

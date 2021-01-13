@@ -11,10 +11,12 @@
         android:paddingBottom="20dp">
 
         <LinearLayout
+            android:id="@+id/imgDangBai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/bamvao">
 
             <TextView
                 android:id="@+id/tvTrangThai"
@@ -27,7 +29,7 @@
                 android:text="Đăng bài tìm trận cho đội"></TextView>
 
             <ImageView
-                android:id="@+id/imgDangBai"
+
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
